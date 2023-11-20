@@ -1,9 +1,9 @@
 package net.theevilreaper.vulpes.backend.handler
 
+import net.theevilreaper.vulpes.api.model.ItemModel
+import net.theevilreaper.vulpes.api.repository.ItemRepository
 import net.theevilreaper.vulpes.backend.spec.database.ItemDatabaseHandler
 import net.theevilreaper.vulpes.backend.util.INVALID_ID_MESSAGE
-import net.theevilreaper.vulpes.model.ItemModel
-import net.theevilreaper.vulpes.repository.ItemRepository
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service

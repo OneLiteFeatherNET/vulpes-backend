@@ -1,8 +1,8 @@
 package net.theevilreaper.vulpes.backend.handler
 
+import net.theevilreaper.vulpes.api.model.BlockModel
+import net.theevilreaper.vulpes.api.repository.BlocKRepository
 import net.theevilreaper.vulpes.backend.spec.database.BlockDatabaseHandler
-import net.theevilreaper.vulpes.model.BlockModel
-import net.theevilreaper.vulpes.repository.BlocKRepository
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
