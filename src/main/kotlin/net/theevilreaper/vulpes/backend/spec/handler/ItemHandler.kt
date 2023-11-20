@@ -1,7 +1,7 @@
 package net.theevilreaper.vulpes.backend.spec.handler
 
+import net.theevilreaper.vulpes.api.model.ItemModel
 import net.theevilreaper.vulpes.backend.spec.database.ItemDatabaseHandler
-import net.theevilreaper.vulpes.model.ItemModel
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity

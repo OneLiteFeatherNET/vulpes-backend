@@ -1,7 +1,7 @@
 package net.theevilreaper.vulpes.backend.spec.handler
 
+import net.theevilreaper.vulpes.api.model.BlockModel
 import net.theevilreaper.vulpes.backend.spec.database.BlockDatabaseHandler
-import net.theevilreaper.vulpes.model.BlockModel
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity

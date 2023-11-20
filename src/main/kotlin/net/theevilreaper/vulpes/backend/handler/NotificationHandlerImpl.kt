@@ -1,8 +1,8 @@
 package net.theevilreaper.vulpes.backend.handler
 
+import net.theevilreaper.vulpes.api.model.NotificationModel
+import net.theevilreaper.vulpes.api.repository.NotificationRepository
 import net.theevilreaper.vulpes.backend.spec.database.NotificationDatabaseHandler
-import net.theevilreaper.vulpes.model.NotificationModel
-import net.theevilreaper.vulpes.repository.NotificationRepository
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service

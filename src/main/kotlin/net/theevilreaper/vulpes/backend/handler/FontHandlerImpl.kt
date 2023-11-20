@@ -1,8 +1,8 @@
 package net.theevilreaper.vulpes.backend.handler
 
+import net.theevilreaper.vulpes.api.model.FontModel
+import net.theevilreaper.vulpes.api.repository.FontRepository
 import net.theevilreaper.vulpes.backend.spec.database.FontDatabaseHandler
-import net.theevilreaper.vulpes.model.FontModel
-import net.theevilreaper.vulpes.repository.FontRepository
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
