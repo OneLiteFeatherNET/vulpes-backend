@@ -25,7 +25,7 @@ class AttributeWebHandler {
     @Autowired
     private lateinit var attributeRepository: AttributeRepository
 
-    @PostMapping("/attribute/add")
+    @PostMapping("/attribute")
     fun add(@RequestBody model: AttributeModel): ResponseEntity<AttributeModel> {
         return ResponseEntity.ok(attributeRepository.save(model))
     }
