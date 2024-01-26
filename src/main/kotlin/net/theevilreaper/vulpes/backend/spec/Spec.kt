@@ -1,5 +1,6 @@
 package net.theevilreaper.vulpes.backend.spec
 
+import org.jetbrains.annotations.ApiStatus
 
 /**
  * @author theEvilReaper
@@ -7,4 +8,6 @@ package net.theevilreaper.vulpes.backend.spec
  * @since
  **/
 
+@ApiStatus.Internal
+@ApiStatus.NonExtendable
 class Spec
