@@ -5,7 +5,7 @@ dependencyResolutionManagement {
         create("libs") {
             version("kotlin", "1.9.23")
 
-            library("jackson", "com.fasterxml.jackson.module", "jackson-module-kotlin").version("2.16.1")
+            library("jackson", "com.fasterxml.jackson.module", "jackson-module-kotlin").version("2.17.0")
             library("annotation", "org.jetbrains", "annotations").version("24.1.0")
 
             library(
