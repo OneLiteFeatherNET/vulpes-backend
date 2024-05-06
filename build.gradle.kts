@@ -1,4 +1,6 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.text.SimpleDateFormat
+import java.util.*
 
 plugins {
     alias(libs.plugins.spring)
@@ -66,7 +68,20 @@ tasks {
         }
     }
     bootBuildImage {
-        builder.set("paketobuildpacks/builder-jammy-base:latest")
+        if (System.getenv().containsKey("CI")) {
+            createdDate.set(SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX").format(Date()))
+            environment.set(environment.get() + mapOf("BP_JVM_VERSION" to "21"))
+            imageName.set("${System.getenv("CI_REGISTRY_IMAGE")}/backend")
+            publish.set(true)
+            docker {
+                publishRegistry {
+                    url.set("https://${System.getenv("CI_REGISTRY")}")
+                    username.set(System.getenv("CI_REGISTRY_USER"))
+                    password.set(System.getenv("CI_REGISTRY_PASSWORD"))
+                }
+            }
+        }
+
     }
     test {
         useJUnitPlatform()
