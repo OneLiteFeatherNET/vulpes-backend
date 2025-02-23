@@ -3,10 +3,10 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 plugins {
-    alias(libs.plugins.spring)
-    alias(libs.plugins.spring.dependency)
     alias(libs.plugins.kotlin.jvm)
-    alias(libs.plugins.kotlin.spring)
+    id("com.github.johnrengelman.shadow") version "8.1.1"
+    id("io.micronaut.application") version "4.4.4"
+    id("io.micronaut.aot") version "4.4.4"
 }
 
 group = "net.theevilreaper"
@@ -20,40 +20,58 @@ java {
 
 dependencies {
     implementation(libs.vulpes.api)
-    implementation(libs.spring.starter.web)
-    implementation(libs.spring.starter.data.mongodb)
     implementation(libs.jackson)
     implementation(libs.annotation)
 
-    testImplementation(libs.embed.mongo)
-    testImplementation(libs.spring.starter.test)
-    testImplementation(libs.spring.starter.data.mongodb)
+    annotationProcessor("io.micronaut:micronaut-http-validation")
+    annotationProcessor("io.micronaut.serde:micronaut-serde-processor")
+    implementation("io.micronaut.serde:micronaut-serde-jackson")
+    implementation("io.micronaut:micronaut-http-client")
+    runtimeOnly("ch.qos.logback:logback-classic")
+    
+    testImplementation("io.micronaut.test:micronaut-test-junit5")
+    testImplementation("org.junit.jupiter:junit-jupiter-api")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+}
+
+application {
+    mainClass.set("net.theevilreaper.vulpes.VulpesApplicationKt")
+}
+
+graalvmNative.toolchainDetection = false
+
+micronaut {
+    runtime("netty")
+    testRuntime("junit5")
+    processing {
+        incremental(true)
+        annotations("net.theevilreaper.*")
+    }
+    aot {
+        optimizeServiceLoading = false
+        convertYamlToJava = false
+        precomputeOperations = true
+        cacheEnvironment = true
+        optimizeClassLoading = true
+        deduceEnvironment = true
+        optimizeNetty = true
+        replaceLogbackXml = true
+    }
+}
+
+tasks.named<io.micronaut.gradle.docker.NativeImageDockerfile>("dockerfileNative") {
+    jdkVersion = "21"
 }
 
 tasks {
     compileKotlin {
         compilerOptions {
-            freeCompilerArgs = listOf("-Xjsr305=strict")
             jvmTarget.set(JvmTarget.JVM_21)
         }
     }
-    bootBuildImage {
-        if (System.getenv().containsKey("CI")) {
-            createdDate.set(SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX").format(Date()))
-            environment.set(environment.get() + mapOf("BP_JVM_VERSION" to "21"))
-            imageName.set("${System.getenv("CI_REGISTRY_IMAGE")}/backend")
-            publish.set(true)
-            docker {
-                publishRegistry {
-                    url.set("https://${System.getenv("CI_REGISTRY")}")
-                    username.set(System.getenv("CI_REGISTRY_USER"))
-                    password.set(System.getenv("CI_REGISTRY_PASSWORD"))
-                }
-            }
+    compileTestKotlin {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_21)
         }
-
-    }
-    test {
-        useJUnitPlatform()
     }
 }
