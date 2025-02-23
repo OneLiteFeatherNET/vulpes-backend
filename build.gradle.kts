@@ -1,12 +1,8 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import java.text.SimpleDateFormat
-import java.util.*
-
 plugins {
-    alias(libs.plugins.kotlin.jvm)
-    id("com.github.johnrengelman.shadow") version "8.1.1"
-    id("io.micronaut.application") version "4.4.4"
-    id("io.micronaut.aot") version "4.4.4"
+    alias(libs.plugins.shadowJar)
+    alias(libs.plugins.micronaut.application)
+    alias(libs.plugins.micronaut.aot)
+    jacoco
 }
 
 group = "net.theevilreaper"
@@ -19,23 +15,37 @@ java {
 }
 
 dependencies {
-    implementation(libs.vulpes.api)
-    implementation(libs.jackson)
-    implementation(libs.annotation)
+    annotationProcessor(mn.micronaut.serde.processor)
+    annotationProcessor(mn.micronaut.http.validation)
+    annotationProcessor(mn.micronaut.data.processor)
+    annotationProcessor("io.micronaut:micronaut-inject-java:4.7.10")
+    annotationProcessor(mn.micronaut.openapi)
 
-    annotationProcessor("io.micronaut:micronaut-http-validation")
-    annotationProcessor("io.micronaut.serde:micronaut-serde-processor")
-    implementation("io.micronaut.serde:micronaut-serde-jackson")
-    implementation("io.micronaut:micronaut-http-client")
-    runtimeOnly("ch.qos.logback:logback-classic")
-    
-    testImplementation("io.micronaut.test:micronaut-test-junit5")
-    testImplementation("org.junit.jupiter:junit-jupiter-api")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+    compileOnly(mn.micronaut.openapi.annotations)
+
+    implementation(libs.vulpes.api)
+    //Micronaut
+    implementation(mn.micronaut.data.processor)
+    implementation(mn.micronaut.runtime)
+    implementation(mn.validation)
+    implementation(mn.snakeyaml)
+    implementation(mn.log4j)
+    implementation(mn.slf4j.api)
+    implementation(mn.slf4j.simple)
+    implementation(mn.jackson.core)
+    implementation(mn.jackson.databind)
+    implementation(mn.jackson.datatype.jsr310)
+    implementation(mn.micronaut.data.document.processor)
+    implementation(mn.micronaut.data.mongodb)
+    implementation(mn.micronaut.mongo.core)
+
+    testImplementation(mn.junit.jupiter.api)
+    testRuntimeOnly(mn.junit.jupiter.engine)
 }
 
+
 application {
-    mainClass.set("net.theevilreaper.vulpes.VulpesApplicationKt")
+    mainClass.set("net.theevilreaper.vulpes.backend.BackendApplication")
 }
 
 graalvmNative.toolchainDetection = false
@@ -64,14 +74,12 @@ tasks.named<io.micronaut.gradle.docker.NativeImageDockerfile>("dockerfileNative"
 }
 
 tasks {
-    compileKotlin {
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_21)
-        }
+    compileJava {
+        options.encoding = "UTF-8"
+        options.release = 21
     }
-    compileTestKotlin {
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_21)
-        }
+
+    jar {
+        dependsOn("shadowJar")
     }
 }

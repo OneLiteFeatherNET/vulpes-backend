@@ -1,10 +1,21 @@
 rootProject.name = "vulpes-backend"
 
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        mavenCentral()
+        maven("https://eldonexus.de/repository/maven-public/")
+    }
+}
+
+plugins {
+    id("io.micronaut.platform.catalog") version "4.4.4"
+}
+
 dependencyResolutionManagement {
     if (System.getenv("CI") != null) {
         repositoriesMode = RepositoriesMode.PREFER_SETTINGS
         repositories {
-            maven("https://s01.oss.sonatype.org/content/repositories/snapshots/")
             maven("https://repo.htl-md.schule/repository/Gitlab-Runner/")
             maven {
                 val groupdId = 28 // Gitlab Group
@@ -22,15 +33,21 @@ dependencyResolutionManagement {
         }
     } else {
         repositories {
+            mavenLocal()
             mavenCentral()
+            maven { url = uri("https://repo.spring.io/milestone") }
+            maven { url = uri("https://repo.spring.io/snapshot") }
             maven("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+            //maven("https://reposilite.worldseed.online/public")
+            maven("https://jitpack.io")
             maven {
                 val groupdId = 28 // Gitlab Group
                 url = uri("https://gitlab.onelitefeather.dev/api/v4/groups/$groupdId/-/packages/maven")
                 name = "GitLab"
                 credentials(HttpHeaderCredentials::class.java) {
-                    name =  "Private-Token"
-                    value = providers.gradleProperty("gitLabPrivateToken").get()
+                    name = "Private-Token"
+                    val gitLabPrivateToken: String? by settings
+                    value = gitLabPrivateToken
                 }
                 authentication {
                     create<HttpHeaderAuthentication>("header")
@@ -40,15 +57,17 @@ dependencyResolutionManagement {
     }
     versionCatalogs {
         create("libs") {
-            version("annotation", "26.0.1")
-            version("jackson", "2.18.2")
-            version("embed.mongo", "4.11.0")
+            version("micronaut", "4.4.4")
 
-            library("jackson", "com.fasterxml.jackson.module", "jackson-module-kotlin").versionRef("jackson")
-            library("annotation", "org.jetbrains", "annotations").versionRef("annotation")
             library("vulpes.api", "net.theevilreaper.vulpes.api", "vulpes-spring-api").version("1.0.0-SNAPSHOT")
-            library("embed.mongo", "de.flapdoodle.embed", "de.flapdoodle.embed.mongo.spring30x").versionRef("embed.mongo")
+            library("jetbrains.annotation", "org.jetbrains", "annotations").version("24.1.0")
 
+            library("jackson", "com.fasterxml.jackson.module", "jackson-module-kotlin").version("2.17.1")
+
+            plugin("micronaut.application", "io.micronaut.application").versionRef("micronaut")
+            plugin("micronaut.aot", "io.micronaut.aot").versionRef("micronaut")
+            plugin("shadowJar", "com.gradleup.shadow").version("9.0.0-beta8")
         }
     }
 }
+
