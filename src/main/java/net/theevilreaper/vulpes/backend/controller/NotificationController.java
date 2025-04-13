@@ -45,7 +45,8 @@ public class NotificationController {
      */
     @Operation(
             summary = "Add a new notification",
-            description = "Adds a new notification to the database."
+            description = "Adds a new notification to the database.",
+            tags = {"Notification"}
     )
     @ApiResponse(
             responseCode = "200",
@@ -81,7 +82,8 @@ public class NotificationController {
      */
     @Operation(
             summary = "Get a notification by ID",
-            description = "Retrieves a notification from the database by its ID."
+            description = "Retrieves a notification from the database by its ID.",
+            tags = {"Notification"}
     )
     @ApiResponse(
             responseCode = "200",
@@ -117,7 +119,8 @@ public class NotificationController {
      */
     @Operation(
             summary = "Remove a notification by ID",
-            description = "Removes a notification from the database by its ID."
+            description = "Removes a notification from the database by its ID.",
+            tags = {"Notification"}
     )
     @ApiResponse(
             responseCode = "200",
@@ -153,7 +156,8 @@ public class NotificationController {
      */
     @Operation(
             summary = "Get all notifications",
-            description = "Retrieves all notifications from the database."
+            description = "Retrieves all notifications from the database.",
+            tags = {"Notification"}
     )
     @ApiResponse(
             responseCode = "200",
@@ -185,7 +189,8 @@ public class NotificationController {
      */
     @Operation(
             summary = "Delete all notifications",
-            description = "Deletes all notifications from the database."
+            description = "Deletes all notifications from the database.",
+            tags = {"Notification"}
     )
     @ApiResponse(
             responseCode = "200",
@@ -210,7 +215,8 @@ public class NotificationController {
      */
     @Operation(
             summary = "Update a notification",
-            description = "Updates an existing notification in the database."
+            description = "Updates an existing notification in the database.",
+            tags = {"Notification"}
     )
     @ApiResponse(
             responseCode = "200",

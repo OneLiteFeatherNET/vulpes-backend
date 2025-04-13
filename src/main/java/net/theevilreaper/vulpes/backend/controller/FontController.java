@@ -39,7 +39,8 @@ public class FontController {
 
     @Operation(
             summary = "Add a new font",
-            description = "Adds a new font to the database. The font is created with the given properties."
+            description = "Adds a new font to the database. The font is created with the given properties.",
+            tags = {"Font"}
     )
     @ApiResponse(
             responseCode = "200",
@@ -69,7 +70,8 @@ public class FontController {
 
     @Operation(
             summary = "Get a font by ID",
-            description = "Gets a font by ID from the database."
+            description = "Gets a font by ID from the database.",
+            tags = {"Font"}
     )
     @ApiResponse(
             responseCode = "200",
@@ -101,7 +103,8 @@ public class FontController {
 
     @Operation(
             summary = "Remove a font by ID",
-            description = "Removes a font by ID from the database."
+            description = "Removes a font by ID from the database.",
+            tags = {"Font"}
     )
     @ApiResponse(
             responseCode = "200",
@@ -134,7 +137,8 @@ public class FontController {
 
     @Operation(
             summary = "Get all fonts",
-            description = "Gets all fonts from the database."
+            description = "Gets all fonts from the database.",
+            tags = {"Font"}
     )
     @ApiResponse(
             responseCode = "200",
@@ -153,7 +157,8 @@ public class FontController {
 
     @Operation(
             summary = "Delete all fonts",
-            description = "Deletes all fonts from the database."
+            description = "Deletes all fonts from the database.",
+            tags = {"Font"}
     )
     @ApiResponse(
             responseCode = "200",
@@ -172,7 +177,8 @@ public class FontController {
 
     @Operation(
             summary = "Update a font",
-            description = "Updates a font in the database."
+            description = "Updates a font in the database.",
+            tags = {"Font"}
     )
     @ApiResponse(
             responseCode = "200",

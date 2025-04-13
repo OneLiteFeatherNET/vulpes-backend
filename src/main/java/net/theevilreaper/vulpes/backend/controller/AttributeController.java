@@ -33,7 +33,8 @@ public class AttributeController {
 
     @Operation(
             summary = "Add a new attribute",
-            description = "Adds a new attribute to the database. The attribute is created with the given properties."
+            description = "Adds a new attribute to the database. The attribute is created with the given properties.",
+            tags = {"Attribute"}
     )
     @ApiResponse(
             responseCode = "200",
@@ -60,7 +61,8 @@ public class AttributeController {
 
     @Operation(
             summary = "Get an attribute by ID",
-            description = "Returns the attribute with the given ID."
+            description = "Returns the attribute with the given ID.",
+            tags = {"Attribute"}
     )
     @ApiResponse(
             responseCode = "200",
@@ -90,7 +92,8 @@ public class AttributeController {
     }
     @Operation(
             summary = "Delete an attribute by ID",
-            description = "Deletes the attribute with the given ID."
+            description = "Deletes the attribute with the given ID.",
+            tags = {"Attribute"}
     )
     @ApiResponse(
             responseCode = "200",
@@ -125,7 +128,8 @@ public class AttributeController {
      */
     @Operation(
             summary = "Delete all attributes",
-            description = "Deletes all attributes from the database."
+            description = "Deletes all attributes from the database.",
+            tags = {"Attribute"}
     )
     @ApiResponse(
             responseCode = "200",
@@ -148,7 +152,8 @@ public class AttributeController {
      */
     @Operation(
             summary = "Get all attributes",
-            description = "Gets all attributes from the database."
+            description = "Gets all attributes from the database.",
+            tags = {"Attribute"}
     )
     @ApiResponse(
             responseCode = "200",
