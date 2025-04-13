@@ -44,7 +44,8 @@ public class ItemController {
 
     @Operation(
             summary = "Add a new item",
-            description = "Adds a new item to the database. The item is created with the given properties."
+            description = "Adds a new item to the database. The item is created with the given properties.",
+            tags = {"Item"}
     )
     @ApiResponse(
             responseCode = "200",
@@ -74,7 +75,8 @@ public class ItemController {
 
     @Operation(
             summary = "Get an item by ID",
-            description = "Retrieves an item from the database by its ID."
+            description = "Retrieves an item from the database by its ID.",
+            tags = {"Item"}
     )
     @ApiResponse(
             responseCode = "200",
@@ -107,7 +109,8 @@ public class ItemController {
 
     @Operation(
             summary = "Remove an item by ID",
-            description = "Removes an item from the database by its ID."
+            description = "Removes an item from the database by its ID.",
+            tags = {"Item"}
     )
     @ApiResponse(
             responseCode = "200",
@@ -138,7 +141,8 @@ public class ItemController {
 
     @Operation(
             summary = "Get all items",
-            description = "Retrieves all items from the database."
+            description = "Retrieves all items from the database.",
+            tags = {"Item"}
     )
     @ApiResponse(
             responseCode = "200",
@@ -157,7 +161,8 @@ public class ItemController {
 
     @Operation(
             summary = "Delete all items",
-            description = "Deletes all items from the database."
+            description = "Deletes all items from the database.",
+            tags = {"Item"}
     )
     @ApiResponse(
             responseCode = "200",
@@ -176,7 +181,8 @@ public class ItemController {
 
     @Operation(
             summary = "Update an item",
-            description = "Updates an item in the database."
+            description = "Updates an item in the database.",
+            tags = {"Item"}
     )
     @ApiResponse(
             responseCode = "200",
