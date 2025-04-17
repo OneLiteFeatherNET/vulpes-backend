@@ -3,10 +3,23 @@ micronaut:
     name: Vulpes Backend
   server:
     port: ${PORT:8085}
+    cors:
+      enabled: true
+      configurations:
+        all:
+          allowedOriginsRegex:
+            - '^https?://localhost(:\d+)?$'
+          allowedMethods:
+            - GET
+            - POST
+            - PUT
+            - DELETE
+            - OPTIONS
   logger:
     levels:
       io.micronaut.data: DEBUG
       io.micronaut.sql: DEBUG
+      io.micronaut.http.server.cors: TRACE
   router:
     static-resources:
       swagger:
