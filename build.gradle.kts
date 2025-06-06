@@ -1,7 +1,8 @@
+
 plugins {
-    alias(libs.plugins.shadowJar)
     alias(libs.plugins.micronaut.application)
     alias(libs.plugins.micronaut.aot)
+    //alias(libs.plugins.shadowJar)
     jacoco
 }
 
@@ -93,7 +94,7 @@ tasks {
     }
 
     jar {
-        dependsOn("shadowJar")
+        //dependsOn("shadowJar")
     }
 }
 

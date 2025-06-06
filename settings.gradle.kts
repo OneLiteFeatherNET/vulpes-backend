@@ -4,7 +4,6 @@ pluginManagement {
     repositories {
         gradlePluginPortal()
         mavenCentral()
-        maven("https://eldonexus.de/repository/maven-public/")
     }
 }
 
@@ -16,7 +15,6 @@ dependencyResolutionManagement {
     repositories {
         maven("https://s01.oss.sonatype.org/content/repositories/snapshots/")
         mavenCentral()
-        maven("https://jitpack.io")
         maven {
             name = "OneLiteFeatherRepository"
             url = uri("https://repo.onelitefeather.dev/onelitefeather")
@@ -45,7 +43,7 @@ dependencyResolutionManagement {
 
             plugin("micronaut.application", "io.micronaut.application").versionRef("micronaut")
             plugin("micronaut.aot", "io.micronaut.aot").versionRef("micronaut")
-            plugin("shadowJar", "com.gradleup.shadow").version("9.0.0-beta15")
+         //   plugin("shadowJar", "com.gradleup.shadow").version("9.0.0-beta15")
         }
     }
 }
