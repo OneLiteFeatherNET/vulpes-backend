@@ -2,7 +2,7 @@ package net.onelitefeather.vulpes.backend.domain.notification;
 
 import io.micronaut.serde.annotation.Serdeable;
 import io.swagger.v3.oas.annotations.media.Schema;
-import net.theevilreaper.vulpes.api.model.NotificationModel;
+import net.onelitefeather.vulpes.api.model.NotificationEntity;
 import net.onelitefeather.vulpes.backend.domain.error.ErrorResponse;
 
 import java.util.UUID;
@@ -22,7 +22,7 @@ public sealed interface NotificationModelResponseDTO {
             @Schema(description = "Frame type of the Notification") String frameType,
             @Schema(description = "Title of the Notification") String title
     ) implements NotificationModelResponseDTO {
-        public static NotificationModelDTO createDTO(NotificationModel notificationModel) {
+        public static NotificationModelDTO createDTO(NotificationEntity notificationModel) {
             return new NotificationModelDTO(
                     notificationModel.getId(),
                     notificationModel.getModelName(),

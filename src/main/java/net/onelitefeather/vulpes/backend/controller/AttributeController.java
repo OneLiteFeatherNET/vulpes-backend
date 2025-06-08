@@ -11,8 +11,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
-import net.theevilreaper.vulpes.api.model.AttributeModel;
-import net.theevilreaper.vulpes.api.repository.AttributeRepository;
+import net.onelitefeather.vulpes.api.model.AttributeEntity;
+import net.onelitefeather.vulpes.api.repository.AttributeRepository;
 import net.onelitefeather.vulpes.backend.domain.attribute.AttributeModelDTO;
 import net.onelitefeather.vulpes.backend.domain.attribute.AttributeModelResponseDTO;
 
@@ -54,8 +54,8 @@ public class AttributeController {
     )
     @Post
     public HttpResponse<AttributeModelResponseDTO> add(@Valid @Body AttributeModelDTO model) {
-        AttributeModel attributeModel = model.toAttributeModel();
-        AttributeModel savedAttributeModel = attributeRepository.save(attributeModel);
+        AttributeEntity attributeModel = model.toAttributeModel();
+        AttributeEntity savedAttributeModel = attributeRepository.save(attributeModel);
         return HttpResponse.ok(AttributeModelResponseDTO.AttributeModelDTO.create(savedAttributeModel));
     }
 
@@ -82,11 +82,11 @@ public class AttributeController {
     )
     @Post("/update")
     public HttpResponse<AttributeModelResponseDTO> update(@Valid @Body AttributeModelDTO model) {
-        Optional<AttributeModel> modelOptional = attributeRepository.findById(model.getId());
+        Optional<AttributeEntity> modelOptional = attributeRepository.findById(model.getId());
         if (modelOptional.isEmpty()) {
             return HttpResponse.notFound(new AttributeModelResponseDTO.AttributeModelErrorDTO("Attribute not found"));
         }
-        AttributeModel attributeModel = model.toAttributeModel();
+        AttributeEntity attributeModel = model.toAttributeModel();
         attributeModel = attributeRepository.update(attributeModel);
         return HttpResponse.ok(AttributeModelResponseDTO.AttributeModelDTO.create(attributeModel));
     }
@@ -113,7 +113,7 @@ public class AttributeController {
     )
     @Delete("/delete/{id}")
     public HttpResponse<AttributeModelResponseDTO> delete(@PathVariable UUID id) {
-        Optional<AttributeModel> attributeModel = attributeRepository.findById(id);
+        Optional<AttributeEntity> attributeModel = attributeRepository.findById(id);
         if (attributeModel.isPresent()) {
             attributeRepository.deleteById(id);
             return HttpResponse.ok(AttributeModelResponseDTO.AttributeModelDTO.create(attributeModel.get()));

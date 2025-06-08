@@ -8,9 +8,9 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
-import net.theevilreaper.vulpes.api.model.NotificationModel;
-import net.theevilreaper.vulpes.api.repository.NotificationRepository;
 import jakarta.inject.Inject;
+import net.onelitefeather.vulpes.api.model.NotificationEntity;
+import net.onelitefeather.vulpes.api.repository.NotificationRepository;
 import net.onelitefeather.vulpes.backend.domain.notification.NotificationModelDTO;
 import net.onelitefeather.vulpes.backend.domain.notification.NotificationModelResponseDTO;
 
@@ -69,7 +69,7 @@ public class NotificationController {
     public HttpResponse<NotificationModelResponseDTO> add(
             @Body @Valid NotificationModelDTO model
     ) {
-        NotificationModel notificationModel = model.toNotificationModel();
+        NotificationEntity notificationModel = model.toNotificationModel();
         notificationModel = notificationRepository.save(notificationModel);
         return HttpResponse.ok(NotificationModelResponseDTO.NotificationModelDTO.createDTO(notificationModel));
     }
@@ -104,7 +104,7 @@ public class NotificationController {
     @Get("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public HttpResponse<NotificationModelResponseDTO> getById(@PathVariable UUID id) {
-        Optional<NotificationModel> model = notificationRepository.findById(id);
+        Optional<NotificationEntity> model = notificationRepository.findById(id);
         if (model.isPresent()) {
             return HttpResponse.ok(NotificationModelResponseDTO.NotificationModelDTO.createDTO(model.get()));
         }
@@ -141,7 +141,7 @@ public class NotificationController {
     @Delete("/remove/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public HttpResponse<NotificationModelResponseDTO> remove(@PathVariable UUID id) {
-        Optional<NotificationModel> model = notificationRepository.findById(id);
+        Optional<NotificationEntity> model = notificationRepository.findById(id);
         if (model.isPresent()) {
             notificationRepository.deleteById(id);
             return HttpResponse.ok(NotificationModelResponseDTO.NotificationModelDTO.createDTO(model.get()));
@@ -237,11 +237,11 @@ public class NotificationController {
     @Post("/update")
     @Produces(MediaType.APPLICATION_JSON)
     public HttpResponse<NotificationModelResponseDTO> update(@Body @Valid NotificationModelDTO model) {
-        Optional<NotificationModel> existingModel = notificationRepository.findById(model.getId());
+        Optional<NotificationEntity> existingModel = notificationRepository.findById(model.getId());
         if (existingModel.isEmpty()) {
             return HttpResponse.notFound(new NotificationModelResponseDTO.NotificationModelErrorDTO("Notification not found"));
         }
-        NotificationModel notificationModel = model.toNotificationModel();
+        NotificationEntity notificationModel = model.toNotificationModel();
         notificationModel = notificationRepository.update(notificationModel);
         return HttpResponse.ok(NotificationModelResponseDTO.NotificationModelDTO.createDTO(notificationModel));
     }

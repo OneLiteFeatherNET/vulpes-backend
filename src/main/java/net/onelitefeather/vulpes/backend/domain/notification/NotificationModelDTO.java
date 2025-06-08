@@ -7,7 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import net.theevilreaper.vulpes.api.model.NotificationModel;
+import net.onelitefeather.vulpes.api.model.NotificationEntity;
 
 @Schema(requiredProperties = {
         "modelName",
@@ -73,8 +73,8 @@ public final class NotificationModelDTO {
         return title;
     }
 
-    public NotificationModel toNotificationModel() {
-        return new NotificationModel(
+    public NotificationEntity toNotificationModel() {
+        return new NotificationEntity(
                 this.id,
                 modelName,
                 name,

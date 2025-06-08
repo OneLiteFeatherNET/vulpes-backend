@@ -2,7 +2,7 @@ package net.onelitefeather.vulpes.backend.domain.font;
 
 import io.micronaut.serde.annotation.Serdeable;
 import io.swagger.v3.oas.annotations.media.Schema;
-import net.theevilreaper.vulpes.api.model.FontModel;
+import net.onelitefeather.vulpes.api.model.FontEntity;
 import net.onelitefeather.vulpes.backend.domain.error.ErrorResponse;
 
 import java.util.List;
@@ -13,32 +13,37 @@ public sealed interface FontModelResponseDTO {
 
     @Schema(description = "Font model data")
     @Serdeable
-    record FontModelDTO(@Schema(description = "ID of the mode", requiredMode = Schema.RequiredMode.NOT_REQUIRED) UUID id,
-                        @Schema(description = "Model Name for the ui", requiredMode = Schema.RequiredMode.REQUIRED) String modelName,
-                        @Schema(description = "Name in the UI", requiredMode = Schema.RequiredMode.REQUIRED) String name,
-                        @Schema(description = "Example description", requiredMode = Schema.RequiredMode.REQUIRED) String description,
-                        @Schema(description = "Example description", requiredMode = Schema.RequiredMode.REQUIRED) String type,
-                        @Schema(description = "Example description", requiredMode = Schema.RequiredMode.REQUIRED) int ascent,
-                        @Schema(description = "Example description", requiredMode = Schema.RequiredMode.REQUIRED) int height,
-                        @Schema(description = "Example description", requiredMode = Schema.RequiredMode.NOT_REQUIRED) List<String> chars,
-                        @Schema(description = "Example description", requiredMode = Schema.RequiredMode.NOT_REQUIRED) List<Double> shift) implements FontModelResponseDTO {
-        public static FontModelDTO createDTO(FontModel fontModel) {
+    record FontModelDTO(
+            @Schema(description = "ID of the mode", requiredMode = Schema.RequiredMode.NOT_REQUIRED) UUID id,
+            @Schema(description = "Model Name for the ui", requiredMode = Schema.RequiredMode.REQUIRED) String uiName,
+            @Schema(description = "Name in the UI", requiredMode = Schema.RequiredMode.REQUIRED) String variableName,
+            @Schema(description = "Example description", requiredMode = Schema.RequiredMode.REQUIRED) String provider,
+            @Schema(description = "Example description", requiredMode = Schema.RequiredMode.REQUIRED) String mapper,
+            @Schema(description = "Example description", requiredMode = Schema.RequiredMode.REQUIRED) String texturePath,
+            @Schema(description = "Example description", requiredMode = Schema.RequiredMode.REQUIRED) String comment,
+            @Schema(description = "Example description", requiredMode = Schema.RequiredMode.REQUIRED) int ascent,
+            @Schema(description = "Example description", requiredMode = Schema.RequiredMode.REQUIRED) int height,
+            @Schema(description = "Example description", requiredMode = Schema.RequiredMode.NOT_REQUIRED) List<String> chars
+    ) implements FontModelResponseDTO {
+        public static FontModelDTO createDTO(FontEntity fontModel) {
             return new FontModelDTO(
                     fontModel.getId(),
-                    fontModel.getModelName(),
-                    fontModel.getName(),
-                    fontModel.getDescription(),
-                    fontModel.getType(),
+                    fontModel.getUiName(),
+                    fontModel.getVariableName(),
+                    fontModel.getProvider(),
+                    fontModel.getMapper(),
+                    fontModel.getTexturePath(),
+                    fontModel.getComment(),
                     fontModel.getAscent(),
                     fontModel.getHeight(),
-                    fontModel.getChars(),
-                    fontModel.getShift()
+                    fontModel.getChars()
             );
         }
     }
 
     @Schema(description = "Error message")
     @Serdeable
-    record FontModelErrorDTO(@Schema(description = "Error message") String errorMessage) implements FontModelResponseDTO, ErrorResponse {
+    record FontModelErrorDTO(
+            @Schema(description = "Error message") String errorMessage) implements FontModelResponseDTO, ErrorResponse {
     }
 }

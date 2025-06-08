@@ -2,7 +2,7 @@ package net.onelitefeather.vulpes.backend.domain.attribute;
 
 import io.micronaut.serde.annotation.Serdeable;
 import io.swagger.v3.oas.annotations.media.Schema;
-import net.theevilreaper.vulpes.api.model.AttributeModel;
+import net.onelitefeather.vulpes.api.model.AttributeEntity;
 import net.onelitefeather.vulpes.backend.domain.error.ErrorResponse;
 
 import java.util.UUID;
@@ -21,7 +21,7 @@ public interface AttributeModelResponseDTO {
             @Schema(description = "Maximum value of the attribute") double maximumValue
     ) implements AttributeModelResponseDTO {
 
-        public static AttributeModelDTO create(AttributeModel model) {
+        public static AttributeModelDTO create(AttributeEntity model) {
             return new AttributeModelDTO(
                     model.getId(),
                     model.getModelName(),
