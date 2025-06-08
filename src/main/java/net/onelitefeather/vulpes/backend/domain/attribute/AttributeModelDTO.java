@@ -4,7 +4,7 @@ import io.micronaut.serde.annotation.Serdeable;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import net.theevilreaper.vulpes.api.model.AttributeModel;
+import net.onelitefeather.vulpes.api.model.AttributeEntity;
 
 import java.util.UUID;
 
@@ -51,7 +51,7 @@ public class AttributeModelDTO {
         return maximumValue;
     }
 
-    public AttributeModel toAttributeModel() {
-        return new AttributeModel(id, modelName, name, defaultValue, maximumValue);
+    public AttributeEntity toAttributeModel() {
+        return new AttributeEntity(id, modelName, name, defaultValue, maximumValue);
     }
 }

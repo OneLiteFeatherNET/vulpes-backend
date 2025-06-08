@@ -15,8 +15,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
-import net.theevilreaper.vulpes.api.model.ItemModel;
-import net.theevilreaper.vulpes.api.repository.ItemRepository;
+import net.onelitefeather.vulpes.api.model.ItemEntity;
+import net.onelitefeather.vulpes.api.repository.ItemRepository;
 import net.onelitefeather.vulpes.backend.domain.item.ItemModelDTO;
 import net.onelitefeather.vulpes.backend.domain.item.ItemModelResponseDTO;
 
@@ -68,7 +68,7 @@ public class ItemController {
     public HttpResponse<ItemModelResponseDTO> add(
            @Valid @Body ItemModelDTO itemModelDto
     ) {
-        ItemModel itemModel = itemModelDto.toItemModel();
+        ItemEntity itemModel = itemModelDto.toItemEntity();
         itemModel = itemRepository.save(itemModel);
         return HttpResponse.ok(ItemModelResponseDTO.ItemModelDTO.createDTO(itemModel));
     }
@@ -99,7 +99,7 @@ public class ItemController {
     public HttpResponse<ItemModelResponseDTO> getById(
             @Valid @PathVariable UUID id
     ) {
-        Optional<ItemModel> model = itemRepository.findById(id);
+        Optional<ItemEntity> model = itemRepository.findById(id);
         if (model.isPresent()) {
             var itemModel = model.get();
             return HttpResponse.ok(ItemModelResponseDTO.ItemModelDTO.createDTO(itemModel));
@@ -131,7 +131,7 @@ public class ItemController {
     @Delete("/remove/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public HttpResponse<ItemModelResponseDTO> remove(@PathVariable UUID id) {
-        Optional<ItemModel> model = itemRepository.findById(id);
+        Optional<ItemEntity> model = itemRepository.findById(id);
         if (model.isPresent()) {
             itemRepository.deleteById(id);
             return HttpResponse.ok(model.map(ItemModelResponseDTO.ItemModelDTO::createDTO).get());
@@ -205,11 +205,11 @@ public class ItemController {
     public HttpResponse<ItemModelResponseDTO> update(
             @Valid @Body ItemModelDTO model
     ) {
-        Optional<ItemModel> existingItem = itemRepository.findById(model.getId());
+        Optional<ItemEntity> existingItem = itemRepository.findById(model.getId());
         if (existingItem.isEmpty()) {
             return HttpResponse.notFound(new ItemModelErrorDTO("Item not found"));
         }
-        var updatedItemModel = itemRepository.update(model.toItemModel());
+        ItemEntity updatedItemModel = itemRepository.update(model.toItemEntity());
         return HttpResponse.ok(ItemModelResponseDTO.ItemModelDTO.createDTO(updatedItemModel));
     }
 }

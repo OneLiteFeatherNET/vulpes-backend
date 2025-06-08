@@ -2,11 +2,7 @@ package net.onelitefeather.vulpes.backend.domain.font;
 
 import io.micronaut.serde.annotation.Serdeable;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.ElementCollection;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PositiveOrZero;
-import net.theevilreaper.vulpes.api.model.FontModel;
+import net.onelitefeather.vulpes.api.model.FontEntity;
 
 import java.util.List;
 import java.util.UUID;
@@ -16,54 +12,65 @@ import java.util.UUID;
 public final class FontModelDTO {
 
     private final UUID id;
-    private final String modelName;
-    private final String name;
-    private final String description;
-    private final String type;
+    private final String uiName;
+    private final String variableName;
+    private final String provider;
+    private final String mapper;
+    private final String texturePath;
+    private final String comment;
     private final int ascent;
     private final int height;
     private final List<String> chars;
-    private final List<Double> shift;
 
     public FontModelDTO(
             @Schema(description = "ID of the mode", requiredMode = Schema.RequiredMode.NOT_REQUIRED) UUID id,
-            @Schema(description = "Model Name for the ui", requiredMode = Schema.RequiredMode.REQUIRED) @NotNull @NotEmpty String modelName,
-            @Schema(description = "Name in the UI", requiredMode = Schema.RequiredMode.REQUIRED) @NotNull @NotEmpty String name,
-            @Schema(description = "Example description", requiredMode = Schema.RequiredMode.REQUIRED) @NotNull @NotEmpty String description,
-            @Schema(description = "Example description", requiredMode = Schema.RequiredMode.REQUIRED) @NotNull @NotEmpty String type,
-            @Schema(description = "Example description", requiredMode = Schema.RequiredMode.REQUIRED) @PositiveOrZero int ascent,
-            @Schema(description = "Example description", requiredMode = Schema.RequiredMode.REQUIRED) @PositiveOrZero int height,
-            @Schema(description = "Example description", requiredMode = Schema.RequiredMode.NOT_REQUIRED) List<String> chars,
-            @Schema(description = "Example description", requiredMode = Schema.RequiredMode.NOT_REQUIRED) List<Double> shift) {
+            @Schema(description = "Model Name for the ui", requiredMode = Schema.RequiredMode.REQUIRED) String uiName,
+            @Schema(description = "Name in the UI", requiredMode = Schema.RequiredMode.REQUIRED) String variableName,
+            @Schema(description = "Example description", requiredMode = Schema.RequiredMode.REQUIRED) String provider,
+            @Schema(description = "Example description", requiredMode = Schema.RequiredMode.REQUIRED) String mapper,
+            @Schema(description = "Example description", requiredMode = Schema.RequiredMode.REQUIRED) String texturePath,
+            @Schema(description = "Example description", requiredMode = Schema.RequiredMode.REQUIRED) String comment,
+            @Schema(description = "Example description", requiredMode = Schema.RequiredMode.REQUIRED) int ascent,
+            @Schema(description = "Example description", requiredMode = Schema.RequiredMode.REQUIRED) int height,
+            @Schema(description = "Example description", requiredMode = Schema.RequiredMode.NOT_REQUIRED) List<String> chars) {
         this.id = id;
-        this.modelName = modelName;
-        this.name = name;
-        this.description = description;
-        this.type = type;
+        this.uiName = uiName;
+        this.variableName = variableName;
+        this.provider = provider;
+        this.mapper = mapper;
+        this.texturePath = texturePath;
+        this.comment = comment;
         this.ascent = ascent;
         this.height = height;
         this.chars = chars;
-        this.shift = shift;
     }
 
     public UUID getId() {
         return id;
     }
 
-    public String getModelName() {
-        return modelName;
+    public String getUiName() {
+        return uiName;
     }
 
-    public String getName() {
-        return name;
+    public String getVariableName() {
+        return variableName;
     }
 
-    public String getDescription() {
-        return description;
+    public String getProvider() {
+        return provider;
     }
 
-    public String getType() {
-        return type;
+    public String getMapper() {
+        return mapper;
+    }
+
+    public String getTexturePath() {
+        return texturePath;
+    }
+
+    public String getComment() {
+        return comment;
     }
 
     public int getAscent() {
@@ -78,21 +85,17 @@ public final class FontModelDTO {
         return chars;
     }
 
-    public List<Double> getShift() {
-        return shift;
-    }
-
-    public FontModel toFontModel() {
-        return new FontModel(
+    public FontEntity toFontModel() {
+        return new FontEntity(
                 id,
-                modelName,
-                name,
-                description,
-                type,
-                ascent,
+                uiName,
+                variableName,
+                provider,
+                texturePath,
+                comment,
                 height,
-                chars,
-                shift
+                ascent,
+                chars
         );
     }
 }

@@ -2,7 +2,7 @@ package net.onelitefeather.vulpes.backend.domain.item;
 
 import io.micronaut.serde.annotation.Serdeable;
 import io.swagger.v3.oas.annotations.media.Schema;
-import net.theevilreaper.vulpes.api.model.ItemModel;
+import net.onelitefeather.vulpes.api.model.ItemEntity;
 import net.onelitefeather.vulpes.backend.domain.error.ErrorResponse;
 
 import java.util.List;
@@ -29,20 +29,20 @@ public sealed interface ItemModelResponseDTO {
             @Schema(description = "List of text lines displayed in the item tooltip") List<String> lore,
             @Schema(description = "List of item flags that modify item behavior") List<String> flags
     ) implements ItemModelResponseDTO {
-        public static ItemModelDTO createDTO(ItemModel ItemModel) {
+        public static ItemModelDTO createDTO(ItemEntity itemEntity) {
             return new ItemModelDTO(
-                    ItemModel.getId(),
-                    ItemModel.getModelName(),
-                    ItemModel.getName(),
-                    ItemModel.getDescription(),
-                    ItemModel.getDisplayName(),
-                    ItemModel.getMaterial(),
-                    ItemModel.getGroupName(),
-                    ItemModel.getCustomModelData(),
-                    ItemModel.getAmount(),
-                    ItemModel.getEnchantments(),
-                    ItemModel.getLore(),
-                    ItemModel.getFlags()
+                    itemEntity.getId(),
+                    itemEntity.getModelName(),
+                    itemEntity.getName(),
+                    itemEntity.getDescription(),
+                    itemEntity.getDisplayName(),
+                    itemEntity.getMaterial(),
+                    itemEntity.getGroupName(),
+                    itemEntity.getCustomModelData(),
+                    itemEntity.getAmount(),
+                    itemEntity.getEnchantments(),
+                    itemEntity.getLore(),
+                    itemEntity.getFlags()
             );
         }
     }

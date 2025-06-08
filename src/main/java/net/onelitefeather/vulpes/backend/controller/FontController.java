@@ -15,8 +15,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
-import net.theevilreaper.vulpes.api.model.FontModel;
-import net.theevilreaper.vulpes.api.repository.FontRepository;
+import net.onelitefeather.vulpes.api.model.FontEntity;
+import net.onelitefeather.vulpes.api.repository.FontRepository;
 import net.onelitefeather.vulpes.backend.domain.font.FontModelDTO;
 import net.onelitefeather.vulpes.backend.domain.font.FontModelResponseDTO;
 
@@ -61,7 +61,7 @@ public class FontController {
     public HttpResponse<FontModelResponseDTO> add(
             @Valid @Body FontModelDTO item
     ) {
-        FontModel fontModel = item.toFontModel();
+        FontEntity fontModel = item.toFontModel();
         fontModel = fontRepository.save(fontModel);
         return HttpResponse.ok(FontModelResponseDTO.FontModelDTO.createDTO(fontModel));
     }
@@ -90,9 +90,9 @@ public class FontController {
     @Get("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public HttpResponse<FontModelResponseDTO> getById(@PathVariable UUID id) {
-        Optional<FontModel> model = fontRepository.findById(id);
+        Optional<FontEntity> model = fontRepository.findById(id);
         if (model.isPresent()) {
-            FontModel fontModel = model.get();
+            FontEntity fontModel = model.get();
             FontModelResponseDTO.FontModelDTO dto = FontModelResponseDTO.FontModelDTO.createDTO(fontModel);
             return HttpResponse.ok(dto);
         }
@@ -123,10 +123,10 @@ public class FontController {
     @Delete("/remove/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public HttpResponse<FontModelResponseDTO> remove(@PathVariable UUID id) {
-        Optional<FontModel> model = fontRepository.findById(id);
+        Optional<FontEntity> model = fontRepository.findById(id);
         if (model.isPresent()) {
             fontRepository.deleteById(id);
-            FontModel fontModel = model.get();
+            FontEntity fontModel = model.get();
             FontModelResponseDTO.FontModelDTO dto = FontModelResponseDTO.FontModelDTO.createDTO(fontModel);
             return HttpResponse.ok(dto);
         }
@@ -199,7 +199,7 @@ public class FontController {
     public HttpResponse<FontModelResponseDTO> update(
             @Valid @Body FontModelDTO model
     ) {
-        Optional<FontModel> modelOptional = fontRepository.findById(model.getId());
+        Optional<FontEntity> modelOptional = fontRepository.findById(model.getId());
         if (modelOptional.isEmpty()) {
             return HttpResponse.notFound(new FontModelResponseDTO.FontModelErrorDTO("Font not found"));
         }
