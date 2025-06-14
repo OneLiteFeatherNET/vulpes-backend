@@ -14,8 +14,8 @@ import java.util.Map;
 import java.util.UUID;
 
 @Schema(requiredProperties = {
-        "modelName",
-        "name",
+        "uiName",
+        "variableName",
         "description",
         "displayName",
         "material",
@@ -27,8 +27,8 @@ import java.util.UUID;
 @Serdeable
 public final class ItemModelDTO {
     private final UUID id;
-    private final String modelName;
-    private final String name;
+    private final String uiName;
+    private final String variableName;
     private final String description;
     private final String displayName;
     private final String material;
@@ -41,20 +41,20 @@ public final class ItemModelDTO {
 
     public ItemModelDTO(
             @Schema(description = "ID of the Model", requiredMode = Schema.RequiredMode.NOT_REQUIRED) UUID id,
-            @Schema(description = "Model Name for the ui", requiredMode = Schema.RequiredMode.REQUIRED) @NotNull @NotBlank @NotEmpty String modelName,
-            @Schema(description = "Name in the UI", requiredMode = Schema.RequiredMode.REQUIRED) @NotNull @NotBlank @NotEmpty String name,
-            @Schema(description = "Example description", requiredMode = Schema.RequiredMode.REQUIRED) @NotNull @NotBlank @NotEmpty String description, // TODO: Add description
-            @Schema(description = "Example description", requiredMode = Schema.RequiredMode.REQUIRED) @NotNull @NotBlank @NotEmpty String displayName,
-            @Schema(description = "Example description", requiredMode = Schema.RequiredMode.REQUIRED) @NotNull @NotBlank @NotEmpty String material,
-            @Schema(description = "Example description", requiredMode = Schema.RequiredMode.REQUIRED) @NotNull @NotBlank @NotEmpty String groupName,
-            @Schema(description = "Example description", requiredMode = Schema.RequiredMode.REQUIRED) @NotNull @Positive int customModelData,
-            @Schema(description = "Example description", requiredMode = Schema.RequiredMode.REQUIRED) @NotNull @Positive int amount,
-            @Schema(description = "Example description", requiredMode = Schema.RequiredMode.NOT_REQUIRED) Map<String, Short> enchantments,
-            @Schema(description = "Example description", requiredMode = Schema.RequiredMode.NOT_REQUIRED) List<String> lore,
-            @Schema(description = "Example description", requiredMode = Schema.RequiredMode.NOT_REQUIRED) List<String> flags) {
+            @Schema(description = "Model Name for the ui", requiredMode = Schema.RequiredMode.REQUIRED) @NotNull @NotBlank @NotEmpty String uiName,
+            @Schema(description = "Name in the UI", requiredMode = Schema.RequiredMode.REQUIRED) @NotNull @NotBlank @NotEmpty String variableName,
+            @Schema(description = "Example comment", requiredMode = Schema.RequiredMode.REQUIRED) @NotNull @NotBlank @NotEmpty String description, // TODO: Add comment
+            @Schema(description = "Example comment", requiredMode = Schema.RequiredMode.REQUIRED) @NotNull @NotBlank @NotEmpty String displayName,
+            @Schema(description = "Example comment", requiredMode = Schema.RequiredMode.REQUIRED) @NotNull @NotBlank @NotEmpty String material,
+            @Schema(description = "Example comment", requiredMode = Schema.RequiredMode.REQUIRED) @NotNull @NotBlank @NotEmpty String groupName,
+            @Schema(description = "Example comment", requiredMode = Schema.RequiredMode.REQUIRED) @NotNull @Positive int customModelData,
+            @Schema(description = "Example comment", requiredMode = Schema.RequiredMode.REQUIRED) @NotNull @Positive int amount,
+            @Schema(description = "Example comment", requiredMode = Schema.RequiredMode.NOT_REQUIRED) Map<String, Short> enchantments,
+            @Schema(description = "Example comment", requiredMode = Schema.RequiredMode.NOT_REQUIRED) List<String> lore,
+            @Schema(description = "Example comment", requiredMode = Schema.RequiredMode.NOT_REQUIRED) List<String> flags) {
         this.id = id;
-        this.modelName = modelName;
-        this.name = name;
+        this.uiName = uiName;
+        this.variableName = variableName;
         this.description = description;
         this.displayName = displayName;
         this.material = material;
@@ -70,12 +70,12 @@ public final class ItemModelDTO {
         return id;
     }
 
-    public String getModelName() {
-        return modelName;
+    public String getUiName() {
+        return uiName;
     }
 
-    public String getName() {
-        return name;
+    public String getVariableName() {
+        return variableName;
     }
 
     public String getDescription() {
@@ -117,8 +117,8 @@ public final class ItemModelDTO {
     public ItemEntity toItemEntity() {
         return new ItemEntity(
                 this.id,
-                modelName,
-                name,
+                uiName,
+                variableName,
                 description,
                 displayName,
                 material,

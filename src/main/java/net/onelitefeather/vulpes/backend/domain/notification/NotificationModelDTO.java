@@ -10,8 +10,8 @@ import jakarta.validation.constraints.NotNull;
 import net.onelitefeather.vulpes.api.model.NotificationEntity;
 
 @Schema(requiredProperties = {
-        "modelName",
-        "name",
+        "uiName",
+        "variableName",
         "description",
         "material",
         "frameType",
@@ -21,8 +21,8 @@ import net.onelitefeather.vulpes.api.model.NotificationEntity;
 @Serdeable
 public final class NotificationModelDTO {
     private final UUID id;
-    private final String modelName;
-    private final String name;
+    private final String uiName;
+    private final String variableName;
     private final String description;
     private final String material;
     private final String frameType;
@@ -30,15 +30,15 @@ public final class NotificationModelDTO {
 
     public NotificationModelDTO(
             @Schema(description = "ID of the notification", requiredMode = Schema.RequiredMode.NOT_REQUIRED) UUID id,
-            @Schema(description = "Model name for the UI", requiredMode = Schema.RequiredMode.REQUIRED) @NotNull @NotBlank @NotEmpty String modelName,
-            @Schema(description = "Name in the UI", requiredMode = Schema.RequiredMode.REQUIRED) @NotNull @NotBlank @NotEmpty String name,
+            @Schema(description = "Model variableName for the UI", requiredMode = Schema.RequiredMode.REQUIRED) @NotNull @NotBlank @NotEmpty String uiName,
+            @Schema(description = "Name in the UI", requiredMode = Schema.RequiredMode.REQUIRED) @NotNull @NotBlank @NotEmpty String variableName,
             @Schema(description = "Description of the notification", requiredMode = Schema.RequiredMode.REQUIRED) @NotNull @NotBlank @NotEmpty String description,
             @Schema(description = "Material identifier", requiredMode = Schema.RequiredMode.REQUIRED) @NotNull @NotBlank @NotEmpty String material,
             @Schema(description = "Type of frame", requiredMode = Schema.RequiredMode.REQUIRED) @NotNull @NotBlank @NotEmpty String frameType,
             @Schema(description = "Title of the notification", requiredMode = Schema.RequiredMode.REQUIRED) @NotNull @NotBlank @NotEmpty String title) {
         this.id = id;
-        this.modelName = modelName;
-        this.name = name;
+        this.uiName = uiName;
+        this.variableName = variableName;
         this.description = description;
         this.material = material;
         this.frameType = frameType;
@@ -49,12 +49,12 @@ public final class NotificationModelDTO {
         return id;
     }
 
-    public String getModelName() {
-        return modelName;
+    public String getUiName() {
+        return uiName;
     }
 
-    public String getName() {
-        return name;
+    public String getVariableName() {
+        return variableName;
     }
 
     public String getDescription() {
@@ -76,8 +76,8 @@ public final class NotificationModelDTO {
     public NotificationEntity toNotificationModel() {
         return new NotificationEntity(
                 this.id,
-                modelName,
-                name,
+                uiName,
+                variableName,
                 description,
                 material,
                 frameType,

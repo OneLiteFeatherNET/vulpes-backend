@@ -12,21 +12,21 @@ import java.util.UUID;
 @Serdeable
 public class AttributeModelDTO {
     private final UUID id;
-    private final String modelName;
-    private final String name;
+    private final String uiName;
+    private final String variableName;
     private final double defaultValue;
     private final double maximumValue;
 
 
     public AttributeModelDTO(
             @Schema(description = "ID of the attribute", requiredMode = Schema.RequiredMode.NOT_REQUIRED) UUID id,
-            @Schema(description = "Model name of the attribute", requiredMode = Schema.RequiredMode.REQUIRED) @NotNull @NotEmpty String modelName,
-            @Schema(description = "Name of the attribute", requiredMode = Schema.RequiredMode.REQUIRED) @NotNull @NotEmpty String name,
+            @Schema(description = "The name for the ui", requiredMode = Schema.RequiredMode.REQUIRED) @NotNull @NotEmpty String uiName,
+            @Schema(description = "The name which represents the variable after the generation", requiredMode = Schema.RequiredMode.REQUIRED) @NotNull @NotEmpty String variableName,
             @Schema(description = "Default value of the attribute", requiredMode = Schema.RequiredMode.REQUIRED) double defaultValue,
             @Schema(description = "Maximum value of the attribute", requiredMode = Schema.RequiredMode.REQUIRED) double maximumValue) {
         this.id = id;
-        this.modelName = modelName;
-        this.name = name;
+        this.uiName = uiName;
+        this.variableName = variableName;
         this.defaultValue = defaultValue;
         this.maximumValue = maximumValue;
     }
@@ -35,12 +35,12 @@ public class AttributeModelDTO {
         return id;
     }
 
-    public String getModelName() {
-        return modelName;
+    public String getUiName() {
+        return uiName;
     }
 
-    public String getName() {
-        return name;
+    public String getVariableName() {
+        return variableName;
     }
 
     public double getDefaultValue() {
@@ -52,6 +52,6 @@ public class AttributeModelDTO {
     }
 
     public AttributeEntity toAttributeModel() {
-        return new AttributeEntity(id, modelName, name, defaultValue, maximumValue);
+        return new AttributeEntity(id, uiName, variableName, defaultValue, maximumValue);
     }
 }
