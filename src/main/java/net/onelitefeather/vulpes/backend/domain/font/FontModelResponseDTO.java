@@ -17,13 +17,13 @@ public sealed interface FontModelResponseDTO {
             @Schema(description = "ID of the mode", requiredMode = Schema.RequiredMode.NOT_REQUIRED) UUID id,
             @Schema(description = "Model Name for the ui", requiredMode = Schema.RequiredMode.REQUIRED) String uiName,
             @Schema(description = "Name in the UI", requiredMode = Schema.RequiredMode.REQUIRED) String variableName,
-            @Schema(description = "Example description", requiredMode = Schema.RequiredMode.REQUIRED) String provider,
-            @Schema(description = "Example description", requiredMode = Schema.RequiredMode.REQUIRED) String mapper,
-            @Schema(description = "Example description", requiredMode = Schema.RequiredMode.REQUIRED) String texturePath,
-            @Schema(description = "Example description", requiredMode = Schema.RequiredMode.REQUIRED) String comment,
-            @Schema(description = "Example description", requiredMode = Schema.RequiredMode.REQUIRED) int ascent,
-            @Schema(description = "Example description", requiredMode = Schema.RequiredMode.REQUIRED) int height,
-            @Schema(description = "Example description", requiredMode = Schema.RequiredMode.NOT_REQUIRED) List<String> chars
+            @Schema(description = "Example comment", requiredMode = Schema.RequiredMode.REQUIRED) String provider,
+            @Schema(description = "Example comment", requiredMode = Schema.RequiredMode.REQUIRED) String mapper,
+            @Schema(description = "Example comment", requiredMode = Schema.RequiredMode.REQUIRED) String texturePath,
+            @Schema(description = "Example comment", requiredMode = Schema.RequiredMode.REQUIRED) String comment,
+            @Schema(description = "Example comment", requiredMode = Schema.RequiredMode.REQUIRED) int ascent,
+            @Schema(description = "Example comment", requiredMode = Schema.RequiredMode.REQUIRED) int height,
+            @Schema(description = "Example comment", requiredMode = Schema.RequiredMode.NOT_REQUIRED) List<String> chars
     ) implements FontModelResponseDTO {
         public static FontModelDTO createDTO(FontEntity fontModel) {
             return new FontModelDTO(
