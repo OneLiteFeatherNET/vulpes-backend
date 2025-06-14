@@ -26,13 +26,13 @@ public final class FontModelDTO {
             @Schema(description = "ID of the mode", requiredMode = Schema.RequiredMode.NOT_REQUIRED) UUID id,
             @Schema(description = "Model Name for the ui", requiredMode = Schema.RequiredMode.REQUIRED) String uiName,
             @Schema(description = "Name in the UI", requiredMode = Schema.RequiredMode.REQUIRED) String variableName,
-            @Schema(description = "Example description", requiredMode = Schema.RequiredMode.REQUIRED) String provider,
-            @Schema(description = "Example description", requiredMode = Schema.RequiredMode.REQUIRED) String mapper,
-            @Schema(description = "Example description", requiredMode = Schema.RequiredMode.REQUIRED) String texturePath,
-            @Schema(description = "Example description", requiredMode = Schema.RequiredMode.REQUIRED) String comment,
-            @Schema(description = "Example description", requiredMode = Schema.RequiredMode.REQUIRED) int ascent,
-            @Schema(description = "Example description", requiredMode = Schema.RequiredMode.REQUIRED) int height,
-            @Schema(description = "Example description", requiredMode = Schema.RequiredMode.NOT_REQUIRED) List<String> chars) {
+            @Schema(description = "Which provider should be used", requiredMode = Schema.RequiredMode.REQUIRED) String provider,
+            @Schema(description = "Internal mapper variable", requiredMode = Schema.RequiredMode.REQUIRED) String mapper,
+            @Schema(description = "The path to the texture", requiredMode = Schema.RequiredMode.REQUIRED) String texturePath,
+            @Schema(description = "The comment", requiredMode = Schema.RequiredMode.REQUIRED) String comment,
+            @Schema(description = "The ascent property", requiredMode = Schema.RequiredMode.REQUIRED) int ascent,
+            @Schema(description = "The height property", requiredMode = Schema.RequiredMode.REQUIRED) int height,
+            @Schema(description = "The chars which are overwritten", requiredMode = Schema.RequiredMode.NOT_REQUIRED) List<String> chars) {
         this.id = id;
         this.uiName = uiName;
         this.variableName = variableName;

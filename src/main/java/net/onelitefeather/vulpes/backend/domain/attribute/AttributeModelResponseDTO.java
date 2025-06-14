@@ -15,17 +15,23 @@ public interface AttributeModelResponseDTO {
     @Serdeable
     record AttributeModelDTO(
             @Schema(description = "UUID of the Attribute Model") UUID id,
-            @Schema(description = "Model Name for the UI") String modelName,
-            @Schema(description = "Name of the attribute in the UI") String name,
+            @Schema(description = "The name for the ui") String uiName,
+            @Schema(description = "The name which represents the variable after the generation") String variableName,
             @Schema(description = "Default value of the attribute") double defaultValue,
             @Schema(description = "Maximum value of the attribute") double maximumValue
     ) implements AttributeModelResponseDTO {
 
+        /**
+         * Creates a DTO from an AttributeEntity.
+         *
+         * @param model the AttributeEntity to convert
+         * @return a new AttributeModelDTO instance
+         */
         public static AttributeModelDTO create(AttributeEntity model) {
             return new AttributeModelDTO(
                     model.getId(),
-                    model.getModelName(),
-                    model.getName(),
+                    model.getUiName(),
+                    model.getVariableName(),
                     model.getDefaultValue(),
                     model.getMaximumValue()
             );
