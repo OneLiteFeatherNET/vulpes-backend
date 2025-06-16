@@ -41,8 +41,8 @@ public final class ItemModelDTO {
 
     public ItemModelDTO(
             @Schema(description = "ID of the Model", requiredMode = Schema.RequiredMode.NOT_REQUIRED) UUID id,
-            @Schema(description = "Model Name for the ui", requiredMode = Schema.RequiredMode.REQUIRED) @NotNull @NotBlank @NotEmpty String uiName,
-            @Schema(description = "Name in the UI", requiredMode = Schema.RequiredMode.REQUIRED) @NotNull @NotBlank @NotEmpty String variableName,
+            @Schema(description = "Name in the UI", requiredMode = Schema.RequiredMode.REQUIRED) @NotNull @NotBlank @NotEmpty String uiName,
+            @Schema(description = "Variable name for the entity", requiredMode = Schema.RequiredMode.REQUIRED) @NotNull @NotBlank @NotEmpty String variableName,
             @Schema(description = "Example comment", requiredMode = Schema.RequiredMode.REQUIRED) @NotNull @NotBlank @NotEmpty String description, // TODO: Add comment
             @Schema(description = "Example comment", requiredMode = Schema.RequiredMode.REQUIRED) @NotNull @NotBlank @NotEmpty String displayName,
             @Schema(description = "Example comment", requiredMode = Schema.RequiredMode.REQUIRED) @NotNull @NotBlank @NotEmpty String material,
