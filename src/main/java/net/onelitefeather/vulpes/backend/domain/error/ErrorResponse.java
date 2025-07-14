@@ -1,5 +1,6 @@
 package net.onelitefeather.vulpes.backend.domain.error;
 
+import io.micronaut.serde.annotation.Serdeable;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 public interface ErrorResponse {
@@ -8,6 +9,7 @@ public interface ErrorResponse {
     String errorMessage();
 
     @Schema(description = "Error message")
+    @Serdeable
     record ErrorResponseDTO(
             @Schema(description = "Error message") String errorMessage
     ) implements ErrorResponse {
