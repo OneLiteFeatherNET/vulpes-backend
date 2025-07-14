@@ -25,6 +25,8 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import static net.onelitefeather.vulpes.backend.domain.font.FontModelResponseDTO.*;
+
 @Controller("/font")
 public class FontController {
 
@@ -53,7 +55,7 @@ public class FontController {
             description = "The font could not be added to the database.",
             content = @Content(
                     mediaType = MediaType.APPLICATION_JSON,
-                    schema = @Schema(implementation = FontModelResponseDTO.FontModelErrorDTO.class)
+                    schema = @Schema(implementation = FontModelErrorDTO.class)
             )
     )
     @Post
@@ -63,7 +65,7 @@ public class FontController {
     ) {
         FontEntity fontModel = item.toFontModel();
         fontModel = fontRepository.save(fontModel);
-        return HttpResponse.ok(FontModelResponseDTO.FontModelDTO.createDTO(fontModel));
+        return HttpResponse.ok(FontModelResponseDTO.FontModelDTO.createDTOWithChars(fontModel));
     }
 
     @Operation(
@@ -84,7 +86,7 @@ public class FontController {
             description = "The font was not found in the database.",
             content = @Content(
                     mediaType = MediaType.APPLICATION_JSON,
-                    schema = @Schema(implementation = FontModelResponseDTO.FontModelErrorDTO.class)
+                    schema = @Schema(implementation = FontModelErrorDTO.class)
             )
     )
     @Get("/{id}")
@@ -96,7 +98,40 @@ public class FontController {
             FontModelResponseDTO.FontModelDTO dto = FontModelResponseDTO.FontModelDTO.createDTO(fontModel);
             return HttpResponse.ok(dto);
         }
-        return HttpResponse.notFound(new FontModelResponseDTO.FontModelErrorDTO("Font not found"));
+        return HttpResponse.notFound(new FontModelErrorDTO("Font not found"));
+    }
+
+
+    @Operation(
+            summary = "Get characters by font ID",
+            description = "Gets the characters of a font by its ID from the database.",
+            tags = {"Font"}
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "The characters of the font were successfully retrieved from the database.",
+            content = @Content(
+                    mediaType = MediaType.APPLICATION_JSON,
+                    schema = @Schema(implementation = FontModelCharsResponseDTO.class)
+            )
+    )
+    @ApiResponse(
+            responseCode = "404",
+            description = "The font was not found in the database.",
+            content = @Content(
+                    mediaType = MediaType.APPLICATION_JSON,
+                    schema = @Schema(implementation = FontModelErrorDTO.class)
+            )
+    )
+    @Get("/chars/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public HttpResponse<FontModelResponseDTO> getCharsById(@PathVariable UUID id) {
+        List<String> model = fontRepository.findCharsByFontId(id);
+        if (!model.isEmpty()) {
+            FontModelCharsResponseDTO dto = FontModelCharsResponseDTO.createDTO(id, model);
+            return HttpResponse.ok(dto);
+        }
+        return HttpResponse.notFound(new FontModelErrorDTO("Font not found"));
     }
 
     @Operation(
@@ -117,7 +152,7 @@ public class FontController {
             description = "The font was not found in the database.",
             content = @Content(
                     mediaType = MediaType.APPLICATION_JSON,
-                    schema = @Schema(implementation = FontModelResponseDTO.FontModelErrorDTO.class)
+                    schema = @Schema(implementation = FontModelErrorDTO.class)
             )
     )
     @Delete("/remove/{id}")
@@ -130,7 +165,7 @@ public class FontController {
             FontModelResponseDTO.FontModelDTO dto = FontModelResponseDTO.FontModelDTO.createDTO(fontModel);
             return HttpResponse.ok(dto);
         }
-        return HttpResponse.notFound(new FontModelResponseDTO.FontModelErrorDTO("Font not found"));
+        return HttpResponse.notFound(new FontModelErrorDTO("Font not found"));
     }
 
     @Operation(
@@ -191,7 +226,7 @@ public class FontController {
             description = "The font was not found in the database.",
             content = @Content(
                     mediaType = MediaType.APPLICATION_JSON,
-                    schema = @Schema(implementation = FontModelResponseDTO.FontModelErrorDTO.class)
+                    schema = @Schema(implementation = FontModelErrorDTO.class)
             )
     )
     @Post("/update")
@@ -201,9 +236,9 @@ public class FontController {
     ) {
         Optional<FontEntity> modelOptional = fontRepository.findById(model.getId());
         if (modelOptional.isEmpty()) {
-            return HttpResponse.notFound(new FontModelResponseDTO.FontModelErrorDTO("Font not found"));
+            return HttpResponse.notFound(new FontModelErrorDTO("Font not found"));
         }
         var updatedFontModel = fontRepository.update(model.toFontModel());
-        return HttpResponse.ok(FontModelResponseDTO.FontModelDTO.createDTO(updatedFontModel));
+        return HttpResponse.ok(FontModelResponseDTO.FontModelDTO.createDTOWithChars(updatedFontModel));
     }
 }
