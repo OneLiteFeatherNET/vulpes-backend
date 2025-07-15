@@ -17,12 +17,12 @@ public sealed interface FontModelResponseDTO {
      * Represents a response DTO for font models that includes characters.
      *
      * @param chars       a list of characters in the font model
-     * @param fontModelId the ID of the font model
+     * @param id the ID of the font model
      */
     @Schema(description = "Font model data with characters")
     @Serdeable
     record FontModelCharsResponseDTO(
-            @Schema(description = "ID of the font model", requiredMode = Schema.RequiredMode.REQUIRED) UUID fontModelId,
+            @Schema(description = "ID of the font model", requiredMode = Schema.RequiredMode.REQUIRED) UUID id,
             @Schema(description = "List of characters in the font model", requiredMode = Schema.RequiredMode.REQUIRED) List<String> chars
     ) implements FontModelResponseDTO {
 
@@ -30,20 +30,20 @@ public sealed interface FontModelResponseDTO {
          * Creates a new instance of FontModelCharsResponseDTO.
          *
          * @param chars       a list of characters in the font model
-         * @param fontModelId the ID of the font model
+         * @param id the ID of the font model
          * @return a new FontModelCharsResponseDTO instance
          */
-        public static @NotNull FontModelCharsResponseDTO createDTO(@NotNull UUID fontModelId, @NotNull List<String> chars) {
-            return new FontModelCharsResponseDTO(fontModelId, chars);
+        public static @NotNull FontModelCharsResponseDTO createDTO(@NotNull UUID id, @NotNull List<String> chars) {
+            return new FontModelCharsResponseDTO(id, chars);
         }
     }
 
     @Schema(description = "Font model data")
     @Serdeable
     record FontModelDTO(
-            @Schema(description = "ID of the mode", requiredMode = Schema.RequiredMode.NOT_REQUIRED) UUID id,
-            @Schema(description = "Model Name for the ui", requiredMode = Schema.RequiredMode.REQUIRED) String uiName,
-            @Schema(description = "Name in the UI", requiredMode = Schema.RequiredMode.REQUIRED) String variableName,
+            @Schema(description = "The id of the model", requiredMode = Schema.RequiredMode.REQUIRED) UUID id,
+            @Schema(description = "Model Name for the UI", requiredMode = Schema.RequiredMode.REQUIRED) String uiName,
+            @Schema(description = "Variable name for the generation", requiredMode = Schema.RequiredMode.REQUIRED) String variableName,
             @Schema(description = "Example comment", requiredMode = Schema.RequiredMode.REQUIRED) String provider,
             @Schema(description = "Example comment", requiredMode = Schema.RequiredMode.REQUIRED) String mapper,
             @Schema(description = "Example comment", requiredMode = Schema.RequiredMode.REQUIRED) String texturePath,

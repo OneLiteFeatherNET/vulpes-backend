@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import net.onelitefeather.vulpes.api.model.ItemEntity;
 import net.onelitefeather.vulpes.backend.domain.error.ErrorResponse;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -89,12 +90,28 @@ public sealed interface ItemModelResponseDTO {
         }
     }
 
+    /**
+     * Represents a response DTO for item models that includes all item details.
+     *
+     * @param id              the unique identifier of the item model
+     * @param uiName          the model name for the UI
+     * @param variableName    the variable name of the item
+     * @param comment         the description of the item
+     * @param displayName     the display variableName of the item shown to users
+     * @param material        the material type of the item
+     * @param groupName       the group category variableName for the item
+     * @param customModelData the custom model data value for resource packs
+     * @param amount          the quantity of the item
+     * @param enchantments    the map of enchantment names and their levels
+     * @param lore            the list of text lines displayed in the item tooltip
+     * @param flags           the list of item flags that modify item behavior
+     */
     @Schema(description = "Item Model Data")
     @Serdeable
     record ItemModelDTO(
-            @Schema(description = "UUID of the Item Model") UUID uuid,
-            @Schema(description = "Model Name for the UI") String modelName,
-            @Schema(description = "Name of the item in the UI") String name,
+            @Schema(description = "The id of the model") UUID id,
+            @Schema(description = "Model Name for the UI") String uiName,
+            @Schema(description = "Variable name for the generation") String variableName,
             @Schema(description = "Description of the item") String comment,
             @Schema(description = "Display variableName of the item shown to users") String displayName,
             @Schema(description = "Material type of the item") String material,
@@ -105,7 +122,14 @@ public sealed interface ItemModelResponseDTO {
             @Schema(description = "List of text lines displayed in the item tooltip") List<String> lore,
             @Schema(description = "List of item flags that modify item behavior") List<String> flags
     ) implements ItemModelResponseDTO {
-        public static ItemModelDTO createDTO(ItemEntity itemEntity) {
+
+        /**
+         * Creates a new instance of ItemModelDTO.
+         *
+         * @param itemEntity the item entity to convert to DTO
+         * @return a new ItemModelDTO instance
+         */
+        public static ItemModelDTO createDTO(@NotNull ItemEntity itemEntity) {
             return new ItemModelDTO(
                     itemEntity.getId(),
                     itemEntity.getUiName(),
@@ -116,13 +140,18 @@ public sealed interface ItemModelResponseDTO {
                     itemEntity.getGroupName(),
                     itemEntity.getCustomModelData(),
                     itemEntity.getAmount(),
-                    itemEntity.getEnchantments(),
-                    itemEntity.getLore(),
-                    itemEntity.getFlags()
+                    Collections.emptyMap(),
+                    Collections.emptyList(),
+                    Collections.emptyList()
             );
         }
     }
 
+    /**
+     * Represents an error response DTO for item models.
+     *
+     * @param errorMessage the error message describing the issue with the item model
+     */
     @Schema(description = "Error message for Item Model")
     @Serdeable
     record ItemModelErrorDTO(
