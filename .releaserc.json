@@ -20,10 +20,7 @@
       {
         "assets": [
           {
-            "path": "bukkit/build/libs/butterfly-paper.jar"
-          },
-          {
-            "path": "minestom/build/libs/butterfly-minestom.jar"
+            "path": "build/libs/vulpes-backend-*.jar"
           }
         ],
         "labels": false,
