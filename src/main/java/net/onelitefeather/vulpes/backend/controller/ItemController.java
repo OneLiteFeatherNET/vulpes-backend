@@ -21,11 +21,12 @@ import net.onelitefeather.vulpes.backend.domain.item.ItemModelDTO;
 import net.onelitefeather.vulpes.backend.domain.item.ItemModelResponseDTO;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static net.onelitefeather.vulpes.backend.domain.item.ItemModelResponseDTO.ItemModelErrorDTO;
+import static net.onelitefeather.vulpes.backend.domain.item.ItemModelResponseDTO.*;
 
 /**
  * @author theEvilReaper
@@ -138,6 +139,100 @@ public class ItemController {
         }
         return HttpResponse.notFound(new ItemModelErrorDTO("Item not found"));
     }
+
+    @Operation(
+            summary = "Get enchantments of an item",
+            description = "Retrieves the enchantments of an item by its ID.",
+            tags = {"Item"}
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "The enchantments of the item were successfully retrieved.",
+            content = @Content(
+                    mediaType = MediaType.APPLICATION_JSON,
+                    schema = @Schema(implementation = ItemModelEnchantmentResponseDTO.class)
+            )
+    )
+    @ApiResponse(
+            responseCode = "404",
+            description = "The item was not found in the database.",
+            content = @Content(
+                    mediaType = MediaType.APPLICATION_JSON,
+                    schema = @Schema(implementation = ItemModelErrorDTO.class)
+            )
+    )
+    @Get("/enchantments/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public HttpResponse<ItemModelResponseDTO> getEnchantmentsById(@PathVariable UUID id) {
+        Map<String, Short> enchantments = itemRepository.findEnchantmentsById(id);
+        if (enchantments.isEmpty()) {
+            return HttpResponse.notFound(new ItemModelErrorDTO("Item not found or has no enchantments"));
+        }
+        return HttpResponse.ok(ItemModelEnchantmentResponseDTO.create(id, enchantments));
+    }
+
+    @Operation(
+            summary = "Get all flags of an item",
+            description = "Retrieves all flags of an item by its ID.",
+            tags = {"Item"}
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "The flags of the item were successfully retrieved.",
+            content = @Content(
+                    mediaType = MediaType.APPLICATION_JSON,
+                    schema = @Schema(implementation = ItemModelFlagResponseDTO.class)
+            )
+    )
+    @ApiResponse(
+            responseCode = "404",
+            description = "The item was not found in the database.",
+            content = @Content(
+                    mediaType = MediaType.APPLICATION_JSON,
+                    schema = @Schema(implementation = ItemModelErrorDTO.class)
+            )
+    )
+    @Get("/flags/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public HttpResponse<ItemModelResponseDTO> getFlagsById(@PathVariable UUID id) {
+        List<String> flags = itemRepository.findFlagsById(id);
+        if (flags.isEmpty()) {
+            return HttpResponse.notFound(new ItemModelErrorDTO("Item not found or has no flags"));
+        }
+        return HttpResponse.ok(ItemModelFlagResponseDTO.createDTO(id, flags));
+    }
+
+    @Operation(
+            summary = "Get all lore of an item",
+            description = "Retrieves all lore of an item by its ID.",
+            tags = {"Item"}
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "The lore of the item was successfully retrieved.",
+            content = @Content(
+                    mediaType = MediaType.APPLICATION_JSON,
+                    schema = @Schema(implementation = ItemModelLoreResponseDTO.class)
+            )
+    )
+    @ApiResponse(
+            responseCode = "404",
+            description = "The item was not found in the database.",
+            content = @Content(
+                    mediaType = MediaType.APPLICATION_JSON,
+                    schema = @Schema(implementation = ItemModelErrorDTO.class)
+            )
+    )
+    @Get("/lore/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public HttpResponse<ItemModelResponseDTO> getLoreById(@PathVariable UUID id) {
+        List<String> lore = itemRepository.findLoreById(id);
+        if (lore.isEmpty()) {
+            return HttpResponse.notFound(new ItemModelErrorDTO("Item not found or has no lore"));
+        }
+        return HttpResponse.ok(ItemModelLoreResponseDTO.createDTO(id, lore));
+    }
+
 
     @Operation(
             summary = "Get all items",
