@@ -11,24 +11,21 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
-import net.onelitefeather.vulpes.api.model.AttributeEntity;
-import net.onelitefeather.vulpes.api.repository.AttributeRepository;
 import net.onelitefeather.vulpes.backend.domain.attribute.AttributeModelDTO;
 import net.onelitefeather.vulpes.backend.domain.attribute.AttributeModelResponseDTO;
+import net.onelitefeather.vulpes.backend.service.AttributeService;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Controller("/attribute")
 public class AttributeController {
 
-    private final AttributeRepository attributeRepository;
+    private final AttributeService attributeService;
 
     @Inject
-    public AttributeController(AttributeRepository attributeRepository) {
-        this.attributeRepository = attributeRepository;
+    public AttributeController(AttributeService attributeService) {
+        this.attributeService = attributeService;
     }
 
     @Operation(
@@ -54,9 +51,8 @@ public class AttributeController {
     )
     @Post
     public HttpResponse<AttributeModelResponseDTO> add(@Valid @Body AttributeModelDTO model) {
-        AttributeEntity attributeModel = model.toAttributeModel();
-        AttributeEntity savedAttributeModel = attributeRepository.save(attributeModel);
-        return HttpResponse.ok(AttributeModelResponseDTO.AttributeModelDTO.create(savedAttributeModel));
+        AttributeModelResponseDTO.AttributeModelDTO createdAttribute = attributeService.createAttribute(model);
+        return HttpResponse.ok(createdAttribute);
     }
 
     @Operation(
@@ -82,13 +78,11 @@ public class AttributeController {
     )
     @Post("/update")
     public HttpResponse<AttributeModelResponseDTO> update(@Valid @Body AttributeModelDTO model) {
-        Optional<AttributeEntity> modelOptional = attributeRepository.findById(model.getId());
-        if (modelOptional.isEmpty()) {
-            return HttpResponse.notFound(new AttributeModelResponseDTO.AttributeModelErrorDTO("Attribute not found"));
+        AttributeModelResponseDTO result = attributeService.updateAttribute(model);
+        if (result instanceof AttributeModelResponseDTO.AttributeModelErrorDTO) {
+            return HttpResponse.notFound(result);
         }
-        AttributeEntity attributeModel = model.toAttributeModel();
-        attributeModel = attributeRepository.update(attributeModel);
-        return HttpResponse.ok(AttributeModelResponseDTO.AttributeModelDTO.create(attributeModel));
+        return HttpResponse.ok(result);
     }
     @Operation(
             summary = "Delete an attribute by ID",
@@ -113,12 +107,11 @@ public class AttributeController {
     )
     @Delete("/delete/{id}")
     public HttpResponse<AttributeModelResponseDTO> delete(@PathVariable UUID id) {
-        Optional<AttributeEntity> attributeModel = attributeRepository.findById(id);
-        if (attributeModel.isPresent()) {
-            attributeRepository.deleteById(id);
-            return HttpResponse.ok(AttributeModelResponseDTO.AttributeModelDTO.create(attributeModel.get()));
+        AttributeModelResponseDTO result = attributeService.deleteAttribute(id);
+        if (result instanceof AttributeModelResponseDTO.AttributeModelErrorDTO) {
+            return HttpResponse.notFound(result);
         }
-        return HttpResponse.notFound(new AttributeModelResponseDTO.AttributeModelErrorDTO("Attribute not found"));
+        return HttpResponse.ok(result);
     }
 
     /**
@@ -141,8 +134,8 @@ public class AttributeController {
     )
     @Delete("/deleteAll")
     public HttpResponse<List<AttributeModelResponseDTO>> deleteAll() {
-        attributeRepository.deleteAll();
-        return HttpResponse.ok(List.of());
+        List<AttributeModelResponseDTO> result = attributeService.deleteAllAttributes();
+        return HttpResponse.ok(result);
     }
 
     /**
@@ -164,8 +157,8 @@ public class AttributeController {
             )
     )
     @Get("/getAll")
-    public HttpResponse<List<AttributeModelResponseDTO>> getAll() {
-        List<AttributeModelResponseDTO> models = attributeRepository.findAll().stream().map(AttributeModelResponseDTO.AttributeModelDTO::create).collect(Collectors.toList());
+    public HttpResponse<List<AttributeModelResponseDTO.AttributeModelDTO>> getAll() {
+        List<AttributeModelResponseDTO.AttributeModelDTO> models = attributeService.getAllAttributes();
         return HttpResponse.ok(models);
     }
 }
