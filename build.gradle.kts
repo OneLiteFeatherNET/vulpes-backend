@@ -98,27 +98,18 @@ tasks {
     register("pushDartClient") {
         dependsOn("openApiGenerate")
         doLast {
-            val clientDir = file("$buildDir/generated/dart-client")
+            val clientDir = file("$projectDir/build/generated/dart-client")
             val version = project.version as String
 
             // Get GitHub credentials from environment variables
             val githubToken = System.getenv("CLIENT_REPO_TOKEN") ?: System.getenv("GITHUB_TOKEN") ?: throw GradleException("CLIENT_REPO_TOKEN or GITHUB_TOKEN environment variable is required")
 
             // Create a temporary directory for the Git repository
-            val tempDir = file("$buildDir/temp/vulpes-client")
+            val tempDir = file("$projectDir/build/temp/vulpes-client")
             tempDir.mkdirs()
 
-            // Configure Git user
-            exec {
-                commandLine("git", "config", "--global", "user.name", "GitHub Actions")
-            }
-
-            exec {
-                commandLine("git", "config", "--global", "user.email", "actions@github.com")
-            }
-
             // Clone the repository using token authentication
-            exec {
+            providers.exec {
                 workingDir = tempDir
                 commandLine("git", "clone", "https://${githubToken}@github.com/OneLiteFeatherNET/vulpes-backend-client-dart.git", ".")
             }
@@ -130,22 +121,22 @@ tasks {
             }
 
             // Commit and push the changes
-            exec {
+            providers.exec {
                 workingDir = tempDir
                 commandLine("git", "add", ".")
             }
 
-            exec {
+            providers.exec {
                 workingDir = tempDir
                 commandLine("git", "commit", "-m", "Update client to version $version")
             }
 
-            exec {
+            providers.exec {
                 workingDir = tempDir
                 commandLine("git", "tag", "-a", "v$version", "-m", "Version $version")
             }
 
-            exec {
+            providers.exec {
                 workingDir = tempDir
                 commandLine("git", "push", "origin", "main", "--tags")
             }
