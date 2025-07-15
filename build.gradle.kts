@@ -1,12 +1,9 @@
 plugins {
     alias(libs.plugins.micronaut.application)
     alias(libs.plugins.micronaut.aot)
-    //alias(libs.plugins.shadowJar)
     jacoco
+    `maven-publish`
 }
-
-group = "net.theevilreaper"
-version = "0.5.0-SNAPSHOT"
 
 java {
     toolchain {
@@ -34,6 +31,7 @@ dependencies {
     implementation(mn.micronaut.data.tx.hibernate)
     implementation(mn.micronaut.jdbc.hikari)
     implementation(mn.micronaut.runtime)
+    implementation(mn.micronaut.openapi)
     implementation(mn.validation)
     implementation(mn.swagger.core)
     // External Dependencies
@@ -57,7 +55,7 @@ dependencies {
 
 
 application {
-    mainClass.set("net.theevilreaper.vulpes.backend.VulpesBackend")
+    mainClass.set("net.onelitefeather.vulpes.VulpesBackend")
 }
 
 graalvmNative.toolchainDetection = false
@@ -67,7 +65,7 @@ micronaut {
     testRuntime("junit5")
     processing {
         incremental(true)
-        annotations("net.theevilreaper.*")
+        annotations("net.onelitefeather.vulpes.*")
     }
     aot {
         optimizeServiceLoading = false
@@ -80,20 +78,72 @@ micronaut {
         replaceLogbackXml = true
     }
 }
-
-tasks.named<io.micronaut.gradle.docker.NativeImageDockerfile>("dockerfileNative") {
-    jdkVersion = "21"
-}
-
 tasks {
     compileJava {
         options.encoding = "UTF-8"
         options.release = 21
         options.forkOptions.jvmArgs = listOf("-Dmicronaut.openapi.views.spec=rapidoc.enabled=true,openapi-explorer.enabled=true,swagger-ui.enabled=true,swagger-ui.theme=flattop")
     }
-
-    jar {
-        //dependsOn("shadowJar")
-    }
 }
 
+publishing {
+    publications.create<MavenPublication>("maven") {
+        artifact(project.tasks.distZip)
+        artifact(project.tasks.distTar)
+        artifact(project.tasks.optimizedJitJar)
+        artifact(project.tasks.optimizedRunnerJitJar)
+        artifact(project.tasks.runnerJar)
+        artifact(project.tasks.jar)
+        artifact(project.tasks.optimizedDistTar)
+        artifact(project.tasks.optimizedDistZip)
+
+        version = rootProject.version as String
+        artifactId = "vulpes-backend"
+        groupId = rootProject.group as String
+        pom {
+            name = "Vulpes Backend"
+            description = "A backend server for OneLiteFeather's Vulpes project, providing a REST API and database access."
+            url = "https://github.com/OneLiteFeatherNET/vulpes-backend"
+            licenses {
+                license {
+                    name = "AGPL-3.0"
+                    url = "https://www.gnu.org/licenses/agpl-3.0.en.html"
+                }
+            }
+            developers {
+                developer {
+                    id = "themeinerlp"
+                    name = "Phillipp Glanz"
+                    email = "p.glanz@madfix.me"
+                }
+                developer {
+                    id = "theEvilReaper"
+                    name = "Steffen Wonning"
+                    email = "steffenwx@gmail.com"
+                }
+            }
+            scm {
+                connection = "scm:git:git://github.com:OneLiteFeatherNET/vulpes-backend.git"
+                developerConnection = "scm:git:ssh://git@github.com:OneLiteFeatherNET/vulpes-backend.git"
+                url = "https://github.com/OneLiteFeatherNET/vulpes-backend"
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            authentication {
+                credentials(PasswordCredentials::class) {
+                    // Those credentials need to be set under "Settings -> Secrets -> Actions" in your repository
+                    username = System.getenv("ONELITEFEATHER_MAVEN_USERNAME")
+                    password = System.getenv("ONELITEFEATHER_MAVEN_PASSWORD")
+                }
+            }
+
+            name = "OneLiteFeatherRepository"
+            val releasesRepoUrl = uri("https://repo.onelitefeather.dev/onelitefeather-releases")
+            val snapshotsRepoUrl = uri("https://repo.onelitefeather.dev/onelitefeather-snapshots")
+            url = if (version.toString().contains("BETA") || version.toString().contains("ALPHA") || version.toString().contains("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl
+        }
+    }
+}
