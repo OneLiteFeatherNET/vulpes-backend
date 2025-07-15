@@ -152,13 +152,13 @@ openApiGenerate {
     generatorName.set("dart-dio")
     inputSpec.set("$projectDir/build/classes/java/main/META-INF/swagger/vulpes-backend-1.0.yml")
     outputDir.set("$projectDir/build/generated/dart-client")
-    apiPackage.set("net.onelitefeather.vulpes.client.api")
-    invokerPackage.set("net.onelitefeather.vulpes.client.invoker")
-    modelPackage.set("net.onelitefeather.vulpes.client.model")
+    apiPackage.set("net.onelitefeather.vulpes.backend.client.api")
+    invokerPackage.set("net.onelitefeather.vulpes.backend.client.invoker")
+    modelPackage.set("net.onelitefeather.vulpes.backend.client.model")
     configOptions.set(mapOf(
-        "pubName" to "vulpes_client",
+        "pubName" to "vulpes_backend_client",
         "pubVersion" to (project.version as String),
-        "pubDescription" to "Vulpes API Client",
+        "pubDescription" to "Vulpes Backend API Client",
         "pubAuthor" to "OneLiteFeather",
         "pubAuthorEmail" to "p.glanz@madfix.me",
         "pubHomepage" to "https://github.com/OneLiteFeatherNET/vulpes-backend-client-dart",
