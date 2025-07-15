@@ -88,8 +88,6 @@ tasks {
 
 publishing {
     publications.create<MavenPublication>("maven") {
-        artifact(project.tasks.distZip)
-        artifact(project.tasks.distTar)
         artifact(project.tasks.optimizedJitJar)
         artifact(project.tasks.optimizedRunnerJitJar)
         artifact(project.tasks.runnerJar)
