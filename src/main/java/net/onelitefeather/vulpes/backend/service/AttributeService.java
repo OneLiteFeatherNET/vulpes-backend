@@ -1,5 +1,7 @@
 package net.onelitefeather.vulpes.backend.service;
 
+import io.micronaut.data.model.Page;
+import io.micronaut.data.model.Pageable;
 import net.onelitefeather.vulpes.api.model.AttributeEntity;
 import net.onelitefeather.vulpes.backend.domain.attribute.AttributeModelDTO;
 import net.onelitefeather.vulpes.backend.domain.attribute.AttributeModelResponseDTO;
@@ -49,7 +51,7 @@ public interface AttributeService {
      *
      * @return a list of all attributes
      */
-    List<AttributeModelResponseDTO.AttributeModelDTO> getAllAttributes();
+    Page<AttributeModelResponseDTO.AttributeModelDTO> getAllAttributes(Pageable pageable);
 
     /**
      * Finds an attribute by its ID.

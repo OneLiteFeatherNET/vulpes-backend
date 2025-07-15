@@ -1,5 +1,7 @@
 package net.onelitefeather.vulpes.backend.controller;
 
+import io.micronaut.data.model.Page;
+import io.micronaut.data.model.Pageable;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Body;
@@ -247,10 +249,10 @@ public class ItemController {
                     schema = @Schema(implementation = ItemModelResponseDTO.ItemModelDTO.class)
             )
     )
-    @Get("/getAll")
+    @Get(uris = {"/getAll", "/all"})
     @Produces(MediaType.APPLICATION_JSON)
-    public HttpResponse<List<ItemModelResponseDTO>> getAll() {
-        List<ItemModelResponseDTO> list = itemRepository.findAll().stream().map(ItemModelResponseDTO.ItemModelDTO::createDTO).collect(Collectors.toList());
+    public HttpResponse<Page<ItemModelResponseDTO>> getAll(Pageable pageable) {
+        Page<ItemModelResponseDTO> list = itemRepository.findAll(pageable).map(ItemModelResponseDTO.ItemModelDTO::createDTO);
         return HttpResponse.ok(list);
     }
 

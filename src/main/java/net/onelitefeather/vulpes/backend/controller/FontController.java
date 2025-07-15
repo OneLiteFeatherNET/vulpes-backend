@@ -1,5 +1,7 @@
 package net.onelitefeather.vulpes.backend.controller;
 
+import io.micronaut.data.model.Page;
+import io.micronaut.data.model.Pageable;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Body;
@@ -181,10 +183,10 @@ public class FontController {
                     schema = @Schema(implementation = FontModelResponseDTO.FontModelDTO.class)
             )
     )
-    @Get("/getAll")
+    @Get(uris = {"/getAll", "/all"})
     @Produces(MediaType.APPLICATION_JSON)
-    public HttpResponse<List<FontModelResponseDTO>> getAll() {
-        List<FontModelResponseDTO> models = fontRepository.findAll().stream().map(FontModelResponseDTO.FontModelDTO::createDTO).collect(Collectors.toList());
+    public HttpResponse<Page<FontModelResponseDTO>> getAll(Pageable pageable) {
+        Page<FontModelResponseDTO> models = fontRepository.findAll(pageable).map(FontModelResponseDTO.FontModelDTO::createDTO);
         return HttpResponse.ok(models);
     }
 

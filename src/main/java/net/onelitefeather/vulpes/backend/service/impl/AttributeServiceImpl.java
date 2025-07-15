@@ -1,5 +1,7 @@
 package net.onelitefeather.vulpes.backend.service.impl;
 
+import io.micronaut.data.model.Page;
+import io.micronaut.data.model.Pageable;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import net.onelitefeather.vulpes.api.model.AttributeEntity;
@@ -61,10 +63,9 @@ public class AttributeServiceImpl implements AttributeService {
     }
 
     @Override
-    public List<AttributeModelResponseDTO.AttributeModelDTO> getAllAttributes() {
-        return attributeRepository.findAll().stream()
-                .map(AttributeModelResponseDTO.AttributeModelDTO::create)
-                .collect(Collectors.toList());
+    public Page<AttributeModelResponseDTO.AttributeModelDTO> getAllAttributes(Pageable pageable) {
+        return attributeRepository.findAll(pageable)
+                .map(AttributeModelResponseDTO.AttributeModelDTO::create);
     }
 
     @Override

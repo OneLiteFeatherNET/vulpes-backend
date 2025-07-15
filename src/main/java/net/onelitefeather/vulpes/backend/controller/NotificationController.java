@@ -1,5 +1,7 @@
 package net.onelitefeather.vulpes.backend.controller;
 
+import io.micronaut.data.model.Page;
+import io.micronaut.data.model.Pageable;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.*;
@@ -175,10 +177,10 @@ public class NotificationController {
                     schema = @Schema(implementation = NotificationModelResponseDTO.NotificationModelErrorDTO.class)
             )
     )
-    @Get("/getAll")
+    @Get(uris = {"/getAll", "/all"})
     @Produces(MediaType.APPLICATION_JSON)
-    public HttpResponse<List<NotificationModelResponseDTO>> getAll() {
-        List<NotificationModelResponseDTO> list = notificationRepository.findAll().stream().map(NotificationModelResponseDTO.NotificationModelDTO::createDTO).collect(Collectors.toList());
+    public HttpResponse<Page<NotificationModelResponseDTO>> getAll(Pageable pageable) {
+        Page<NotificationModelResponseDTO> list = notificationRepository.findAll(pageable).map(NotificationModelResponseDTO.NotificationModelDTO::createDTO);
         return HttpResponse.ok(list);
     }
 

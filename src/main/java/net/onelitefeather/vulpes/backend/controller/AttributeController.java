@@ -1,12 +1,16 @@
 package net.onelitefeather.vulpes.backend.controller;
 
+import io.micronaut.data.model.Page;
+import io.micronaut.data.model.Pageable;
 import io.micronaut.http.HttpResponse;
+import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Delete;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.PathVariable;
 import io.micronaut.http.annotation.Post;
+import io.micronaut.http.annotation.Produces;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.inject.Inject;
@@ -156,9 +160,10 @@ public class AttributeController {
                     schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = AttributeModelResponseDTO.AttributeModelDTO.class)
             )
     )
-    @Get("/getAll")
-    public HttpResponse<List<AttributeModelResponseDTO.AttributeModelDTO>> getAll() {
-        List<AttributeModelResponseDTO.AttributeModelDTO> models = attributeService.getAllAttributes();
+    @Produces(MediaType.APPLICATION_JSON)
+    @Get(uris = {"/getAll", "/all"})
+    public HttpResponse<Page<AttributeModelResponseDTO.AttributeModelDTO>> getAll(Pageable pageable) {
+        Page<AttributeModelResponseDTO.AttributeModelDTO> models = attributeService.getAllAttributes(pageable);
         return HttpResponse.ok(models);
     }
 }
