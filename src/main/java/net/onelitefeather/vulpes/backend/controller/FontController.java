@@ -18,9 +18,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import net.onelitefeather.vulpes.api.model.FontEntity;
-import net.onelitefeather.vulpes.api.repository.FontRepository;
 import net.onelitefeather.vulpes.backend.domain.font.FontModelDTO;
 import net.onelitefeather.vulpes.backend.domain.font.FontModelResponseDTO;
+import net.onelitefeather.vulpes.backend.service.FontService;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,11 +32,11 @@ import static net.onelitefeather.vulpes.backend.domain.font.FontModelResponseDTO
 @Controller("/font")
 public class FontController {
 
-    private final FontRepository fontRepository;
+    private final FontService fontService;
 
     @Inject
-    public FontController(FontRepository fontRepository) {
-        this.fontRepository = fontRepository;
+    public FontController(FontService fontService) {
+        this.fontService = fontService;
     }
 
     @Operation(
@@ -65,9 +65,8 @@ public class FontController {
     public HttpResponse<FontModelResponseDTO> add(
             @Valid @Body FontModelDTO item
     ) {
-        FontEntity fontModel = item.toFontModel();
-        fontModel = fontRepository.save(fontModel);
-        return HttpResponse.ok(FontModelResponseDTO.FontModelDTO.createDTOWithChars(fontModel));
+        FontModelResponseDTO.FontModelDTO result = fontService.createFont(item);
+        return HttpResponse.ok(result);
     }
 
     @Operation(
@@ -94,7 +93,7 @@ public class FontController {
     @Get("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public HttpResponse<FontModelResponseDTO> getById(@PathVariable UUID id) {
-        Optional<FontEntity> model = fontRepository.findById(id);
+        Optional<FontEntity> model = fontService.findFontById(id);
         if (model.isPresent()) {
             FontEntity fontModel = model.get();
             FontModelResponseDTO.FontModelDTO dto = FontModelResponseDTO.FontModelDTO.createDTO(fontModel);
@@ -128,7 +127,7 @@ public class FontController {
     @Get("/chars/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public HttpResponse<FontModelResponseDTO> getCharsById(@PathVariable UUID id) {
-        List<String> model = fontRepository.findCharsByFontId(id);
+        List<String> model = fontService.findCharsByFontId(id);
         if (!model.isEmpty()) {
             FontModelCharsResponseDTO dto = FontModelCharsResponseDTO.createDTO(id, model);
             return HttpResponse.ok(dto);
@@ -160,14 +159,11 @@ public class FontController {
     @Delete("/remove/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public HttpResponse<FontModelResponseDTO> remove(@PathVariable UUID id) {
-        Optional<FontEntity> model = fontRepository.findById(id);
-        if (model.isPresent()) {
-            fontRepository.deleteById(id);
-            FontEntity fontModel = model.get();
-            FontModelResponseDTO.FontModelDTO dto = FontModelResponseDTO.FontModelDTO.createDTO(fontModel);
-            return HttpResponse.ok(dto);
+        FontModelResponseDTO result = fontService.deleteFont(id);
+        if (result instanceof FontModelResponseDTO.FontModelErrorDTO) {
+            return HttpResponse.notFound(result);
         }
-        return HttpResponse.notFound(new FontModelErrorDTO("Font not found"));
+        return HttpResponse.ok(result);
     }
 
     @Operation(
@@ -185,8 +181,8 @@ public class FontController {
     )
     @Get(uris = {"/getAll", "/all"})
     @Produces(MediaType.APPLICATION_JSON)
-    public HttpResponse<Page<FontModelResponseDTO>> getAll(Pageable pageable) {
-        Page<FontModelResponseDTO> models = fontRepository.findAll(pageable).map(FontModelResponseDTO.FontModelDTO::createDTO);
+    public HttpResponse<Page<FontModelResponseDTO.FontModelDTO>> getAll(Pageable pageable) {
+        Page<FontModelResponseDTO.FontModelDTO> models = fontService.getAllFonts(pageable);
         return HttpResponse.ok(models);
     }
 
@@ -206,8 +202,8 @@ public class FontController {
     @Delete("/deleteAll")
     @Produces(MediaType.APPLICATION_JSON)
     public HttpResponse<List<FontModelResponseDTO>> deleteAll() {
-        fontRepository.deleteAll();
-        return HttpResponse.ok(List.of());
+        List<FontModelResponseDTO> result = fontService.deleteAllFonts();
+        return HttpResponse.ok(result);
     }
 
     @Operation(
@@ -236,11 +232,10 @@ public class FontController {
     public HttpResponse<FontModelResponseDTO> update(
             @Valid @Body FontModelDTO model
     ) {
-        Optional<FontEntity> modelOptional = fontRepository.findById(model.getId());
-        if (modelOptional.isEmpty()) {
-            return HttpResponse.notFound(new FontModelErrorDTO("Font not found"));
+        FontModelResponseDTO result = fontService.updateFont(model);
+        if (result instanceof FontModelResponseDTO.FontModelErrorDTO) {
+            return HttpResponse.notFound(result);
         }
-        var updatedFontModel = fontRepository.update(model.toFontModel());
-        return HttpResponse.ok(FontModelResponseDTO.FontModelDTO.createDTOWithChars(updatedFontModel));
+        return HttpResponse.ok(result);
     }
 }

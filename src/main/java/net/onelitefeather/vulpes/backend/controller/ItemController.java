@@ -18,9 +18,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import net.onelitefeather.vulpes.api.model.ItemEntity;
-import net.onelitefeather.vulpes.api.repository.ItemRepository;
 import net.onelitefeather.vulpes.backend.domain.item.ItemModelDTO;
 import net.onelitefeather.vulpes.backend.domain.item.ItemModelResponseDTO;
+import net.onelitefeather.vulpes.backend.service.ItemService;
 
 import java.util.List;
 import java.util.Map;
@@ -38,11 +38,11 @@ import static net.onelitefeather.vulpes.backend.domain.item.ItemModelResponseDTO
 @Controller("/item")
 public class ItemController {
 
-    private final ItemRepository itemRepository;
+    private final ItemService itemService;
 
     @Inject
-    public ItemController(ItemRepository itemRepository) {
-        this.itemRepository = itemRepository;
+    public ItemController(ItemService itemService) {
+        this.itemService = itemService;
     }
 
     @Operation(
@@ -71,9 +71,8 @@ public class ItemController {
     public HttpResponse<ItemModelResponseDTO> add(
            @Valid @Body ItemModelDTO itemModelDto
     ) {
-        ItemEntity itemModel = itemModelDto.toItemEntity();
-        itemModel = itemRepository.save(itemModel);
-        return HttpResponse.ok(ItemModelResponseDTO.ItemModelDTO.createDTO(itemModel));
+        ItemModelResponseDTO.ItemModelDTO result = itemService.createItem(itemModelDto);
+        return HttpResponse.ok(result);
     }
 
     @Operation(
@@ -102,7 +101,7 @@ public class ItemController {
     public HttpResponse<ItemModelResponseDTO> getById(
             @Valid @PathVariable UUID id
     ) {
-        Optional<ItemEntity> model = itemRepository.findById(id);
+        Optional<ItemEntity> model = itemService.findItemById(id);
         if (model.isPresent()) {
             var itemModel = model.get();
             return HttpResponse.ok(ItemModelResponseDTO.ItemModelDTO.createDTO(itemModel));
@@ -134,12 +133,11 @@ public class ItemController {
     @Delete("/remove/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public HttpResponse<ItemModelResponseDTO> remove(@PathVariable UUID id) {
-        Optional<ItemEntity> model = itemRepository.findById(id);
-        if (model.isPresent()) {
-            itemRepository.deleteById(id);
-            return HttpResponse.ok(model.map(ItemModelResponseDTO.ItemModelDTO::createDTO).get());
+        ItemModelResponseDTO result = itemService.deleteItem(id);
+        if (result instanceof ItemModelResponseDTO.ItemModelErrorDTO) {
+            return HttpResponse.notFound(result);
         }
-        return HttpResponse.notFound(new ItemModelErrorDTO("Item not found"));
+        return HttpResponse.ok(result);
     }
 
     @Operation(
@@ -166,7 +164,7 @@ public class ItemController {
     @Get("/enchantments/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public HttpResponse<ItemModelResponseDTO> getEnchantmentsById(@PathVariable UUID id) {
-        Map<String, Short> enchantments = itemRepository.findEnchantmentsById(id);
+        Map<String, Short> enchantments = itemService.findEnchantmentsById(id);
         if (enchantments.isEmpty()) {
             return HttpResponse.notFound(new ItemModelErrorDTO("Item not found or has no enchantments"));
         }
@@ -197,7 +195,7 @@ public class ItemController {
     @Get("/flags/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public HttpResponse<ItemModelResponseDTO> getFlagsById(@PathVariable UUID id) {
-        List<String> flags = itemRepository.findFlagsById(id);
+        List<String> flags = itemService.findFlagsById(id);
         if (flags.isEmpty()) {
             return HttpResponse.notFound(new ItemModelErrorDTO("Item not found or has no flags"));
         }
@@ -228,7 +226,7 @@ public class ItemController {
     @Get("/lore/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public HttpResponse<ItemModelResponseDTO> getLoreById(@PathVariable UUID id) {
-        List<String> lore = itemRepository.findLoreById(id);
+        List<String> lore = itemService.findLoreById(id);
         if (lore.isEmpty()) {
             return HttpResponse.notFound(new ItemModelErrorDTO("Item not found or has no lore"));
         }
@@ -251,8 +249,8 @@ public class ItemController {
     )
     @Get(uris = {"/getAll", "/all"})
     @Produces(MediaType.APPLICATION_JSON)
-    public HttpResponse<Page<ItemModelResponseDTO>> getAll(Pageable pageable) {
-        Page<ItemModelResponseDTO> list = itemRepository.findAll(pageable).map(ItemModelResponseDTO.ItemModelDTO::createDTO);
+    public HttpResponse<Page<ItemModelResponseDTO.ItemModelDTO>> getAll(Pageable pageable) {
+        Page<ItemModelResponseDTO.ItemModelDTO> list = itemService.getAllItems(pageable);
         return HttpResponse.ok(list);
     }
 
@@ -272,8 +270,8 @@ public class ItemController {
     @Delete("/deleteAll")
     @Produces(MediaType.APPLICATION_JSON)
     public HttpResponse<List<ItemModelResponseDTO>> deleteAll() {
-        itemRepository.deleteAll();
-        return HttpResponse.ok(List.of());
+        List<ItemModelResponseDTO> result = itemService.deleteAllItems();
+        return HttpResponse.ok(result);
     }
 
     @Operation(
@@ -302,11 +300,10 @@ public class ItemController {
     public HttpResponse<ItemModelResponseDTO> update(
             @Valid @Body ItemModelDTO model
     ) {
-        Optional<ItemEntity> existingItem = itemRepository.findById(model.getId());
-        if (existingItem.isEmpty()) {
-            return HttpResponse.notFound(new ItemModelErrorDTO("Item not found"));
+        ItemModelResponseDTO result = itemService.updateItem(model);
+        if (result instanceof ItemModelResponseDTO.ItemModelErrorDTO) {
+            return HttpResponse.notFound(result);
         }
-        ItemEntity updatedItemModel = itemRepository.update(model.toItemEntity());
-        return HttpResponse.ok(ItemModelResponseDTO.ItemModelDTO.createDTO(updatedItemModel));
+        return HttpResponse.ok(result);
     }
 }
