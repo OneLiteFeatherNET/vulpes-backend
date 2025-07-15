@@ -15,16 +15,12 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
-import net.onelitefeather.vulpes.api.model.sound.SoundEventEntity;
-import net.onelitefeather.vulpes.api.repository.SoundRepository;
 import net.onelitefeather.vulpes.backend.domain.sound.SoundEventDTO;
 import net.onelitefeather.vulpes.backend.domain.sound.SoundResponseDTO;
+import net.onelitefeather.vulpes.backend.service.SoundService;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import static net.onelitefeather.vulpes.backend.domain.sound.SoundResponseDTO.*;
 
@@ -39,16 +35,16 @@ import static net.onelitefeather.vulpes.backend.domain.sound.SoundResponseDTO.*;
 public class SoundController {
 
     private static final String GENERIC_ERROR = "Sound event not found";
-    private final SoundRepository soundRepository;
+    private final SoundService soundService;
 
     /**
-     * Constructs a new {@link SoundController} with the specified {@link SoundRepository}.
+     * Constructs a new {@link SoundController} with the specified {@link SoundService}.
      *
-     * @param soundRepository the repository to manage sound events
+     * @param soundService the service to manage sound events
      */
     @Inject
-    public SoundController(SoundRepository soundRepository) {
-        this.soundRepository = soundRepository;
+    public SoundController(SoundService soundService) {
+        this.soundService = soundService;
     }
 
     @Operation(
@@ -69,9 +65,8 @@ public class SoundController {
     public HttpResponse<SoundResponseDTO> add(
             @Body @Valid SoundEventDTO dtoModel
     ) {
-        SoundEventEntity event = dtoModel.toEntity();
-        event = soundRepository.save(event);
-        return HttpResponse.ok(SoundModelDTO.createDTO(event));
+        SoundModelDTO result = soundService.createSoundEvent(dtoModel);
+        return HttpResponse.ok(result);
     }
 
     @Operation(
@@ -98,9 +93,9 @@ public class SoundController {
     @Get("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public HttpResponse<SoundResponseDTO> getById(@PathVariable UUID id) {
-        Optional<SoundEventEntity> model = soundRepository.findById(id);
-        if (model.isPresent()) {
-            return HttpResponse.ok(SoundModelDTO.createDTO(model.get()));
+        var soundEvent = soundService.findSoundEventById(id);
+        if (soundEvent.isPresent()) {
+            return HttpResponse.ok(SoundModelDTO.createDTO(soundEvent.get()));
         }
         return HttpResponse.notFound(new SoundErrorDTO(GENERIC_ERROR));
     }
@@ -129,12 +124,11 @@ public class SoundController {
     @Delete("/remove/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public HttpResponse<SoundResponseDTO> remove(@PathVariable UUID id) {
-        Optional<SoundEventEntity> model = soundRepository.findById(id);
-        if (model.isPresent()) {
-            soundRepository.deleteById(id);
-            return HttpResponse.ok(SoundModelDTO.createDTO(model.get()));
+        SoundResponseDTO result = soundService.deleteSoundEvent(id);
+        if (result instanceof SoundErrorDTO) {
+            return HttpResponse.notFound(result);
         }
-        return HttpResponse.notFound(new SoundErrorDTO(GENERIC_ERROR));
+        return HttpResponse.ok(result);
     }
 
     @Operation(
@@ -161,16 +155,8 @@ public class SoundController {
     @Get("/getAll")
     @Produces(MediaType.APPLICATION_JSON)
     public HttpResponse<List<SoundResponseDTO>> getAll() {
-        List<SoundEventEntity> list = soundRepository.findAll();
-
-        if (list.isEmpty()) {
-            return HttpResponse.ok(Collections.emptyList());
-        }
-
-        List<SoundResponseDTO> mapped = list.stream()
-                .map(SoundModelDTO::createDTO)
-                .collect(Collectors.toList());
-        return HttpResponse.ok(mapped);
+        List<SoundResponseDTO> results = soundService.getAllSoundEvents();
+        return HttpResponse.ok(results);
     }
 
     @Operation(
@@ -189,10 +175,9 @@ public class SoundController {
     @Delete("/deleteAll")
     @Produces(MediaType.APPLICATION_JSON)
     public HttpResponse<List<SoundResponseDTO>> deleteAll() {
-        soundRepository.deleteAll();
-        return HttpResponse.ok(List.of());
+        List<SoundResponseDTO> results = soundService.deleteAllSoundEvents();
+        return HttpResponse.ok(results);
     }
-
 
     @Operation(
             summary = "Update a sound event",
@@ -218,13 +203,11 @@ public class SoundController {
     @Post("/update")
     @Produces(MediaType.APPLICATION_JSON)
     public HttpResponse<SoundResponseDTO> update(@Body @Valid SoundEventDTO model) {
-        Optional<SoundEventEntity> existingModel = soundRepository.findById(model.getId());
-        if (existingModel.isEmpty()) {
-            return HttpResponse.notFound(new SoundErrorDTO(GENERIC_ERROR));
+        SoundResponseDTO result = soundService.updateSoundEvent(model);
+        if (result instanceof SoundErrorDTO) {
+            return HttpResponse.notFound(result);
         }
-        SoundEventEntity soundModel = model.toEntity();
-        soundModel = soundRepository.update(soundModel);
-        return HttpResponse.ok(SoundModelDTO.createDTO(soundModel));
+        return HttpResponse.ok(result);
     }
 
     @Operation(
@@ -235,6 +218,7 @@ public class SoundController {
     @Get("{id}/sources")
     @Produces(MediaType.APPLICATION_JSON)
     public HttpResponse<SoundResponseDTO> get(@Valid @PathVariable UUID id) {
-        return HttpResponse.ok();
+        SoundResponseDTO result = soundService.getSoundSourcesById(id);
+        return HttpResponse.ok(result);
     }
 }
