@@ -55,7 +55,7 @@ dependencies {
 
 
 application {
-    mainClass.set("net.onelitefeather.vulpes.VulpesBackend")
+    mainClass.set("net.onelitefeather.vulpes.backend.VulpesBackend")
 }
 
 graalvmNative.toolchainDetection = false
