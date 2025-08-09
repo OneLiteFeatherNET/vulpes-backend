@@ -21,7 +21,7 @@ public interface AttributeModelResponseDTO {
      * @param maximumValue the maximum value of the attribute
      */
     @Schema(
-            name = "ResponseAttributeModelDTO",
+            name = "AttributeModelDTO",
             description = "Attribute Model Data"
     )
     @Serdeable

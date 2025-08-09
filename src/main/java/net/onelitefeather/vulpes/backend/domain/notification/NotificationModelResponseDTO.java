@@ -23,7 +23,7 @@ public sealed interface NotificationModelResponseDTO {
      * @param title         the title of the notification
      */
     @Schema(
-            name = "ResponseNotificationModelDTO",
+            name = "NotificationModelDTO",
             description = "Notification Model Data"
     )
     @Serdeable
@@ -61,10 +61,7 @@ public sealed interface NotificationModelResponseDTO {
      *
      * @param errorMessage the error message describing the issue
      */
-    @Schema(
-            name = "NotificationModelErrorDTO",
-            description = "Error message for Notification Model"
-    )
+    @Schema(description = "Error message for Notification Model")
     @Serdeable
     record NotificationModelErrorDTO(
             @Schema(description = "Error message") String errorMessage
