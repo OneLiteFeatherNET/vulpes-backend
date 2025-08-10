@@ -85,7 +85,7 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: |
-            ${{ secrets.HARBOR_REGISTRY }}/otis/otis
+            ${{ secrets.HARBOR_REGISTRY }}/vulpes/vulpes-backend
           tags: |
             type=semver,pattern={{version}},value=${{ needs.release.outputs.release_version }}
             type=semver,pattern={{major}}.{{minor}},value=${{ needs.release.outputs.release_version }}
