@@ -37,6 +37,7 @@ dependencies {
     implementation(mn.swagger.core)
     // External Dependencies
     implementation(mn.mariadb.java.client)
+    implementation(mn.postgresql)
     implementation(mn.snakeyaml)
     implementation(mn.log4j)
     implementation(mn.slf4j.api)
