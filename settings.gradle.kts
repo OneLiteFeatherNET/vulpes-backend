@@ -33,7 +33,7 @@ dependencyResolutionManagement {
     versionCatalogs {
         create("libs") {
             version("micronaut", "4.5.4")
-            version("vulpes.model", "1.5.1")
+            version("vulpes.model", "1.5.1-beta.1")
             version("uuid.creator", "6.1.1")
 
             library("uuid.creator", "com.github.f4b6a3", "uuid-creator").versionRef("uuid.creator")
