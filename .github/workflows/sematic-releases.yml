@@ -80,6 +80,13 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
       - name: Build Docker Artifacts
         run: ./gradlew jar optimizedBuildLayers optimizedDockerfile -Pversion=${{ needs.release.outputs.release_version }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          ONELITEFEATHER_MAVEN_USERNAME: ${{ secrets.ONELITEFEATHER_MAVEN_USERNAME }}
+          ONELITEFEATHER_MAVEN_PASSWORD: ${{ secrets.ONELITEFEATHER_MAVEN_PASSWORD }}
+          # Token with permissions to push to the client repository
+          CLIENT_REPO_TOKEN: ${{ secrets.CLIENT_REPO_TOKEN }}
       - name: Docker meta
         id: meta
         uses: docker/metadata-action@v5
