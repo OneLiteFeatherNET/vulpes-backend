@@ -3,7 +3,7 @@ package net.onelitefeather.vulpes.backend.domain.sound;
 import io.micronaut.core.annotation.Introspected;
 import io.micronaut.serde.annotation.Serdeable;
 import io.swagger.v3.oas.annotations.media.Schema;
-import net.onelitefeather.vulpes.api.model.sound.SoundFileSource;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.util.UUID;
 
@@ -71,9 +71,5 @@ public final class SoundFileSourceDTO {
 
     public UUID getId() {
         return id;
-    }
-
-    public SoundFileSource toEntity() {
-        return new SoundFileSource(id, name, volume, pitch, weight, stream, attenuationDistance, preload, type);
     }
 }

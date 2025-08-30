@@ -1,5 +1,7 @@
 package net.onelitefeather.vulpes.backend.controller;
 
+import io.micronaut.data.model.Page;
+import io.micronaut.data.model.Pageable;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Body;
@@ -15,6 +17,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
+import net.onelitefeather.vulpes.backend.domain.notification.NotificationModelResponseDTO;
 import net.onelitefeather.vulpes.backend.domain.sound.SoundEventDTO;
 import net.onelitefeather.vulpes.backend.domain.sound.SoundResponseDTO;
 import net.onelitefeather.vulpes.backend.service.SoundService;
@@ -224,8 +227,10 @@ public class SoundController {
     )
     @Get("{id}/sources")
     @Produces(MediaType.APPLICATION_JSON)
-    public HttpResponse<SoundResponseDTO> get(@Valid @PathVariable UUID id) {
-        SoundResponseDTO result = soundService.getSoundSourcesById(id);
+    public HttpResponse<Page<SoundResponseDTO.SoundFileSourceDTO>> get(@Valid @PathVariable UUID id, Pageable pageable) {
+        Page<SoundResponseDTO.SoundFileSourceDTO> result = soundService.getSoundSourcesById(id, pageable);
         return HttpResponse.ok(result);
     }
+
+
 }
