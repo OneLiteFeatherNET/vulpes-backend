@@ -71,7 +71,7 @@ class SoundControllerIntegrationTest implements io.micronaut.test.support.TestPr
 
     @Test
     void testPostSound_returnsOk() {
-        SoundEventDTO dto = sampleEventDTO(UUID.randomUUID());
+        SoundEventDTO dto = sampleEventDTOWithoutId();
 
         var response =
                 given()
