@@ -54,7 +54,10 @@ dependencies {
     testRuntimeOnly(mn.junit.jupiter.engine)
     testImplementation(mn.testcontainers.core)
     testImplementation(mn.testcontainers.mariadb)
+    testImplementation("org.testcontainers:junit-jupiter")
     testImplementation(mn.micronaut.test.rest.assured)
+    // Faker library for JUnit tests
+    testImplementation("net.datafaker:datafaker:2.4.2")
 }
 
 
