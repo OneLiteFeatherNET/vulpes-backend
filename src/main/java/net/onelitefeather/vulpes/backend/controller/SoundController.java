@@ -62,12 +62,23 @@ public class SoundController {
                     schema = @Schema(implementation = SoundResponseDTO.SoundModelDTO.class)
             )
     )
+    @ApiResponse(
+            responseCode = "500",
+            description = "The sound event could not be added to the database.",
+            content = @Content(
+                    mediaType = MediaType.APPLICATION_JSON,
+                    schema = @Schema(implementation = SoundResponseDTO.SoundErrorDTO.class)
+            )
+    )
     @Post
     @Produces(MediaType.APPLICATION_JSON)
     public HttpResponse<SoundResponseDTO> add(
             @Body @Valid SoundEventDTO dtoModel
     ) {
         SoundResponseDTO result = soundService.createSoundEvent(dtoModel);
+        if (result instanceof SoundResponseDTO.SoundErrorDTO) {
+            return HttpResponse.badRequest(result);
+        }
         return HttpResponse.ok(result);
     }
 
