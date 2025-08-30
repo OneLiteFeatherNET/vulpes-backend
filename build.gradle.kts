@@ -165,10 +165,11 @@ openApiGenerate {
         "pubName" to "vulpes_backend_client",
         "pubVersion" to (project.version as String),
         "pubDescription" to "Vulpes Backend API Client",
-        "pubAuthor" to "OneLiteFeather",
+        "pubAuthor" to "OneLiteFeatherNET",
         "pubAuthorEmail" to "p.glanz@madfix.me",
         "pubHomepage" to "https://github.com/OneLiteFeatherNET/vulpes-backend-client-dart",
         "pubRepository" to "https://github.com/OneLiteFeatherNET/vulpes-backend-client-dart",
+        "pubPublishTo" to "https://github.com/OneLiteFeatherNET/vulpes-backend-client-dart",
         "dateLibrary" to "core",
         "enumUnknownDefaultCase" to "true"
     ))
