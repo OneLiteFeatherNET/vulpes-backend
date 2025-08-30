@@ -1,5 +1,7 @@
 package net.onelitefeather.vulpes.backend.service;
 
+import io.micronaut.data.model.Page;
+import io.micronaut.data.model.Pageable;
 import net.onelitefeather.vulpes.api.model.sound.SoundEventEntity;
 import net.onelitefeather.vulpes.backend.domain.sound.SoundEventDTO;
 import net.onelitefeather.vulpes.backend.domain.sound.SoundResponseDTO;
@@ -65,5 +67,5 @@ public interface SoundService {
      * @param id the ID of the sound event
      * @return the sound event response with sources
      */
-    SoundResponseDTO getSoundSourcesById(UUID id);
+    Page<SoundResponseDTO.SoundFileSourceDTO> getSoundSourcesById(UUID id, Pageable pageable);
 }

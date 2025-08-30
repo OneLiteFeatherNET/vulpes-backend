@@ -3,6 +3,7 @@ package net.onelitefeather.vulpes.backend.domain.sound;
 import io.micronaut.serde.annotation.Serdeable;
 import io.swagger.v3.oas.annotations.media.Schema;
 import net.onelitefeather.vulpes.api.model.sound.SoundEventEntity;
+import net.onelitefeather.vulpes.api.model.sound.SoundFileSource;
 import net.onelitefeather.vulpes.backend.domain.error.ErrorResponse;
 
 import java.util.UUID;
@@ -10,6 +11,37 @@ import java.util.UUID;
 @Schema(description = "Response DTO for Sound model")
 @Serdeable
 public interface SoundResponseDTO {
+
+    @Schema(
+            name = "ResponseSoundModelDTO",
+            description = "Data transfer object for Sound models"
+    )
+    @Serdeable
+    record SoundFileSourceDTO(
+            @Schema(description = "Id of the File Source") UUID id,
+            @Schema(description = "Name to display it in the ui") String name,
+            @Schema(description = "Volume") float volume,
+            @Schema(description = "Pitch") float pitch,
+            @Schema(description = "Weight") int weight,
+            @Schema(description = "Stream") boolean stream,
+            @Schema(description = "AttenuationDistance") int attenuationDistance,
+            @Schema(description = "preload") boolean preload,
+            @Schema(description = "type") String type
+    ) implements SoundResponseDTO {
+        public static SoundFileSourceDTO createDTO(SoundFileSource source) {
+            return new SoundFileSourceDTO(
+                    source.getId(),
+                    source.getName(),
+                    source.getVolume(),
+                    source.getPitch(),
+                    source.getWeight(),
+                    source.isStreamable(),
+                    source.getAttenuationDistance(),
+                    source.isStreamable(),
+                    source.getType()
+            );
+        }
+    }
 
     /**
      * The {@link SoundModelDTO} is used to represent a sound model in the system.

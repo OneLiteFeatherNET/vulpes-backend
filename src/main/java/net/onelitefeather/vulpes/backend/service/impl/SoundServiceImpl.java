@@ -1,8 +1,11 @@
 package net.onelitefeather.vulpes.backend.service.impl;
 
+import io.micronaut.data.model.Page;
+import io.micronaut.data.model.Pageable;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import net.onelitefeather.vulpes.api.model.sound.SoundEventEntity;
+import net.onelitefeather.vulpes.api.repository.SoundFileSourceRepository;
 import net.onelitefeather.vulpes.api.repository.SoundRepository;
 import net.onelitefeather.vulpes.backend.domain.sound.SoundEventDTO;
 import net.onelitefeather.vulpes.backend.domain.sound.SoundResponseDTO;
@@ -24,15 +27,18 @@ public class SoundServiceImpl implements SoundService {
 
     private static final String GENERIC_ERROR = "Sound event not found";
     private final SoundRepository soundRepository;
+    private final SoundFileSourceRepository soundFileSourceRepository;
 
     /**
      * Constructs a new SoundServiceImpl with the specified SoundRepository.
      *
      * @param soundRepository the repository to manage sound events
+     * @param soundFileSourceRepository the repository to manage sound file sources
      */
     @Inject
-    public SoundServiceImpl(SoundRepository soundRepository) {
+    public SoundServiceImpl(SoundRepository soundRepository, SoundFileSourceRepository soundFileSourceRepository) {
         this.soundRepository = soundRepository;
+        this.soundFileSourceRepository = soundFileSourceRepository;
     }
 
     @Override
@@ -88,9 +94,9 @@ public class SoundServiceImpl implements SoundService {
     }
 
     @Override
-    public SoundResponseDTO getSoundSourcesById(UUID id) {
-        // This method is not fully implemented in the controller
-        // Implement according to requirements
+    public Page<SoundFileSourceDTO> getSoundSourcesById(UUID id, Pageable pageable) {
+        // notificationRepository.findAll(pageable).map(NotificationModelResponseDTO.NotificationModelDTO::createDTO);
+        // this.soundFileSourceRepository.findSoundFileSourcesBySoundEvent()
         return null;
     }
 }
