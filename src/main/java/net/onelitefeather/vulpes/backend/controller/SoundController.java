@@ -12,11 +12,13 @@ import io.micronaut.http.annotation.PathVariable;
 import io.micronaut.http.annotation.Post;
 import io.micronaut.http.annotation.Produces;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
+import net.onelitefeather.vulpes.backend.domain.notification.NotificationModelResponseDTO;
 import net.onelitefeather.vulpes.backend.domain.sound.SoundEventDTO;
 import net.onelitefeather.vulpes.backend.domain.sound.SoundFileSourceDTO;
 import net.onelitefeather.vulpes.backend.domain.sound.SoundResponseDTO;
@@ -157,7 +159,10 @@ public class SoundController {
             description = "The sound events were successfully retrieved from the database.",
             content = @Content(
                     mediaType = MediaType.APPLICATION_JSON,
-                    schema = @Schema(implementation = SoundResponseDTO.SoundModelDTO.class)
+                    array = @ArraySchema(
+                            schema = @Schema(implementation = SoundResponseDTO.class),
+                            arraySchema = @Schema(implementation = Page.class)
+                    )
             )
     )
     @ApiResponse(

@@ -12,6 +12,7 @@ import io.micronaut.http.annotation.PathVariable;
 import io.micronaut.http.annotation.Post;
 import io.micronaut.http.annotation.Produces;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -165,7 +166,10 @@ public class AttributeController {
             description = "The attributes were successfully retrieved.",
             content = @Content(
                     mediaType = "application/json",
-                    schema = @Schema(implementation = AttributeModelResponseDTO.AttributeModelDTO.class)
+                    array = @ArraySchema(
+                            schema = @Schema(implementation = AttributeModelResponseDTO.AttributeModelDTO.class),
+                            arraySchema = @Schema(implementation = Page.class)
+                    )
             )
     )
     @Produces(MediaType.APPLICATION_JSON)
