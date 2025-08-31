@@ -6,12 +6,14 @@ import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import jakarta.inject.Inject;
 import net.onelitefeather.vulpes.api.model.NotificationEntity;
+import net.onelitefeather.vulpes.backend.domain.item.ItemModelResponseDTO;
 import net.onelitefeather.vulpes.backend.domain.notification.NotificationModelDTO;
 import net.onelitefeather.vulpes.backend.domain.notification.NotificationModelResponseDTO;
 import net.onelitefeather.vulpes.backend.service.NotificationService;
@@ -168,7 +170,10 @@ public class NotificationController {
             description = "The notifications were successfully retrieved from the database.",
             content = @Content(
                     mediaType = MediaType.APPLICATION_JSON,
-                    schema = @Schema(implementation = NotificationModelResponseDTO.NotificationModelDTO.class)
+                    array = @ArraySchema(
+                            schema = @Schema(implementation = NotificationModelResponseDTO.NotificationModelDTO.class),
+                            arraySchema = @Schema(implementation = Page.class)
+                    )
             )
     )
     @ApiResponse(

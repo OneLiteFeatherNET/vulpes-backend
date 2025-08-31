@@ -12,12 +12,14 @@ import io.micronaut.http.annotation.PathVariable;
 import io.micronaut.http.annotation.Post;
 import io.micronaut.http.annotation.Produces;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import net.onelitefeather.vulpes.api.model.ItemEntity;
+import net.onelitefeather.vulpes.backend.domain.font.FontModelResponseDTO;
 import net.onelitefeather.vulpes.backend.domain.item.ItemModelDTO;
 import net.onelitefeather.vulpes.backend.domain.item.ItemModelResponseDTO;
 import net.onelitefeather.vulpes.backend.service.ItemService;
@@ -248,7 +250,10 @@ public class ItemController {
             description = "All items were successfully retrieved from the database.",
             content = @Content(
                     mediaType = MediaType.APPLICATION_JSON,
-                    schema = @Schema(implementation = ItemModelResponseDTO.ItemModelDTO.class)
+                    array = @ArraySchema(
+                            schema = @Schema(implementation = ItemModelResponseDTO.ItemModelDTO.class),
+                            arraySchema = @Schema(implementation = Page.class)
+                    )
             )
     )
     @Get(uris = {"/all"})

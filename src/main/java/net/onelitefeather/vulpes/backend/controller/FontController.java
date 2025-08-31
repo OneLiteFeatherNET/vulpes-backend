@@ -12,12 +12,14 @@ import io.micronaut.http.annotation.PathVariable;
 import io.micronaut.http.annotation.Post;
 import io.micronaut.http.annotation.Produces;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import net.onelitefeather.vulpes.api.model.FontEntity;
+import net.onelitefeather.vulpes.backend.domain.attribute.AttributeModelResponseDTO;
 import net.onelitefeather.vulpes.backend.domain.font.FontModelDTO;
 import net.onelitefeather.vulpes.backend.domain.font.FontModelResponseDTO;
 import net.onelitefeather.vulpes.backend.service.FontService;
@@ -181,7 +183,10 @@ public class FontController {
             description = "The fonts were successfully retrieved from the database.",
             content = @Content(
                     mediaType = MediaType.APPLICATION_JSON,
-                    schema = @Schema(implementation = FontModelResponseDTO.FontModelDTO.class)
+                    array = @ArraySchema(
+                            schema = @Schema(implementation = FontModelResponseDTO.FontModelDTO.class),
+                            arraySchema = @Schema(implementation = Page.class)
+                    )
             )
     )
     @Get(uris = {"/all"})
