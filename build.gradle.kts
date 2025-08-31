@@ -104,7 +104,7 @@ tasks {
     this.openApiGenerate {
         dependsOn("compileJava")
     }
-    register("pushDartClient", Exec::class) {
+    register("pushDartClient") {
         dependsOn("openApiGenerate")
         val clientDir = file("$projectDir/build/generated/dart-client")
         val version = project.version as String
@@ -115,19 +115,36 @@ tasks {
         // Create a temporary directory for the Git repository
         val tempDir = file("$projectDir/build/temp/vulpes-client")
         tempDir.mkdirs()
-        workingDir = tempDir
-        commandLine("git", "clone", "https://${githubToken}@github.com/OneLiteFeatherNET/vulpes-backend-client-dart.git", ".")
+        providers.exec {
+            workingDir = tempDir
+            commandLine("git", "clone", "https://${githubToken}@github.com/OneLiteFeatherNET/vulpes-backend-client-dart.git", ".")
+        }.result?.get()
 
         // Copy the generated client to the repository
         copy {
             from(clientDir)
             into(tempDir)
         }
-        commandLine("git", "add", ".")
-        commandLine("git", "commit", "-m", "Update client to version $version")
-        commandLine("git", "tag", "-a", "v$version", "-m", "Version $version")
-        commandLine("git", "push", "origin", "main", "--force")
-        commandLine("git", "push", "origin", "main", "--tags")
+
+        providers.exec {
+            workingDir = tempDir
+            commandLine("git", "add", ".")
+        }.result?.get()
+
+        providers.exec {
+            workingDir = tempDir
+            commandLine("git", "commit", "-m", "Update client to version $version")
+        }.result?.get()
+
+        providers.exec {
+            workingDir = tempDir
+            commandLine("git", "tag", "-a", "v$version", "-m", "Version $version")
+        }.result?.get()
+
+        providers.exec {
+            workingDir = tempDir
+            commandLine("git", "push", "origin", "--tags")
+        }.result?.get()
     }
     named("publish") {
         dependsOn("pushDartClient")
