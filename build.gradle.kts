@@ -144,6 +144,11 @@ tasks {
 
            providers.exec {
                workingDir = tempDir
+               commandLine("git", "push", "origin")
+           }.result?.get()
+
+           providers.exec {
+               workingDir = tempDir
                commandLine("git", "push", "origin", "--tags")
            }.result?.get()
        }
