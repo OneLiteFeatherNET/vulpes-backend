@@ -72,7 +72,7 @@ class SoundControllerIntegrationTest {
             System.out.println("[DEBUG_LOG] Response status: " + response.statusCode());
             System.out.println("[DEBUG_LOG] Response body: " + response.asString());
         }
-        org.junit.jupiter.api.Assertions.assertEquals(200, response.statusCode());
+        assertEquals(200, response.statusCode());
         SoundResponseDTO.SoundModelDTO resp = response.as(SoundResponseDTO.SoundModelDTO.class);
         assertNotNull(resp);
         assertNotNull(resp.id());
