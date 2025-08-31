@@ -2,7 +2,6 @@ package net.onelitefeather.vulpes.backend.controller;
 
 import io.micronaut.runtime.server.EmbeddedServer;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
-import io.micronaut.test.extensions.testresources.annotation.TestResourcesProperties;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import jakarta.inject.Inject;
