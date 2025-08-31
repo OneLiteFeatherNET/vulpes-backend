@@ -126,6 +126,7 @@ tasks {
         commandLine("git", "add", ".")
         commandLine("git", "commit", "-m", "Update client to version $version")
         commandLine("git", "tag", "-a", "v$version", "-m", "Version $version")
+        commandLine("git", "push", "origin", "main", "--force")
         commandLine("git", "push", "origin", "main", "--tags")
     }
     named("publish") {
