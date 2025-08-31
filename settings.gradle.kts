@@ -42,6 +42,7 @@ dependencyResolutionManagement {
 
             plugin("micronaut.application", "io.micronaut.application").versionRef("micronaut")
             plugin("micronaut.aot", "io.micronaut.aot").versionRef("micronaut")
+            plugin("micronaut.test-resources", "io.micronaut.test-resources").versionRef("micronaut")
         }
     }
 }

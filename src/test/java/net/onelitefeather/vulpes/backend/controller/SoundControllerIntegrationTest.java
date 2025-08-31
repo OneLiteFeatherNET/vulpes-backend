@@ -2,46 +2,33 @@ package net.onelitefeather.vulpes.backend.controller;
 
 import io.micronaut.runtime.server.EmbeddedServer;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
-import jakarta.inject.Inject;
-import org.junit.jupiter.api.*;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
-import org.testcontainers.containers.MariaDBContainer;
+import io.micronaut.test.extensions.testresources.annotation.TestResourcesProperties;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
+import jakarta.inject.Inject;
 import net.datafaker.Faker;
 import net.onelitefeather.vulpes.backend.domain.sound.SoundEventDTO;
 import net.onelitefeather.vulpes.backend.domain.sound.SoundFileSourceDTO;
 import net.onelitefeather.vulpes.backend.domain.sound.SoundResponseDTO;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.UUID;
 
 import static io.restassured.RestAssured.given;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @MicronautTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @Testcontainers
 @DisplayName("Integration tests for SoundController endpoints with Testcontainers")
-class SoundControllerIntegrationTest implements io.micronaut.test.support.TestPropertyProvider {
-
-    @Container
-    static final MariaDBContainer<?> mariadb = new MariaDBContainer<>("mariadb:11.4")
-            .withDatabaseName("vulpes")
-            .withUsername("root")
-            .withPassword("vulpes");
-
-    @Override
-    public java.util.Map<String, String> getProperties() {
-        mariadb.start();
-        return java.util.Map.of(
-                "datasources.default.url", mariadb.getJdbcUrl(),
-                "datasources.default.username", mariadb.getUsername(),
-                "datasources.default.password", mariadb.getPassword(),
-                "datasources.default.driverClassName", "org.mariadb.jdbc.Driver",
-                "jpa.default.properties.hibernate.hbm2ddl.auto", "update"
-        );
-    }
+class SoundControllerIntegrationTest {
 
     @Inject
     EmbeddedServer server;
