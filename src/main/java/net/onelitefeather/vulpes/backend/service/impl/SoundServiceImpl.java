@@ -8,6 +8,7 @@ import jakarta.transaction.Transactional;
 import net.onelitefeather.vulpes.api.model.sound.SoundEventEntity;
 import net.onelitefeather.vulpes.api.repository.SoundFileSourceRepository;
 import net.onelitefeather.vulpes.api.repository.SoundRepository;
+import net.onelitefeather.vulpes.backend.domain.notification.NotificationModelResponseDTO;
 import net.onelitefeather.vulpes.backend.domain.sound.SoundEventDTO;
 import net.onelitefeather.vulpes.backend.domain.sound.SoundFileSourceDTO;
 import net.onelitefeather.vulpes.backend.domain.sound.SoundResponseDTO;
@@ -81,16 +82,8 @@ public class SoundServiceImpl implements SoundService {
     }
 
     @Override
-    public List<SoundResponseDTO> getAllSoundEvents() {
-        List<SoundEventEntity> list = soundRepository.findAll();
-
-        if (list.isEmpty()) {
-            return Collections.emptyList();
-        }
-
-        return list.stream()
-                .map(SoundResponseDTO.SoundModelDTO::createDTO)
-                .collect(Collectors.toList());
+    public Page<SoundResponseDTO.SoundModelDTO> getAllSoundEvents(Pageable pageable) {
+        return soundRepository.findAll(pageable).map(SoundResponseDTO.SoundModelDTO::createDTO);
     }
 
     @Override

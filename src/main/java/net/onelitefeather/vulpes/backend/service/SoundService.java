@@ -53,7 +53,7 @@ public interface SoundService {
      *
      * @return a list of all sound events
      */
-    List<SoundResponseDTO> getAllSoundEvents();
+    Page<SoundResponseDTO.SoundModelDTO> getAllSoundEvents(Pageable pageable);
 
     /**
      * Finds a sound event by its ID.
