@@ -175,9 +175,9 @@ public class SoundController {
     )
     @Get("/all")
     @Produces(MediaType.APPLICATION_JSON)
-    public HttpResponse<List<SoundResponseDTO>> getAll() {
-        List<SoundResponseDTO> results = soundService.getAllSoundEvents();
-        return HttpResponse.ok(results);
+    public HttpResponse<Page<SoundResponseDTO.SoundModelDTO>> getAll(Pageable pageable) {
+        Page<SoundResponseDTO.SoundModelDTO> returnValues = soundService.getAllSoundEvents(pageable);
+        return HttpResponse.ok(returnValues);
     }
 
     @Operation(
