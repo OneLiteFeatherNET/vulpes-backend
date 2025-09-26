@@ -296,7 +296,7 @@ public class SoundController {
     @Post("{id}/sources")
     @Produces(MediaType.APPLICATION_JSON)
     public HttpResponse<SoundResponseDTO> createSource(
-            @Valid @PathVariable("id") UUID soundEventId,
+            @PathVariable("id") UUID soundEventId,
             @Body SoundFileSourceDTO sourceDTO
     ) {
         SoundResponseDTO result = soundService.createAndLinkSource(soundEventId, sourceDTO);
@@ -335,7 +335,7 @@ public class SoundController {
     @Post("{id}/sources/update")
     @Produces(MediaType.APPLICATION_JSON)
     public HttpResponse<SoundResponseDTO> updateSource(
-            @Valid @PathVariable("id") UUID soundEventId,
+            @PathVariable("id") UUID soundEventId,
             @Body SoundFileSourceDTO sourceDTO
     ) {
         SoundResponseDTO result = soundService.updateLinkedSource(soundEventId, sourceDTO);
@@ -375,7 +375,7 @@ public class SoundController {
     @Delete("{id}/sources/delete")
     @Produces(MediaType.APPLICATION_JSON)
     public HttpResponse<SoundResponseDTO> deleteSource(
-            @Valid @PathVariable("id") UUID soundEventId,
+            @PathVariable("id") UUID soundEventId,
             @Body SoundFileSourceDTO sourceDTO
     ) {
         SoundResponseDTO result = soundService.deleteLinkedSource(soundEventId, sourceDTO);
