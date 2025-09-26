@@ -259,7 +259,7 @@ public class SoundController {
     )
     @Get("{id}/sources")
     @Produces(MediaType.APPLICATION_JSON)
-    public HttpResponse<Page<SoundResponseDTO>> get(@Valid @PathVariable UUID id, Pageable pageable) {
+    public HttpResponse<Page<SoundResponseDTO>> get(@PathVariable UUID id, Pageable pageable) {
         Page<SoundResponseDTO> result = soundService.getSoundSourcesById(id, pageable);
         return HttpResponse.ok(result);
     }
