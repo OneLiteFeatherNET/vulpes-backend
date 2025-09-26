@@ -130,11 +130,15 @@ tasks {
            providers.exec {
                workingDir = tempDir
                commandLine("flutter", "pub", "get")
+               errorOutput = System.err
+               standardOutput = System.out
            }.result?.get()
 
            providers.exec {
                workingDir = tempDir
                commandLine("flutter", "pub", "run", "build_runner", "build", "--delete-conflicting-outputs")
+               errorOutput = System.err
+               standardOutput = System.out
            }.result?.get()
 
            providers.exec {
