@@ -27,6 +27,7 @@ class SoundControllerTest {
         SoundResponseDTO response;
         Optional<SoundEventEntity> findByIdResponse;
         Page<SoundResponseDTO> sourcesPage;
+        Page<SoundResponseDTO.SoundModelDTO> modelDtoPage;
         SoundResponseDTO.SoundFileSourceDTO sourceResponse;
 
         @Override
@@ -50,8 +51,8 @@ class SoundControllerTest {
         }
 
         @Override
-        public List<SoundResponseDTO> getAllSoundEvents() {
-            return List.of(response);
+        public Page<SoundResponseDTO.SoundModelDTO> getAllSoundEvents(Pageable pageable) {
+            return modelDtoPage;
         }
 
         @Override
