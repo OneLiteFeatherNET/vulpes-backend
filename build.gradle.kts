@@ -129,14 +129,14 @@ tasks {
 
            providers.exec {
                workingDir = tempDir
-               commandLine("flutter", "pub", "get")
+               commandLine("dart", "pub", "get")
                errorOutput = System.err
                standardOutput = System.out
            }.result?.get()
 
            providers.exec {
                workingDir = tempDir
-               commandLine("flutter", "pub", "run", "build_runner", "build", "--delete-conflicting-outputs")
+               commandLine("dart", "run", "build_runner", "build", "-d")
                errorOutput = System.err
                standardOutput = System.out
            }.result?.get()
@@ -189,8 +189,7 @@ openApiGenerate {
         "pubHomepage" to "https://github.com/OneLiteFeatherNET/vulpes-backend-client-dart",
         "pubRepository" to "https://github.com/OneLiteFeatherNET/vulpes-backend-client-dart",
         "pubPublishTo" to "https://github.com/OneLiteFeatherNET/vulpes-backend-client-dart",
-        "dateLibrary" to "core",
-        "enumUnknownDefaultCase" to "true"
+        "dateLibrary" to "core"
     ))
 }
 
