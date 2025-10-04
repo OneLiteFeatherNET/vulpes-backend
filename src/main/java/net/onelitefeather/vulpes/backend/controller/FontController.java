@@ -141,6 +141,30 @@ public class FontController {
     }
 
     @Operation(
+            summary = "Update characters of a font",
+            operationId = "updateChars",
+            description = "Updates the characters of a font in the database.",
+            tags = {"Font"}
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "The characters of the font were successfully updated in the database.",
+            content = @Content(
+                    mediaType = MediaType.APPLICATION_JSON,
+                    array = @ArraySchema(
+                            schema = @Schema(implementation = FontModelCharsResponseDTO.class)
+                    )
+            )
+    )
+    @Post("/chars/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public HttpResponse<FontModelResponseDTO> updateChars(@PathVariable UUID id,@Body List<String> chars) {
+        List<String> model = fontService.updateCharsByFontId(id, chars);
+        FontModelCharsResponseDTO dto = FontModelCharsResponseDTO.createDTO(id, model);
+        return HttpResponse.ok(dto);
+    }
+
+    @Operation(
             summary = "Remove a font by ID",
             operationId = "deleteFont",
             description = "Removes a font by ID from the database.",
