@@ -73,17 +73,17 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Map<String, Short> findEnchantmentsById(UUID id) {
-        return itemRepository.findEnchantmentsById(id);
+    public Map<String, Short> findEnchantmentsById(UUID id,Pageable pageable) {
+        return itemRepository.findEnchantmentsById(id, pageable);
     }
 
     @Override
-    public List<String> findFlagsById(UUID id) {
-        return itemRepository.findFlagsById(id);
+    public List<String> findFlagsById(UUID id, Pageable pageable) {
+        return itemRepository.findFlagsById(id, pageable);
     }
 
     @Override
-    public List<String> findLoreById(UUID id) {
-        return itemRepository.findLoreById(id);
+    public List<String> findLoreById(UUID id, Pageable pageable) {
+        return itemRepository.findLoreById(id, pageable);
     }
 }

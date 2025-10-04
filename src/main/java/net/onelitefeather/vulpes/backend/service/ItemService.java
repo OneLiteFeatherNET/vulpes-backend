@@ -67,23 +67,26 @@ public interface ItemService {
      * Gets the enchantments of an item by its ID.
      *
      * @param id the ID of the item
+     * @param pageable pagination information
      * @return a map of enchantment names to levels
      */
-    Map<String, Short> findEnchantmentsById(UUID id);
+    Map<String, Short> findEnchantmentsById(UUID id, Pageable pageable);
 
     /**
      * Gets the flags of an item by its ID.
      *
      * @param id the ID of the item
+     * @param pageable pagination information
      * @return a list of flags
      */
-    List<String> findFlagsById(UUID id);
+    List<String> findFlagsById(UUID id, Pageable pageable);
 
     /**
      * Gets the lore of an item by its ID.
      *
      * @param id the ID of the item
+     * @param pageable pagination information
      * @return a list of lore lines
      */
-    List<String> findLoreById(UUID id);
+    List<String> findLoreById(UUID id, Pageable pageable);
 }
