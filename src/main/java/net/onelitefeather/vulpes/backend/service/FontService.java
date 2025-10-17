@@ -69,4 +69,12 @@ public interface FontService {
      * @return a list of characters
      */
     List<String> findCharsByFontId(UUID id);
+
+    /**
+     * Updates the characters of a font by its ID.
+     * @param id the ID of the font
+     * @param chars the new characters to set
+     * @return the updated characters
+     */
+    List<String> updateCharsByFontId(UUID id, List<String> chars);
 }

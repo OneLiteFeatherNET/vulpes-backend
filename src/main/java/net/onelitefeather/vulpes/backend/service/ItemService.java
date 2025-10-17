@@ -67,23 +67,50 @@ public interface ItemService {
      * Gets the enchantments of an item by its ID.
      *
      * @param id the ID of the item
+     * @param pageable pagination information
      * @return a map of enchantment names to levels
      */
-    Map<String, Short> findEnchantmentsById(UUID id);
+    Map<String, Short> findEnchantmentsById(UUID id, Pageable pageable);
 
     /**
      * Gets the flags of an item by its ID.
      *
      * @param id the ID of the item
+     * @param pageable pagination information
      * @return a list of flags
      */
-    List<String> findFlagsById(UUID id);
+    List<String> findFlagsById(UUID id, Pageable pageable);
 
     /**
      * Gets the lore of an item by its ID.
      *
      * @param id the ID of the item
+     * @param pageable pagination information
      * @return a list of lore lines
      */
-    List<String> findLoreById(UUID id);
+    List<String> findLoreById(UUID id, Pageable pageable);
+
+    /**
+     * Updates the flags of an item by its ID.
+     * @param id the ID of the item to update the flags of
+     * @param flags the new flags to set
+     * @return the updated flags
+     */
+    List<String> updateFlagsById(UUID id, List<String> flags);
+
+    /**
+     * Updates the enchantments of an item by its ID.
+     * @param id the ID of the item to update the enchantments of
+     * @param enchantments the new enchantments to set
+     * @return the updated enchantments
+     */
+    Map<String, Short> updateEnchantmentsById(UUID id, Map<String, Short> enchantments);
+
+    /**
+     * Updates the lore of an item by its ID.
+     * @param id the ID of the item to update the lore of
+     * @param lore the new lore to set
+     * @return the updated lore
+     */
+    List<String> updateLoreById(UUID id, List<String> lore);
 }

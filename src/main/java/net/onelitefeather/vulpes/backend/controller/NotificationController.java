@@ -6,12 +6,14 @@ import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import jakarta.inject.Inject;
 import net.onelitefeather.vulpes.api.model.NotificationEntity;
+import net.onelitefeather.vulpes.backend.domain.item.ItemModelResponseDTO;
 import net.onelitefeather.vulpes.backend.domain.notification.NotificationModelDTO;
 import net.onelitefeather.vulpes.backend.domain.notification.NotificationModelResponseDTO;
 import net.onelitefeather.vulpes.backend.service.NotificationService;
@@ -47,6 +49,7 @@ public class NotificationController {
      */
     @Operation(
             summary = "Add a new notification",
+            operationId = "addNotification",
             description = "Adds a new notification to the database.",
             tags = {"Notification"}
     )
@@ -83,6 +86,7 @@ public class NotificationController {
      */
     @Operation(
             summary = "Get a notification by ID",
+            operationId = "getNotificationById",
             description = "Retrieves a notification from the database by its ID.",
             tags = {"Notification"}
     )
@@ -120,6 +124,7 @@ public class NotificationController {
      */
     @Operation(
             summary = "Remove a notification by ID",
+            operationId = "removeNotificationById",
             description = "Removes a notification from the database by its ID.",
             tags = {"Notification"}
     )
@@ -139,7 +144,7 @@ public class NotificationController {
                     schema = @Schema(implementation = NotificationModelResponseDTO.NotificationModelErrorDTO.class)
             )
     )
-    @Delete("/remove/{id}")
+    @Delete("/delete/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public HttpResponse<NotificationModelResponseDTO> remove(@PathVariable UUID id) {
         NotificationModelResponseDTO result = notificationService.deleteNotification(id);
@@ -156,6 +161,7 @@ public class NotificationController {
      */
     @Operation(
             summary = "Get all notifications",
+            operationId = "getAllNotifications",
             description = "Retrieves all notifications from the database.",
             tags = {"Notification"}
     )
@@ -164,7 +170,10 @@ public class NotificationController {
             description = "The notifications were successfully retrieved from the database.",
             content = @Content(
                     mediaType = MediaType.APPLICATION_JSON,
-                    schema = @Schema(implementation = NotificationModelResponseDTO.NotificationModelDTO.class)
+                    array = @ArraySchema(
+                            schema = @Schema(implementation = NotificationModelResponseDTO.NotificationModelDTO.class),
+                            arraySchema = @Schema(implementation = Page.class)
+                    )
             )
     )
     @ApiResponse(
@@ -175,7 +184,7 @@ public class NotificationController {
                     schema = @Schema(implementation = NotificationModelResponseDTO.NotificationModelErrorDTO.class)
             )
     )
-    @Get(uris = {"/getAll", "/all"})
+    @Get(uris = {"/all"})
     @Produces(MediaType.APPLICATION_JSON)
     public HttpResponse<Page<NotificationModelResponseDTO.NotificationModelDTO>> getAll(Pageable pageable) {
         Page<NotificationModelResponseDTO.NotificationModelDTO> list = notificationService.getAllNotifications(pageable);
@@ -189,6 +198,7 @@ public class NotificationController {
      */
     @Operation(
             summary = "Delete all notifications",
+            operationId = "deleteAllNotifications",
             description = "Deletes all notifications from the database.",
             tags = {"Notification"}
     )
@@ -200,7 +210,7 @@ public class NotificationController {
                     schema = @Schema(implementation = NotificationModelResponseDTO.NotificationModelDTO.class)
             )
     )
-    @Delete("/deleteAll")
+    @Delete("/delete/all")
     @Produces(MediaType.APPLICATION_JSON)
     public HttpResponse<List<NotificationModelResponseDTO>> deleteAll() {
         List<NotificationModelResponseDTO> result = notificationService.deleteAllNotifications();
@@ -215,6 +225,7 @@ public class NotificationController {
      */
     @Operation(
             summary = "Update a notification",
+            operationId = "updateNotification",
             description = "Updates an existing notification in the database.",
             tags = {"Notification"}
     )

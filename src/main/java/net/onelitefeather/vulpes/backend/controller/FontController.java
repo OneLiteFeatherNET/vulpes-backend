@@ -12,12 +12,14 @@ import io.micronaut.http.annotation.PathVariable;
 import io.micronaut.http.annotation.Post;
 import io.micronaut.http.annotation.Produces;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import net.onelitefeather.vulpes.api.model.FontEntity;
+import net.onelitefeather.vulpes.backend.domain.attribute.AttributeModelResponseDTO;
 import net.onelitefeather.vulpes.backend.domain.font.FontModelDTO;
 import net.onelitefeather.vulpes.backend.domain.font.FontModelResponseDTO;
 import net.onelitefeather.vulpes.backend.service.FontService;
@@ -41,6 +43,7 @@ public class FontController {
 
     @Operation(
             summary = "Add a new font",
+            operationId = "addFont",
             description = "Adds a new font to the database. The font is created with the given properties.",
             tags = {"Font"}
     )
@@ -71,6 +74,7 @@ public class FontController {
 
     @Operation(
             summary = "Get a font by ID",
+            operationId = "getFontById",
             description = "Gets a font by ID from the database.",
             tags = {"Font"}
     )
@@ -105,6 +109,7 @@ public class FontController {
 
     @Operation(
             summary = "Get characters by font ID",
+            operationId = "getCharsById",
             description = "Gets the characters of a font by its ID from the database.",
             tags = {"Font"}
     )
@@ -128,15 +133,40 @@ public class FontController {
     @Produces(MediaType.APPLICATION_JSON)
     public HttpResponse<FontModelResponseDTO> getCharsById(@PathVariable UUID id) {
         List<String> model = fontService.findCharsByFontId(id);
-        if (!model.isEmpty()) {
-            FontModelCharsResponseDTO dto = FontModelCharsResponseDTO.createDTO(id, model);
-            return HttpResponse.ok(dto);
+        if (model == null) {
+            return HttpResponse.notFound(new FontModelErrorDTO("Font not found"));
         }
-        return HttpResponse.notFound(new FontModelErrorDTO("Font not found"));
+        FontModelCharsResponseDTO dto = FontModelCharsResponseDTO.createDTO(id, model);
+        return HttpResponse.ok(dto);
+    }
+
+    @Operation(
+            summary = "Update characters of a font",
+            operationId = "updateChars",
+            description = "Updates the characters of a font in the database.",
+            tags = {"Font"}
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "The characters of the font were successfully updated in the database.",
+            content = @Content(
+                    mediaType = MediaType.APPLICATION_JSON,
+                    array = @ArraySchema(
+                            schema = @Schema(implementation = FontModelCharsResponseDTO.class)
+                    )
+            )
+    )
+    @Post("/chars/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public HttpResponse<FontModelResponseDTO> updateChars(@PathVariable UUID id,@Body List<String> chars) {
+        List<String> model = fontService.updateCharsByFontId(id, chars);
+        FontModelCharsResponseDTO dto = FontModelCharsResponseDTO.createDTO(id, model);
+        return HttpResponse.ok(dto);
     }
 
     @Operation(
             summary = "Remove a font by ID",
+            operationId = "deleteFont",
             description = "Removes a font by ID from the database.",
             tags = {"Font"}
     )
@@ -156,7 +186,7 @@ public class FontController {
                     schema = @Schema(implementation = FontModelErrorDTO.class)
             )
     )
-    @Delete("/remove/{id}")
+    @Delete("/delete/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public HttpResponse<FontModelResponseDTO> remove(@PathVariable UUID id) {
         FontModelResponseDTO result = fontService.deleteFont(id);
@@ -168,6 +198,7 @@ public class FontController {
 
     @Operation(
             summary = "Get all fonts",
+            operationId = "getAllFonts",
             description = "Gets all fonts from the database.",
             tags = {"Font"}
     )
@@ -176,10 +207,13 @@ public class FontController {
             description = "The fonts were successfully retrieved from the database.",
             content = @Content(
                     mediaType = MediaType.APPLICATION_JSON,
-                    schema = @Schema(implementation = FontModelResponseDTO.FontModelDTO.class)
+                    array = @ArraySchema(
+                            schema = @Schema(implementation = FontModelResponseDTO.FontModelDTO.class),
+                            arraySchema = @Schema(implementation = Page.class)
+                    )
             )
     )
-    @Get(uris = {"/getAll", "/all"})
+    @Get(uris = {"/all"})
     @Produces(MediaType.APPLICATION_JSON)
     public HttpResponse<Page<FontModelResponseDTO.FontModelDTO>> getAll(Pageable pageable) {
         Page<FontModelResponseDTO.FontModelDTO> models = fontService.getAllFonts(pageable);
@@ -188,6 +222,7 @@ public class FontController {
 
     @Operation(
             summary = "Delete all fonts",
+            operationId = "deleteAllFonts",
             description = "Deletes all fonts from the database.",
             tags = {"Font"}
     )
@@ -199,7 +234,7 @@ public class FontController {
                     schema = @Schema(implementation = FontModelResponseDTO.FontModelDTO.class)
             )
     )
-    @Delete("/deleteAll")
+    @Delete("delete/all")
     @Produces(MediaType.APPLICATION_JSON)
     public HttpResponse<List<FontModelResponseDTO>> deleteAll() {
         List<FontModelResponseDTO> result = fontService.deleteAllFonts();
@@ -208,6 +243,7 @@ public class FontController {
 
     @Operation(
             summary = "Update a font",
+            operationId = "updateFont",
             description = "Updates a font in the database.",
             tags = {"Font"}
     )

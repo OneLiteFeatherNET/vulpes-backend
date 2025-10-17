@@ -73,17 +73,53 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Map<String, Short> findEnchantmentsById(UUID id) {
-        return itemRepository.findEnchantmentsById(id);
+    public Map<String, Short> findEnchantmentsById(UUID id,Pageable pageable) {
+        return itemRepository.findEnchantmentsById(id, pageable);
     }
 
     @Override
-    public List<String> findFlagsById(UUID id) {
-        return itemRepository.findFlagsById(id);
+    public List<String> findFlagsById(UUID id, Pageable pageable) {
+        return itemRepository.findFlagsById(id, pageable);
     }
 
     @Override
-    public List<String> findLoreById(UUID id) {
-        return itemRepository.findLoreById(id);
+    public List<String> findLoreById(UUID id, Pageable pageable) {
+        return itemRepository.findLoreById(id, pageable);
+    }
+
+    @Override
+    public List<String> updateLoreById(UUID id, List<String> lore) {
+        var byId = this.itemRepository.findById(id);
+        if (byId.isEmpty()) {
+            return List.of();
+        }
+        var item = byId.get();
+        item.setLore(lore);
+        var updated = this.itemRepository.update(item);
+        return updated.getLore();
+    }
+
+    @Override
+    public Map<String, Short> updateEnchantmentsById(UUID id, Map<String, Short> enchantments) {
+        var byId = this.itemRepository.findById(id);
+        if (byId.isEmpty()) {
+            return Map.of();
+        }
+        var item = byId.get();
+        item.setEnchantments(enchantments);
+        var updated = this.itemRepository.update(item);
+        return updated.getEnchantments();
+    }
+
+    @Override
+    public List<String> updateFlagsById(UUID id, List<String> flags) {
+        var byId = this.itemRepository.findById(id);
+        if (byId.isEmpty()) {
+            return List.of();
+        }
+        var item = byId.get();
+        item.setFlags(flags);
+        var updated = this.itemRepository.update(item);
+        return updated.getFlags();
     }
 }
