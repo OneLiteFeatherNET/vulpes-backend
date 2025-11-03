@@ -376,7 +376,7 @@ public class SoundController {
     @Produces(MediaType.APPLICATION_JSON)
     public HttpResponse<SoundResponseDTO> deleteSource(
             @PathVariable("id") UUID soundEventId,
-            @Body SoundFileSourceDTO sourceDTO
+            @Body UUID sourceDTO
     ) {
         SoundResponseDTO result = soundService.deleteLinkedSource(soundEventId, sourceDTO);
         return HttpResponse.ok(result);
