@@ -56,7 +56,7 @@ public class SoundServiceImpl implements SoundService {
 
     @Override
     public SoundResponseDTO updateSoundEvent(SoundEventDTO soundEventDTO) {
-        Optional<SoundEventEntity> existingModel = soundRepository.findById(soundEventDTO.getId());
+        Optional<SoundEventEntity> existingModel = soundRepository.findById(soundEventDTO.id());
         if (existingModel.isEmpty()) {
             return new SoundResponseDTO.SoundErrorDTO(GENERIC_ERROR);
         }
@@ -115,7 +115,7 @@ public class SoundServiceImpl implements SoundService {
     @Override
     @Transactional
     public SoundResponseDTO.SoundFileSourceDTO updateLinkedSource(UUID soundEventId, SoundFileSourceDTO sourceDTO) {
-        if (soundEventId == null || sourceDTO == null || sourceDTO.getId() == null) {
+        if (soundEventId == null || sourceDTO == null || sourceDTO.id() == null) {
             throw new IllegalArgumentException("SoundEventId and SourceDTO and SourceDTO.Id must not be null");
         }
         Optional<SoundEventEntity> soundEventOpt = soundRepository.findById(soundEventId);
@@ -127,7 +127,7 @@ public class SoundServiceImpl implements SoundService {
                 .stream()
                 .filter(SoundResponseDTO.SoundFileSourceDTO.class::isInstance)
                 .map(SoundResponseDTO.SoundFileSourceDTO.class::cast)
-                .filter(s -> s.id().equals(sourceDTO.getId()))
+                .filter(s -> s.id().equals(sourceDTO.id()))
                 .findFirst();
         if (existingSourceOpt.isEmpty()) {
             throw new IllegalArgumentException("Sound source not found for the given sound event");
@@ -141,7 +141,7 @@ public class SoundServiceImpl implements SoundService {
     @Override
     @Transactional
     public SoundResponseDTO.SoundFileSourceDTO deleteLinkedSource(UUID soundEventId, SoundFileSourceDTO sourceDTO) {
-        if (soundEventId == null || sourceDTO == null || sourceDTO.getId() == null) {
+        if (soundEventId == null || sourceDTO == null || sourceDTO.id() == null) {
             throw new IllegalArgumentException("SoundEventId and SourceDTO and SourceDTO.Id must not be null");
         }
 
@@ -154,12 +154,12 @@ public class SoundServiceImpl implements SoundService {
                 .stream()
                 .filter(SoundResponseDTO.SoundFileSourceDTO.class::isInstance)
                 .map(SoundResponseDTO.SoundFileSourceDTO.class::cast)
-                .filter(s -> s.id().equals(sourceDTO.getId()))
+                .filter(s -> s.id().equals(sourceDTO.id()))
                 .findFirst();
         if (existingSourceOpt.isEmpty()) {
             throw new IllegalArgumentException("Sound source not found for the given sound event");
         }
-        soundFileSourceRepository.deleteById(sourceDTO.getId());
+        soundFileSourceRepository.deleteById(sourceDTO.id());
         return existingSourceOpt.get();
     }
 }

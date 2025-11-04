@@ -36,7 +36,7 @@ public class FontServiceImpl implements FontService {
 
     @Override
     public FontModelResponseDTO updateFont(FontModelDTO fontModelDTO) {
-        Optional<FontEntity> modelOptional = fontRepository.findById(fontModelDTO.getId());
+        Optional<FontEntity> modelOptional = fontRepository.findById(fontModelDTO.id());
         if (modelOptional.isEmpty()) {
             return new FontModelResponseDTO.FontModelErrorDTO("Font not found");
         }
