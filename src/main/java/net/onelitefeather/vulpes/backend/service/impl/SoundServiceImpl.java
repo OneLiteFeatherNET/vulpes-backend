@@ -104,7 +104,7 @@ public class SoundServiceImpl implements SoundService {
         }
         Optional<SoundEventEntity> soundEventOpt = soundRepository.findById(soundEventId);
         if (soundEventOpt.isEmpty()) {
-            throw new IllegalArgumentException("Sound event not found");
+            throw new IllegalArgumentException(GENERIC_ERROR);
         }
         var sourceEntity = sourceDTO.toEntity();
         sourceEntity.setSoundEvent(soundEventOpt.get());
@@ -120,7 +120,7 @@ public class SoundServiceImpl implements SoundService {
         }
         Optional<SoundEventEntity> soundEventOpt = soundRepository.findById(soundEventId);
         if (soundEventOpt.isEmpty()) {
-            throw new IllegalArgumentException("Sound event not found");
+            throw new IllegalArgumentException(GENERIC_ERROR);
         }
         Optional<SoundResponseDTO.SoundFileSourceDTO> existingSourceOpt = this.getSoundSourcesById(soundEventId, Pageable.unpaged())
                 .getContent()
