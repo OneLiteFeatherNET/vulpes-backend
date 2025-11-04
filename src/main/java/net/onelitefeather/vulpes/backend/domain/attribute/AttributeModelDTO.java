@@ -16,7 +16,7 @@ import java.util.UUID;
 @Introspected
 public record AttributeModelDTO(
         @Schema(description = "ID of the attribute", requiredMode = Schema.RequiredMode.NOT_REQUIRED) UUID id,
-        @Schema(description = "The name for the ui", requiredMode = Schema.RequiredMode.REQUIRED) String uiName,
+        @Schema(description = "The name for the ui", requiredMode = Schema.RequiredMode.REQUIRED) @NotEmpty @NotBlank String uiName,
         @Schema(description = "The name which represents the variable after the generation", requiredMode = Schema.RequiredMode.REQUIRED) @NotEmpty @NotBlank String variableName,
         @Schema(description = "Default value of the attribute", requiredMode = Schema.RequiredMode.REQUIRED) @PositiveOrZero double defaultValue,
         @Schema(description = "Maximum value of the attribute", requiredMode = Schema.RequiredMode.REQUIRED) @Positive double maximumValue
