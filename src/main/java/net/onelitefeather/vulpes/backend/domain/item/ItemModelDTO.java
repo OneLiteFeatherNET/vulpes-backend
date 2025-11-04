@@ -29,12 +29,12 @@ import java.util.UUID;
 @Serdeable
 public record ItemModelDTO(
         @Schema(description = "ID of the Model", requiredMode = Schema.RequiredMode.NOT_REQUIRED) UUID id,
-        @Schema(description = "Name in the UI", requiredMode = Schema.RequiredMode.REQUIRED) @NotNull @NotBlank String uiName,
-        @Schema(description = "Variable name for the entity", requiredMode = Schema.RequiredMode.REQUIRED) @NotNull @NotBlank String variableName,
+        @Schema(description = "Name in the UI", requiredMode = Schema.RequiredMode.REQUIRED) @NotBlank String uiName,
+        @Schema(description = "Variable name for the entity", requiredMode = Schema.RequiredMode.REQUIRED) @NotBlank String variableName,
         @Schema(description = "Internal description of the item", requiredMode = Schema.RequiredMode.REQUIRED) String comment,
-        @Schema(description = "The display name of the item", requiredMode = Schema.RequiredMode.REQUIRED) @NotNull @NotBlank String displayName,
-        @Schema(description = "The material from the item", requiredMode = Schema.RequiredMode.REQUIRED) @NotNull @NotBlank String material,
-        @Schema(description = "The group to identify their basic usage", requiredMode = Schema.RequiredMode.REQUIRED) @NotNull @NotBlank String group,
+        @Schema(description = "The display name of the item", requiredMode = Schema.RequiredMode.REQUIRED) @NotBlank String displayName,
+        @Schema(description = "The material from the item", requiredMode = Schema.RequiredMode.REQUIRED) @NotBlank String material,
+        @Schema(description = "The group to identify their basic usage", requiredMode = Schema.RequiredMode.REQUIRED) @NotBlank String group,
         @Schema(description = "Integer which refers to the customModelData index", requiredMode = Schema.RequiredMode.REQUIRED) @PositiveOrZero int customModelData,
         @Schema(description = "The amount of the item", requiredMode = Schema.RequiredMode.REQUIRED) @Positive int amount,
         @Schema(description = "The given enchantments", requiredMode = Schema.RequiredMode.NOT_REQUIRED) Map<String, Short> enchantments,

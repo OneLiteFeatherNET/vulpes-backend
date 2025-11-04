@@ -22,16 +22,17 @@ import net.onelitefeather.vulpes.api.model.NotificationEntity;
 @Serdeable
 public record NotificationModelDTO(
         @Schema(description = "ID of the notification", requiredMode = Schema.RequiredMode.NOT_REQUIRED) UUID id,
-        @Schema(description = "Model variableName for the UI", requiredMode = Schema.RequiredMode.REQUIRED) @NotBlank @NotEmpty String uiName,
-        @Schema(description = "Name in the UI", requiredMode = Schema.RequiredMode.REQUIRED) @NotBlank @NotEmpty String variableName,
+        @Schema(description = "Model variableName for the UI", requiredMode = Schema.RequiredMode.REQUIRED) @NotBlank String uiName,
+        @Schema(description = "Name in the UI", requiredMode = Schema.RequiredMode.REQUIRED) @NotBlank String variableName,
         @Schema(description = "Comment of the notification", requiredMode = Schema.RequiredMode.REQUIRED) String comment,
-        @Schema(description = "Material identifier", requiredMode = Schema.RequiredMode.REQUIRED) @NotBlank @NotEmpty String material,
-        @Schema(description = "Type of frame", requiredMode = Schema.RequiredMode.REQUIRED) @NotBlank @NotEmpty String frameType,
-        @Schema(description = "Title of the notification", requiredMode = Schema.RequiredMode.REQUIRED) @NotBlank @NotEmpty String title
+        @Schema(description = "Material identifier", requiredMode = Schema.RequiredMode.REQUIRED) @NotBlank String material,
+        @Schema(description = "Type of frame", requiredMode = Schema.RequiredMode.REQUIRED) @NotBlank String frameType,
+        @Schema(description = "Title of the notification", requiredMode = Schema.RequiredMode.REQUIRED) @NotBlank String title
 ) {
 
     /**
      * Converts this DTO to a {@link NotificationEntity}.
+     *
      * @return a new {@link NotificationEntity} instance with the data from this DTO
      */
     public @NotNull NotificationEntity toNotificationModel() {

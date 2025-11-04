@@ -15,11 +15,11 @@ import java.util.UUID;
 @Serdeable
 public record FontModelDTO(
         @Schema(description = "ID of the mode", requiredMode = Schema.RequiredMode.NOT_REQUIRED) UUID id,
-        @Schema(description = "Model Name for the ui", requiredMode = Schema.RequiredMode.REQUIRED) @NotBlank @NotNull String uiName,
-        @Schema(description = "Name in the UI", requiredMode = Schema.RequiredMode.REQUIRED) @NotBlank @NotNull String variableName,
-        @Schema(description = "Which provider should be used", requiredMode = Schema.RequiredMode.REQUIRED) @NotBlank @NotNull String provider,
-        @Schema(description = "Internal mapper variable", requiredMode = Schema.RequiredMode.REQUIRED) @NotBlank @NotNull String mapper,
-        @Schema(description = "The path to the texture", requiredMode = Schema.RequiredMode.REQUIRED) @NotBlank @NotNull String texturePath,
+        @Schema(description = "Model Name for the ui", requiredMode = Schema.RequiredMode.REQUIRED) @NotBlank String uiName,
+        @Schema(description = "Name in the UI", requiredMode = Schema.RequiredMode.REQUIRED) @NotBlank String variableName,
+        @Schema(description = "Which provider should be used", requiredMode = Schema.RequiredMode.REQUIRED) @NotBlank String provider,
+        @Schema(description = "Internal mapper variable", requiredMode = Schema.RequiredMode.REQUIRED) @NotBlank String mapper,
+        @Schema(description = "The path to the texture", requiredMode = Schema.RequiredMode.REQUIRED) @NotBlank String texturePath,
         @Schema(description = "The comment", requiredMode = Schema.RequiredMode.REQUIRED) @Nullable String comment,
         @Schema(description = "The ascent property", requiredMode = Schema.RequiredMode.REQUIRED) @PositiveOrZero int ascent,
         @Schema(description = "The height property", requiredMode = Schema.RequiredMode.REQUIRED) @PositiveOrZero int height,

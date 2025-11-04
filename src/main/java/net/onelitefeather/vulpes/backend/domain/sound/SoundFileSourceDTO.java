@@ -4,7 +4,6 @@ import io.micronaut.core.annotation.Introspected;
 import io.micronaut.serde.annotation.Serdeable;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -28,14 +27,14 @@ import java.util.UUID;
 @Serdeable
 public record SoundFileSourceDTO(
         UUID id,
-        @NotBlank @NotEmpty String name,
+        @NotBlank String name,
         @PositiveOrZero float volume,
         @PositiveOrZero float pitch,
         @Positive int weight,
         boolean stream,
         @Positive int attenuationDistance,
         boolean preload,
-        @NotBlank @NotEmpty String type
+        @NotBlank String type
 ) {
 
     /**

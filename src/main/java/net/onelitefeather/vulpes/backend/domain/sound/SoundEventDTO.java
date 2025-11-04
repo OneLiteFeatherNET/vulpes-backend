@@ -38,10 +38,10 @@ import java.util.UUID;
 @Serdeable
 public record SoundEventDTO(
         @Schema(description = "Id of the Model", requiredMode = RequiredMode.REQUIRED) UUID id,
-        @Schema(description = "Name to display it in the ui", requiredMode = RequiredMode.REQUIRED) @NotNull @NotBlank String uiName,
-        @Schema(description = "The name which is used for the variable generation", requiredMode = RequiredMode.REQUIRED) @NotNull @NotBlank  String variableName,
-        @Schema(description = "They key of the sound", requiredMode = RequiredMode.REQUIRED) @NotNull @NotBlank  String keyName,
-        @Schema(description = "The subtitle which is display when the sound is played", requiredMode = RequiredMode.REQUIRED) @NotNull @NotBlank  String subTitle
+        @Schema(description = "Name to display it in the ui", requiredMode = RequiredMode.REQUIRED) @NotBlank String uiName,
+        @Schema(description = "The name which is used for the variable generation", requiredMode = RequiredMode.REQUIRED) @NotBlank String variableName,
+        @Schema(description = "They key of the sound", requiredMode = RequiredMode.REQUIRED) @NotBlank String keyName,
+        @Schema(description = "The subtitle which is display when the sound is played", requiredMode = RequiredMode.REQUIRED) @NotBlank String subTitle
 ) {
     /**
      * Converts this DTO to a {@link SoundEventEntity}.
