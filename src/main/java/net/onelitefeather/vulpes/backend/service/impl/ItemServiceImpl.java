@@ -37,7 +37,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemModelResponseDTO updateItem(ItemModelDTO itemModelDTO) {
-        Optional<ItemEntity> existingItem = itemRepository.findById(itemModelDTO.getId());
+        Optional<ItemEntity> existingItem = itemRepository.findById(itemModelDTO.id());
         if (existingItem.isEmpty()) {
             return new ItemModelResponseDTO.ItemModelErrorDTO("Item not found");
         }
