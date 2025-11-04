@@ -52,15 +52,19 @@ dependencies {
 
     testImplementation(mn.junit.jupiter.api)
     testImplementation(mn.junit.jupiter.params)
-    testRuntimeOnly(mn.junit.jupiter.engine)
     testImplementation(mn.testcontainers.core)
     testImplementation(mn.testcontainers.mariadb)
     testImplementation(mn.micronaut.test.rest.assured)
+    testImplementation(mn.micronaut.validation)
     testImplementation(mn.micronaut.test.resources.extensions.core)
     testImplementation(mn.micronaut.test.resources.extensions.junit.platform)
     // Faker library for JUnit tests
     testImplementation(libs.testcontainers.junit)
     testImplementation(libs.datafaker)
+    testImplementation(libs.hibernate.validator)
+    testImplementation(libs.jakarta.validation)
+
+    testRuntimeOnly(mn.junit.jupiter.engine)
 }
 
 application {
