@@ -3,27 +3,39 @@ package net.onelitefeather.vulpes.backend.domain.sound;
 import io.micronaut.core.annotation.Introspected;
 import io.micronaut.serde.annotation.Serdeable;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import net.onelitefeather.vulpes.api.model.sound.SoundFileSource;
 
 import java.util.UUID;
 
 @Schema(
         requiredProperties = {
+                "name",
+                "volume",
+                "pitch",
+                "weight",
+                "stream",
+                "attenuationDistance",
+                "preload",
+                "type"
         }
 )
 @Introspected
 @Serdeable
 public record SoundFileSourceDTO(
         UUID id,
-        String name,
-        float volume,
-        float pitch,
-        int weight,
+        @NotBlank @NotEmpty String name,
+        @PositiveOrZero float volume,
+        @PositiveOrZero float pitch,
+        @Positive int weight,
         boolean stream,
-        int attenuationDistance,
+        @Positive int attenuationDistance,
         boolean preload,
-        String type
+        @NotBlank @NotEmpty String type
 ) {
 
     /**
