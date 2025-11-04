@@ -4,6 +4,7 @@ import io.micronaut.core.annotation.Introspected;
 import io.micronaut.serde.annotation.Serdeable;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import net.onelitefeather.vulpes.api.model.sound.SoundEventEntity;
 
@@ -37,10 +38,10 @@ import java.util.UUID;
 @Serdeable
 public record SoundEventDTO(
         @Schema(description = "Id of the Model", requiredMode = RequiredMode.REQUIRED) UUID id,
-        @Schema(description = "Name to display it in the ui", requiredMode = RequiredMode.REQUIRED) String uiName,
-        @Schema(description = "The name which is used for the variable generation", requiredMode = RequiredMode.REQUIRED) String variableName,
-        @Schema(description = "They key of the sound", requiredMode = RequiredMode.REQUIRED) String keyName,
-        @Schema(description = "The subtitle which is display when the sound is played", requiredMode = RequiredMode.REQUIRED) String subTitle
+        @Schema(description = "Name to display it in the ui", requiredMode = RequiredMode.REQUIRED) @NotBlank String uiName,
+        @Schema(description = "The name which is used for the variable generation", requiredMode = RequiredMode.REQUIRED) @NotBlank String variableName,
+        @Schema(description = "They key of the sound", requiredMode = RequiredMode.REQUIRED) @NotBlank String keyName,
+        @Schema(description = "The subtitle which is display when the sound is played", requiredMode = RequiredMode.REQUIRED) @NotBlank String subTitle
 ) {
     /**
      * Converts this DTO to a {@link SoundEventEntity}.
