@@ -39,6 +39,7 @@ dependencyResolutionManagement {
             version("jetbrains.annotation", "26.0.2")
             version("hibernate.validator", "9.0.1.Final")
             version("jakarta.validation", "3.1.1")
+            version("cyclonedx", "3.0.1")
 
             library("uuid.creator", "com.github.f4b6a3", "uuid-creator").versionRef("uuid.creator")
             library("vulpes.api", "net.onelitefeather", "vulpes-model").versionRef("vulpes.model")
@@ -52,6 +53,7 @@ dependencyResolutionManagement {
             plugin("micronaut.application", "io.micronaut.application").versionRef("micronaut")
             plugin("micronaut.aot", "io.micronaut.aot").versionRef("micronaut")
             plugin("micronaut.test-resources", "io.micronaut.test-resources").versionRef("micronaut")
+            plugin("cyclonedx", "org.cyclonedx.bom").versionRef("cyclonedx")
         }
     }
 }

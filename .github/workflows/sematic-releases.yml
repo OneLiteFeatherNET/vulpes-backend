@@ -64,6 +64,17 @@ jobs:
             VERSION=$(cat version.txt)
             echo "release_version=$VERSION" >> $GITHUB_OUTPUT
           fi
+      - name: Upload BOM to Dependency-Track
+        uses: DependencyTrack/gh-upload-sbom@v3
+        with:
+          serverhostname: ${{ secrets.DEPENDENCYTRACK_HOSTNAME }}
+          apikey: ${{ secrets.DEPENDENCYTRACK_APIKEY }}
+          projectname: "Vulpes Backend"
+          projectversion: ${{ env.release_version }}
+          projecttags: 'docker,application,micronaut'
+          bomfilename: "build/reports/cyclonedx/bom.xml"
+          autocreate: true
+          parent: 'a5b26cf1-d8e0-4815-b727-0a355a2354f6'
   docker:
     name: Build Docker Artifacts
     runs-on: ubuntu-latest

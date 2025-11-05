@@ -5,6 +5,7 @@ plugins {
     jacoco
     `maven-publish`
     id("org.openapi.generator") version "7.14.0"
+    alias(libs.plugins.cyclonedx)
 }
 
 java {
