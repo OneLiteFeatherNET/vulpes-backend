@@ -5,7 +5,9 @@ import io.micronaut.data.model.Pageable;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import net.onelitefeather.vulpes.api.model.ItemEntity;
+import net.onelitefeather.vulpes.api.model.item.ItemEnchantmentEntity;
 import net.onelitefeather.vulpes.api.repository.ItemRepository;
+import net.onelitefeather.vulpes.api.repository.item.ItemEnchantmentRepository;
 import net.onelitefeather.vulpes.backend.domain.item.ItemModelDTO;
 import net.onelitefeather.vulpes.backend.domain.item.ItemModelResponseDTO;
 import net.onelitefeather.vulpes.backend.service.ItemService;
@@ -22,10 +24,12 @@ import java.util.UUID;
 public class ItemServiceImpl implements ItemService {
 
     private final ItemRepository itemRepository;
+    private final ItemEnchantmentRepository itemEnchantmentRepository;
 
     @Inject
-    public ItemServiceImpl(ItemRepository itemRepository) {
+    public ItemServiceImpl(ItemRepository itemRepository, ItemEnchantmentRepository itemEnchantmentRepository) {
         this.itemRepository = itemRepository;
+        this.itemEnchantmentRepository = itemEnchantmentRepository;
     }
 
     @Override
@@ -73,8 +77,8 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Map<String, Short> findEnchantmentsById(UUID id,Pageable pageable) {
-        return itemRepository.findEnchantmentsById(id, pageable);
+    public Page<ItemEnchantmentEntity> findEnchantmentsById(UUID id, Pageable pageable) {
+        return this.itemEnchantmentRepository.findEnchantmentsById(id, pageable);
     }
 
     @Override

@@ -19,6 +19,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import net.onelitefeather.vulpes.api.model.ItemEntity;
+import net.onelitefeather.vulpes.api.model.item.ItemEnchantmentEntity;
+import net.onelitefeather.vulpes.backend.domain.item.ItemEnchantmentResponseDTO;
 import net.onelitefeather.vulpes.backend.domain.item.ItemModelDTO;
 import net.onelitefeather.vulpes.backend.domain.item.ItemModelResponseDTO;
 import net.onelitefeather.vulpes.backend.service.ItemService;
@@ -155,7 +157,7 @@ public class ItemController {
             content = @Content(
                     mediaType = MediaType.APPLICATION_JSON,
                     array = @ArraySchema(
-                            schema = @Schema(implementation = ItemModelEnchantmentResponseDTO.class),
+                            schema = @Schema(implementation = ItemEnchantmentResponseDTO.class),
                             arraySchema = @Schema(implementation = Page.class)
                     )
             )
@@ -165,9 +167,9 @@ public class ItemController {
             "/{id}/enchantments"
     })
     @Produces(MediaType.APPLICATION_JSON)
-    public HttpResponse<Page<ItemModelEnchantmentResponseDTO>> getEnchantmentsById(@PathVariable UUID id, Pageable pageable) {
-        Map<String, Short> enchantments = itemService.findEnchantmentsById(id, pageable);
-        return HttpResponse.ok(Page.of(enchantments.entrySet().stream().map(ItemModelResponseDTO.ItemModelEnchantmentResponseDTO::createDTO).toList(), pageable, (long) enchantments.size()));
+    public HttpResponse<Page<ItemEnchantmentResponseDTO>> getEnchantmentsById(@PathVariable UUID id, Pageable pageable) {
+        Page<ItemEnchantmentEntity> enchantments = itemService.findEnchantmentsById(id, pageable);
+        return HttpResponse.ok(enchantments.map(ItemEnchantmentResponseDTO.ItemEnchantmentDTO::createDTO));
     }
 
     @Operation(

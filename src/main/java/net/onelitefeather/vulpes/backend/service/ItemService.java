@@ -3,6 +3,7 @@ package net.onelitefeather.vulpes.backend.service;
 import io.micronaut.data.model.Page;
 import io.micronaut.data.model.Pageable;
 import net.onelitefeather.vulpes.api.model.ItemEntity;
+import net.onelitefeather.vulpes.api.model.item.ItemEnchantmentEntity;
 import net.onelitefeather.vulpes.backend.domain.item.ItemModelDTO;
 import net.onelitefeather.vulpes.backend.domain.item.ItemModelResponseDTO;
 
@@ -70,7 +71,7 @@ public interface ItemService {
      * @param pageable pagination information
      * @return a map of enchantment names to levels
      */
-    Map<String, Short> findEnchantmentsById(UUID id, Pageable pageable);
+    Page<ItemEnchantmentEntity> findEnchantmentsById(UUID id, Pageable pageable);
 
     /**
      * Gets the flags of an item by its ID.
