@@ -21,6 +21,8 @@ import jakarta.validation.Valid;
 import net.onelitefeather.vulpes.api.model.FontEntity;
 import net.onelitefeather.vulpes.backend.domain.font.FontModelDTO;
 import net.onelitefeather.vulpes.backend.domain.font.FontModelResponseDTO;
+import net.onelitefeather.vulpes.backend.domain.font.FontStringDTO;
+import net.onelitefeather.vulpes.backend.domain.font.FontStringResponseDTO;
 import net.onelitefeather.vulpes.backend.service.FontService;
 
 import java.util.List;
@@ -116,7 +118,7 @@ public class FontController {
             description = "The characters of the font were successfully retrieved from the database.",
             content = @Content(
                     mediaType = MediaType.APPLICATION_JSON,
-                    schema = @Schema(implementation = FontModelCharsResponseDTO.class)
+                    schema = @Schema(implementation = FontStringResponseDTO.class)
             )
     )
     @ApiResponse(
@@ -129,19 +131,15 @@ public class FontController {
     )
     @Get("/chars/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public HttpResponse<FontModelResponseDTO> getCharsById(@PathVariable UUID id) {
-        List<String> model = fontService.findCharsByFontId(id);
-        if (model == null) {
-            return HttpResponse.notFound(new FontModelErrorDTO("Font not found"));
-        }
-        FontModelCharsResponseDTO dto = FontModelCharsResponseDTO.createDTO(id, model);
-        return HttpResponse.ok(dto);
+    public HttpResponse<Page<FontStringResponseDTO>> getCharsById(@PathVariable UUID id, Pageable pageable) {
+        Page<FontStringResponseDTO> models = fontService.findCharsByFontId(id, pageable);
+        return HttpResponse.ok(models);
     }
 
     @Operation(
-            summary = "Update characters of a font",
-            operationId = "updateChars",
-            description = "Updates the characters of a font in the database.",
+            summary = "Update character of a font",
+            operationId = "updateChar",
+            description = "Updates the character of a font in the database.",
             tags = {"Font"}
     )
     @ApiResponse(
@@ -150,16 +148,15 @@ public class FontController {
             content = @Content(
                     mediaType = MediaType.APPLICATION_JSON,
                     array = @ArraySchema(
-                            schema = @Schema(implementation = FontModelCharsResponseDTO.class)
+                            schema = @Schema(implementation = FontStringResponseDTO.class)
                     )
             )
     )
     @Post("/chars/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public HttpResponse<FontModelResponseDTO> updateChars(@PathVariable UUID id,@Body List<String> chars) {
-        List<String> model = fontService.updateCharsByFontId(id, chars);
-        FontModelCharsResponseDTO dto = FontModelCharsResponseDTO.createDTO(id, model);
-        return HttpResponse.ok(dto);
+    public HttpResponse<FontStringResponseDTO> updateChar(@PathVariable UUID id, @Body FontStringDTO charModel) {
+        FontStringResponseDTO model = fontService.updateCharByFontId(id, charModel);
+        return HttpResponse.ok(model);
     }
 
     @Operation(
