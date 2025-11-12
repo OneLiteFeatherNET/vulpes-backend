@@ -6,8 +6,11 @@ import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import net.onelitefeather.vulpes.api.model.FontEntity;
 import net.onelitefeather.vulpes.api.repository.FontRepository;
+import net.onelitefeather.vulpes.api.repository.font.FontStringRepository;
 import net.onelitefeather.vulpes.backend.domain.font.FontModelDTO;
 import net.onelitefeather.vulpes.backend.domain.font.FontModelResponseDTO;
+import net.onelitefeather.vulpes.backend.domain.font.FontStringDTO;
+import net.onelitefeather.vulpes.backend.domain.font.FontStringResponseDTO;
 import net.onelitefeather.vulpes.backend.service.FontService;
 
 import java.util.List;
@@ -21,10 +24,12 @@ import java.util.UUID;
 public class FontServiceImpl implements FontService {
 
     private final FontRepository fontRepository;
+    private final FontStringRepository fontStringRepository;
 
     @Inject
-    public FontServiceImpl(FontRepository fontRepository) {
+    public FontServiceImpl(FontRepository fontRepository, FontStringRepository fontStringRepository) {
         this.fontRepository = fontRepository;
+        this.fontStringRepository = fontStringRepository;
     }
 
     @Override
@@ -73,19 +78,20 @@ public class FontServiceImpl implements FontService {
     }
 
     @Override
-    public List<String> findCharsByFontId(UUID id) {
-        return fontRepository.findCharsByFontId(id, Pageable.UNPAGED);
+    public Page<FontStringResponseDTO> findCharsByFontId(UUID id, Pageable pageable) {
+        return this.fontStringRepository.findCharsByFontId(id, pageable).map(FontStringResponseDTO.FontStringDTO::createDTO);
     }
 
     @Override
-    public List<String> updateCharsByFontId(UUID id, List<String> chars) {
+    public FontStringResponseDTO updateCharByFontId(UUID id, FontStringDTO charModel) {
         var byId = this.fontRepository.findById(id);
         if (byId.isEmpty()) {
-            return List.of();
+            return new FontStringResponseDTO.FontStringErrorDTO("Font not found");
         }
-        var font = byId.get();
-        font.setChars(chars);
-        var updated = this.fontRepository.update(font);
-        return updated.getChars();
+        var fontEntity = byId.get();
+        var charEntity = charModel.toEntity();
+        charEntity.setFont(fontEntity);
+        var updatedChar = this.fontStringRepository.update(charEntity);
+        return FontStringResponseDTO.FontStringDTO.createDTO(updatedChar);
     }
 }

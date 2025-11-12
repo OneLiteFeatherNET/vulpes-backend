@@ -41,7 +41,7 @@ public record FontModelDTO(
                 comment,
                 height,
                 ascent,
-                chars
+                List.of()
         );
     }
 }
