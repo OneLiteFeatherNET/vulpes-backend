@@ -3,9 +3,10 @@ package net.onelitefeather.vulpes.backend.service;
 import io.micronaut.data.model.Page;
 import io.micronaut.data.model.Pageable;
 import net.onelitefeather.vulpes.api.model.ItemEntity;
-import net.onelitefeather.vulpes.api.model.item.ItemEnchantmentEntity;
 import net.onelitefeather.vulpes.backend.domain.item.ItemEnchantmentDTO;
 import net.onelitefeather.vulpes.backend.domain.item.ItemEnchantmentResponseDTO;
+import net.onelitefeather.vulpes.backend.domain.item.ItemLoreDTO;
+import net.onelitefeather.vulpes.backend.domain.item.ItemLoreResponseDTO;
 import net.onelitefeather.vulpes.backend.domain.item.ItemModelDTO;
 import net.onelitefeather.vulpes.backend.domain.item.ItemModelResponseDTO;
 
@@ -81,7 +82,7 @@ public interface ItemService {
      * @param pageable pagination information
      * @return a list of flags
      */
-    List<String> findFlagsById(UUID id, Pageable pageable);
+    Page<ItemLoreResponseDTO> findFlagsById(UUID id, Pageable pageable);
 
     /**
      * Gets the lore of an item by its ID.
@@ -93,12 +94,12 @@ public interface ItemService {
     List<String> findLoreById(UUID id, Pageable pageable);
 
     /**
-     * Updates the flags of an item by its ID.
-     * @param id the ID of the item to update the flags of
-     * @param flags the new flags to set
-     * @return the updated flags
+     * Updates the flag of an item by its ID.
+     * @param id the ID of the item to update the flag of
+     * @param flag the new flag to set
+     * @return the updated flag
      */
-    List<String> updateFlagsById(UUID id, List<String> flags);
+    ItemLoreResponseDTO updateFlagById(UUID id, ItemLoreDTO flag);
 
     /**
      * Updates the enchantments of an item by its ID.
