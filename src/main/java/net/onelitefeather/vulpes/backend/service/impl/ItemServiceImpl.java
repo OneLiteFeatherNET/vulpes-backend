@@ -6,16 +6,19 @@ import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import net.onelitefeather.vulpes.api.model.ItemEntity;
 import net.onelitefeather.vulpes.api.model.item.ItemEnchantmentEntity;
+import net.onelitefeather.vulpes.api.model.item.ItemLoreEntity;
 import net.onelitefeather.vulpes.api.repository.ItemRepository;
 import net.onelitefeather.vulpes.api.repository.item.ItemEnchantmentRepository;
+import net.onelitefeather.vulpes.api.repository.item.ItemLoreRepository;
 import net.onelitefeather.vulpes.backend.domain.item.ItemEnchantmentDTO;
 import net.onelitefeather.vulpes.backend.domain.item.ItemEnchantmentResponseDTO;
+import net.onelitefeather.vulpes.backend.domain.item.ItemLoreDTO;
+import net.onelitefeather.vulpes.backend.domain.item.ItemLoreResponseDTO;
 import net.onelitefeather.vulpes.backend.domain.item.ItemModelDTO;
 import net.onelitefeather.vulpes.backend.domain.item.ItemModelResponseDTO;
 import net.onelitefeather.vulpes.backend.service.ItemService;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -28,11 +31,15 @@ public class ItemServiceImpl implements ItemService {
     private static final String GENERIC_ERROR = "Item not found";
     private final ItemRepository itemRepository;
     private final ItemEnchantmentRepository itemEnchantmentRepository;
+    private final ItemLoreRepository itemLoreRepository;
 
     @Inject
-    public ItemServiceImpl(ItemRepository itemRepository, ItemEnchantmentRepository itemEnchantmentRepository) {
+    public ItemServiceImpl(ItemRepository itemRepository,
+                           ItemEnchantmentRepository itemEnchantmentRepository,
+                           ItemLoreRepository itemLoreRepository) {
         this.itemRepository = itemRepository;
         this.itemEnchantmentRepository = itemEnchantmentRepository;
+        this.itemLoreRepository = itemLoreRepository;
     }
 
     @Override
@@ -85,8 +92,8 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<String> findFlagsById(UUID id, Pageable pageable) {
-        return itemRepository.findFlagsById(id, pageable);
+    public Page<ItemLoreResponseDTO> findFlagsById(UUID id, Pageable pageable) {
+        return this.itemLoreRepository.findLoreById(id, pageable).map(ItemLoreResponseDTO.ItemLoreDTO::createDTO);
     }
 
     @Override
@@ -120,14 +127,15 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<String> updateFlagsById(UUID id, List<String> flags) {
+    public ItemLoreResponseDTO updateFlagById(UUID id, ItemLoreDTO flag) {
         var byId = this.itemRepository.findById(id);
         if (byId.isEmpty()) {
-            return List.of();
+            return new ItemLoreResponseDTO.ItemLoreErrorDTO(GENERIC_ERROR);
         }
         var item = byId.get();
-        item.setFlags(flags);
-        var updated = this.itemRepository.update(item);
-        return updated.getFlags();
+        ItemLoreEntity entity = flag.toEntity();
+        entity.setItem(item);
+        var saved = this.itemLoreRepository.save(entity);
+        return ItemLoreResponseDTO.ItemLoreDTO.createDTO(saved);
     }
 }

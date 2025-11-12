@@ -21,6 +21,8 @@ import jakarta.validation.Valid;
 import net.onelitefeather.vulpes.api.model.ItemEntity;
 import net.onelitefeather.vulpes.backend.domain.item.ItemEnchantmentDTO;
 import net.onelitefeather.vulpes.backend.domain.item.ItemEnchantmentResponseDTO;
+import net.onelitefeather.vulpes.backend.domain.item.ItemLoreDTO;
+import net.onelitefeather.vulpes.backend.domain.item.ItemLoreResponseDTO;
 import net.onelitefeather.vulpes.backend.domain.item.ItemModelDTO;
 import net.onelitefeather.vulpes.backend.domain.item.ItemModelResponseDTO;
 import net.onelitefeather.vulpes.backend.service.ItemService;
@@ -209,7 +211,7 @@ public class ItemController {
             content = @Content(
                     mediaType = MediaType.APPLICATION_JSON,
                     array = @ArraySchema(
-                            schema = @Schema(implementation = String.class),
+                            schema = @Schema(implementation = ItemLoreResponseDTO.ItemLoreDTO.class),
                             arraySchema = @Schema(implementation = Page.class)
                     )
             )
@@ -219,14 +221,14 @@ public class ItemController {
             "/{id}/flags"
     })
     @Produces(MediaType.APPLICATION_JSON)
-    public HttpResponse<Page<String>> getFlagsById(@PathVariable UUID id, Pageable pageable) {
-        List<String> flags = itemService.findFlagsById(id, pageable);
-        return HttpResponse.ok(Page.of(flags, pageable, (long) flags.size()));
+    public HttpResponse<Page<ItemLoreResponseDTO>> getFlagsById(@PathVariable UUID id, Pageable pageable) {
+        Page<ItemLoreResponseDTO> flags = itemService.findFlagsById(id, pageable);
+        return HttpResponse.ok(flags);
     }
 
     @Operation(
-            summary = "Update flags of an item",
-            description = "Updates the flags of an item by its ID.",
+            summary = "Update flag of an item",
+            description = "Updates the flag of an item by its ID.",
             tags = {"Item"}
     )
     @ApiResponse(
@@ -235,17 +237,17 @@ public class ItemController {
             content = @Content(
                     mediaType = MediaType.APPLICATION_JSON,
                     array = @ArraySchema(
-                            schema = @Schema(implementation = String.class),
+                            schema = @Schema(implementation = ItemLoreResponseDTO.ItemLoreDTO.class),
                             arraySchema = @Schema(implementation = List.class)
                     )
             )
     )
     @Post(uris = {
-            "/flags/{id}",
-            "/{id}/flags"
+            "/flag/{id}",
+            "/{id}/flag"
     })
-    public HttpResponse<List<String>> updateFlags(@PathVariable UUID id,@Body List<String> flags) {
-        List<String> result = itemService.updateFlagsById(id, flags);
+    public HttpResponse<ItemLoreResponseDTO> updateFlags(@PathVariable UUID id,@Body ItemLoreDTO flag) {
+        ItemLoreResponseDTO result = itemService.updateFlagById(id, flag);
         return HttpResponse.ok(result);
     }
 
