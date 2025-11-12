@@ -367,7 +367,7 @@ public class ItemController {
             description = "The item was not found in the database.",
             content = @Content(
                     mediaType = MediaType.APPLICATION_JSON,
-                    schema = @Schema(implementation = ItemModelErrorDTO.class)
+                    schema = @Schema(implementation = ItemModelResponseDTO.ItemModelErrorDTO.class)
             )
     )
     @Post("/update")
