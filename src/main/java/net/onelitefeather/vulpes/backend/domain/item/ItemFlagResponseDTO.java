@@ -3,7 +3,6 @@ package net.onelitefeather.vulpes.backend.domain.item;
 import io.micronaut.serde.annotation.Serdeable;
 import io.swagger.v3.oas.annotations.media.Schema;
 import net.onelitefeather.vulpes.api.model.item.ItemFlagEntity;
-import net.onelitefeather.vulpes.api.model.item.ItemLoreEntity;
 import net.onelitefeather.vulpes.backend.domain.error.ErrorResponse;
 
 import java.util.UUID;
