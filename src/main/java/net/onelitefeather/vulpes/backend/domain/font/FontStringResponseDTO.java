@@ -19,7 +19,7 @@ public interface FontStringResponseDTO {
      * @param orderIndex the order index of the font string
      */
     @Schema(
-            name = "FontStringDTO",
+            name = "ResponseFontStringDTO",
             description = "Font String DTO"
     )
     @Serdeable

@@ -164,7 +164,7 @@ public class ItemController {
                     )
             )
     )
-    @Get(uris = {"/all"})
+    @Get(uris = {"/"})
     @Produces(MediaType.APPLICATION_JSON)
     public HttpResponse<Page<ItemModelResponseDTO.ItemModelDTO>> getAll(Pageable pageable) {
         Page<ItemModelResponseDTO.ItemModelDTO> list = itemService.getAllItems(pageable);
@@ -227,6 +227,7 @@ public class ItemController {
 
     @Operation(
             summary = "Get enchantments of an item",
+            operationId = "getEnchantments",
             description = "Retrieves the enchantments of an item by its ID.",
             tags = {"Item"}
     )
@@ -386,6 +387,7 @@ public class ItemController {
 
     @Operation(
             summary = "Get all flags of an item",
+            operationId = "getFlags",
             description = "Retrieves all flags of an item by its ID.",
             tags = {"Item"}
     )
@@ -412,6 +414,7 @@ public class ItemController {
 
     @Operation(
             summary = "Update flag of an item",
+            operationId = "updateFlag",
             description = "Updates the flag of an item by its ID.",
             tags = {"Item"}
     )
@@ -437,6 +440,7 @@ public class ItemController {
 
     @Operation(
             summary = "Get all lore of an item",
+            operationId = "getLore",
             description = "Retrieves all lore of an item by its ID.",
             tags = {"Item"}
     )
@@ -463,6 +467,7 @@ public class ItemController {
 
     @Operation(
             summary = "Update lore of an item",
+            operationId = "updateLore",
             description = "Updates the lore of an item by its ID.",
             tags = {"Item"}
     )

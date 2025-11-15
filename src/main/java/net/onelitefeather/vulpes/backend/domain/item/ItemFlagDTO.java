@@ -8,12 +8,7 @@ import net.onelitefeather.vulpes.api.model.item.ItemFlagEntity;
 
 import java.util.UUID;
 
-@Schema(
-        requiredProperties = {
-                "id",
-                "flag"
-        }
-)
+@Schema()
 @Introspected
 @Serdeable
 public record ItemFlagDTO(

@@ -182,7 +182,7 @@ public class NotificationController {
                     schema = @Schema(implementation = NotificationModelResponseDTO.NotificationModelErrorDTO.class)
             )
     )
-    @Get(uris = {"/all"})
+    @Get(uris = {"/"})
     @Produces(MediaType.APPLICATION_JSON)
     public HttpResponse<Page<NotificationModelResponseDTO.NotificationModelDTO>> getAll(Pageable pageable) {
         Page<NotificationModelResponseDTO.NotificationModelDTO> list = notificationService.getAllNotifications(pageable);
@@ -208,7 +208,7 @@ public class NotificationController {
                     schema = @Schema(implementation = NotificationModelResponseDTO.NotificationModelDTO.class)
             )
     )
-    @Delete("/delete/all")
+    @Delete("/delete/")
     @Produces(MediaType.APPLICATION_JSON)
     public HttpResponse<List<NotificationModelResponseDTO>> deleteAll() {
         List<NotificationModelResponseDTO> result = notificationService.deleteAllNotifications();
