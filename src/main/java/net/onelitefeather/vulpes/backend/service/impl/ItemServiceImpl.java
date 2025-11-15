@@ -116,7 +116,7 @@ public class ItemServiceImpl implements ItemService {
         var item = byId.get();
         var entity = lore.toEntity();
         entity.setItem(item);
-        var saved = this.itemLoreRepository.save(entity);
+        var saved = this.itemLoreRepository.update(entity);
         return ItemLoreResponseDTO.ItemLoreDTO.createDTO(saved);
     }
 
@@ -129,8 +129,54 @@ public class ItemServiceImpl implements ItemService {
         var item = byId.get();
         ItemEnchantmentEntity entity = enchantment.toEntity();
         entity.setItem(item);
+        var saved = this.itemEnchantmentRepository.update(entity);
+        return ItemEnchantmentResponseDTO.ItemEnchantmentDTO.createDTO(saved);
+    }
+
+    @Override
+    public ItemEnchantmentResponseDTO createEnchantmentById(UUID id, ItemEnchantmentDTO enchantment) {
+        var byId = this.itemRepository.findById(id);
+        if (byId.isEmpty()) {
+            return new ItemEnchantmentResponseDTO.ItemEnchantmentErrorDTO(GENERIC_ERROR);
+        }
+        var item = byId.get();
+        ItemEnchantmentEntity entity = enchantment.toEntity();
+        entity.setItem(item);
         var saved = this.itemEnchantmentRepository.save(entity);
         return ItemEnchantmentResponseDTO.ItemEnchantmentDTO.createDTO(saved);
+    }
+
+    @Override
+    public ItemEnchantmentResponseDTO deleteEnchantmentById(UUID id, UUID enchantment) {
+        var byId = this.itemRepository.findById(id);
+        if (byId.isEmpty()) {
+            return new ItemEnchantmentResponseDTO.ItemEnchantmentErrorDTO(GENERIC_ERROR);
+        }
+        var item = byId.get();
+        var entity = this.itemEnchantmentRepository.findById(enchantment);
+        if (entity.isEmpty()) {
+            return new ItemEnchantmentResponseDTO.ItemEnchantmentErrorDTO(GENERIC_ERROR);
+        }
+        var resolvedEntity = entity.get();
+        if (!resolvedEntity.getItem().getId().equals(item.getId())) {
+            return new ItemEnchantmentResponseDTO.ItemEnchantmentErrorDTO(GENERIC_ERROR);
+        }
+        this.itemEnchantmentRepository.deleteById(resolvedEntity.getId());
+        return ItemEnchantmentResponseDTO.ItemEnchantmentDTO.createDTO(resolvedEntity);
+    }
+
+    @Override
+    public List<ItemEnchantmentResponseDTO> deleteAllEnchantmentsById(UUID id) {
+        var byId = this.itemRepository.findById(id);
+        if (byId.isEmpty()) {
+            return List.of();
+        }
+        var item = byId.get();
+        var enchantments = this.itemEnchantmentRepository.findAll().stream().filter(e -> e.getItem().getId().equals(item.getId())).toList();
+        this.itemEnchantmentRepository.deleteAll(enchantments);
+        return enchantments.stream()
+                .map(ItemEnchantmentResponseDTO.ItemEnchantmentDTO::createDTO)
+                .toList();
     }
 
     @Override
@@ -142,7 +188,7 @@ public class ItemServiceImpl implements ItemService {
         var item = byId.get();
         var entity = flag.toEntity();
         entity.setItem(item);
-        var saved = this.itemFlagRepository.save(entity);
+        var saved = this.itemFlagRepository.update(entity);
         return ItemFlagResponseDTO.ItemFlagDTO.createDTO(saved);
     }
 }

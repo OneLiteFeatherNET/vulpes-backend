@@ -11,6 +11,7 @@ import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.PathVariable;
 import io.micronaut.http.annotation.Post;
 import io.micronaut.http.annotation.Produces;
+import io.micronaut.http.annotation.Put;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -192,6 +193,7 @@ public class ItemController {
 
     @Operation(
             summary = "Update an item",
+            operationId = "updateItem",
             description = "Updates an item in the database.",
             tags = {"Item"}
     )
@@ -251,6 +253,7 @@ public class ItemController {
 
     @Operation(
             summary = "Update enchantment of an item",
+            operationId = "updateEnchantment",
             description = "Updates the enchantment of an item by its ID.",
             tags = {"Item"}
     )
@@ -276,8 +279,77 @@ public class ItemController {
     })
     public HttpResponse<ItemEnchantmentResponseDTO> updateEnchantment(@PathVariable UUID id, @Body ItemEnchantmentDTO enchantment) {
         var enchantmentResult = itemService.updateEnchantmentById(id, enchantment);
+        if (enchantmentResult instanceof ItemEnchantmentResponseDTO.ItemEnchantmentErrorDTO) {
+            return HttpResponse.notFound(enchantmentResult);
+        }
         return HttpResponse.ok(enchantmentResult);
     }
+
+    @Operation(
+            summary = "Create enchantment of an item",
+            operationId = "createEnchantment",
+            description = "Create the enchantment of an item by its ID.",
+            tags = {"Item"}
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "The enchantment of the item were successfully created.",
+            content = @Content(
+                    mediaType = MediaType.APPLICATION_JSON,
+                    schema = @Schema(implementation = ItemEnchantmentResponseDTO.ItemEnchantmentDTO.class)
+            )
+    )
+    @ApiResponse(
+            responseCode = "404",
+            description = "No item were found for the given item ID.",
+            content = @Content(
+                    mediaType = MediaType.APPLICATION_JSON,
+                    schema = @Schema(implementation = ItemEnchantmentResponseDTO.ItemEnchantmentErrorDTO.class)
+            )
+    )
+    @Put(uris = {
+            "/enchantment/{id}",
+            "/{id}/enchantment"
+    })
+    public HttpResponse<ItemEnchantmentResponseDTO> createEnchantment(@PathVariable UUID id, @Body ItemEnchantmentDTO enchantment) {
+        var enchantmentResult = itemService.createEnchantmentById(id, enchantment);
+        return HttpResponse.ok(enchantmentResult);
+    }
+
+    @Operation(
+            summary = "Create enchantment of an item",
+            operationId = "createEnchantment",
+            description = "Create the enchantment of an item by its ID.",
+            tags = {"Item"}
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "The enchantment of the item were successfully created.",
+            content = @Content(
+                    mediaType = MediaType.APPLICATION_JSON,
+                    schema = @Schema(implementation = ItemEnchantmentResponseDTO.ItemEnchantmentDTO.class)
+            )
+    )
+    @ApiResponse(
+            responseCode = "404",
+            description = "No item were found for the given item ID.",
+            content = @Content(
+                    mediaType = MediaType.APPLICATION_JSON,
+                    schema = @Schema(implementation = ItemEnchantmentResponseDTO.ItemEnchantmentErrorDTO.class)
+            )
+    )
+    @Put(uris = {
+            "/enchantment/{id}/{enchantmentId}",
+            "/{id}/enchantment/{enchantmentId}"
+    })
+    public HttpResponse<ItemEnchantmentResponseDTO> deleteEnchantment(@PathVariable UUID id, @PathVariable UUID enchantmentId) {
+        var enchantmentResult = itemService.deleteEnchantmentById(id, enchantmentId);
+        if (enchantmentResult instanceof ItemEnchantmentResponseDTO.ItemEnchantmentErrorDTO) {
+            return HttpResponse.notFound(enchantmentResult);
+        }
+        return HttpResponse.ok(enchantmentResult);
+    }
+
 
     @Operation(
             summary = "Get all flags of an item",

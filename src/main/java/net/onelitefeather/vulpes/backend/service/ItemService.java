@@ -112,6 +112,29 @@ public interface ItemService {
     ItemEnchantmentResponseDTO updateEnchantmentById(UUID id, ItemEnchantmentDTO enchantment);
 
     /**
+     * Creates the enchantments of an item by its ID.
+     * @param id the ID of the item to update the enchantments of
+     * @param enchantment the enchantments to create
+     * @return the created enchantment
+     */
+    ItemEnchantmentResponseDTO createEnchantmentById(UUID id, ItemEnchantmentDTO enchantment);
+
+    /**
+     * Delete the enchantment of an item by its ID.
+     * @param id the ID of the item to update the enchantments of
+     * @param enchantment the enchantment to delete
+     * @return the deleted enchantment
+     */
+    ItemEnchantmentResponseDTO deleteEnchantmentById(UUID id, UUID enchantment);
+
+    /**
+     * Delete the enchantments of an item by its ID.
+     * @param id the ID of the item to update the enchantments of
+     * @return the deleted enchantment
+     */
+    List<ItemEnchantmentResponseDTO> deleteAllEnchantmentsById(UUID id);
+
+    /**
      * Updates the lore of an item by its ID.
      * @param id the ID of the item to update the lore of
      * @param lore the new lore to set
