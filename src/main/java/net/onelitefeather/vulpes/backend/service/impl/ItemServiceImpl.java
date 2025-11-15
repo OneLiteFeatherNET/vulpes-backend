@@ -121,6 +121,52 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    public ItemLoreResponseDTO createLoreById(UUID id, ItemLoreDTO loreDto) {
+        var byId = this.itemRepository.findById(id);
+        if (byId.isEmpty()) {
+            return new ItemLoreResponseDTO.ItemLoreErrorDTO(GENERIC_ERROR);
+        }
+        var item = byId.get();
+        var entity = loreDto.toEntity();
+        entity.setItem(item);
+        var saved = this.itemLoreRepository.save(entity);
+        return ItemLoreResponseDTO.ItemLoreDTO.createDTO(saved);
+    }
+
+    @Override
+    public ItemLoreResponseDTO deleteLoreById(UUID id, UUID loreId) {
+        var byId = this.itemRepository.findById(id);
+        if (byId.isEmpty()) {
+            return new ItemLoreResponseDTO.ItemLoreErrorDTO(GENERIC_ERROR);
+        }
+        var item = byId.get();
+        var entity = this.itemLoreRepository.findById(loreId);
+        if (entity.isEmpty()) {
+            return new ItemLoreResponseDTO.ItemLoreErrorDTO(GENERIC_ERROR);
+        }
+        var resolvedEntity = entity.get();
+        if (!resolvedEntity.getItem().getId().equals(item.getId())) {
+            return new ItemLoreResponseDTO.ItemLoreErrorDTO(GENERIC_ERROR);
+        }
+        this.itemLoreRepository.deleteById(resolvedEntity.getId());
+        return ItemLoreResponseDTO.ItemLoreDTO.createDTO(resolvedEntity);
+    }
+
+    @Override
+    public List<ItemLoreResponseDTO> deleteAllLoreById(UUID id) {
+        var byId = this.itemRepository.findById(id);
+        if (byId.isEmpty()) {
+            return List.of();
+        }
+        var item = byId.get();
+        var lores = this.itemLoreRepository.findAll().stream().filter(e -> e.getItem().getId().equals(item.getId())).toList();
+        this.itemLoreRepository.deleteAll(lores);
+        return lores.stream()
+                .map(ItemLoreResponseDTO.ItemLoreDTO::createDTO)
+                .toList();
+    }
+
+    @Override
     public ItemEnchantmentResponseDTO updateEnchantmentById(UUID id, ItemEnchantmentDTO enchantment) {
         var byId = this.itemRepository.findById(id);
         if (byId.isEmpty()) {
