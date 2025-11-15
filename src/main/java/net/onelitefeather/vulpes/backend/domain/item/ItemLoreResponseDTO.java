@@ -18,7 +18,7 @@ public interface ItemLoreResponseDTO {
      * @param orderIndex the orderIndex of the lore
      */
     @Schema(
-            name = "ItemLoreDTO",
+            name = "ResponseItemLoreDTO",
             description = "Item Lore DTO"
     )
     @Serdeable

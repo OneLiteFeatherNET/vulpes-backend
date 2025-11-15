@@ -9,13 +9,7 @@ import net.onelitefeather.vulpes.api.model.item.ItemLoreEntity;
 
 import java.util.UUID;
 
-@Schema(
-        requiredProperties = {
-                "id",
-                "text",
-                "orderIndex"
-        }
-)
+@Schema()
 @Introspected
 @Serdeable
 public record ItemLoreDTO(

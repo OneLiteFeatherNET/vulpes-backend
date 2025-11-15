@@ -9,13 +9,11 @@ import net.onelitefeather.vulpes.api.model.item.ItemEnchantmentEntity;
 
 import java.util.UUID;
 
-@Schema(
-        requiredProperties = {
-                "id",
-                "name",
-                "level"
-        }
-)
+@Schema(requiredProperties = {
+        "id",
+        "name",
+        "level"
+})
 @Introspected
 @Serdeable
 public record ItemEnchantmentDTO(

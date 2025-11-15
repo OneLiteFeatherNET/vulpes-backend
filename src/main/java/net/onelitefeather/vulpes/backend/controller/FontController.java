@@ -159,7 +159,7 @@ public class FontController {
                     )
             )
     )
-    @Get(uris = {"/all"})
+    @Get(uris = {"/"})
     @Produces(MediaType.APPLICATION_JSON)
     public HttpResponse<Page<FontModelResponseDTO.FontModelDTO>> getAll(Pageable pageable) {
         Page<FontModelResponseDTO.FontModelDTO> models = fontService.getAllFonts(pageable);
@@ -180,7 +180,7 @@ public class FontController {
                     schema = @Schema(implementation = FontModelResponseDTO.FontModelDTO.class)
             )
     )
-    @Delete("delete/all")
+    @Delete("delete")
     @Produces(MediaType.APPLICATION_JSON)
     public HttpResponse<List<FontModelResponseDTO>> deleteAll() {
         List<FontModelResponseDTO> result = fontService.deleteAllFonts();

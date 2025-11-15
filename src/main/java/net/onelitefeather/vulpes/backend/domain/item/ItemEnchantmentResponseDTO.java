@@ -19,7 +19,7 @@ public interface ItemEnchantmentResponseDTO {
      * @param level the level of the enchantment
      */
     @Schema(
-            name = "ItemEnchantmentDTO",
+            name = "ResponseItemEnchantmentDTO",
             description = "Item Enchantment DTO"
     )
     @Serdeable

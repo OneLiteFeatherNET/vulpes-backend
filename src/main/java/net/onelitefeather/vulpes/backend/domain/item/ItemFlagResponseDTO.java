@@ -12,14 +12,14 @@ import java.util.UUID;
 public interface ItemFlagResponseDTO {
 
     /**
-     * Represents a response DTO for item lore.
+     * Represents a response DTO for item flag.
      *
      * @param id    the unique identifier of the flag
      * @param flag  the flag of the flag
      */
     @Schema(
-            name = "ItemLoreDTO",
-            description = "Item Lore DTO"
+            name = "ResponseItemFlagDTO",
+            description = "Item Flag DTO"
     )
     @Serdeable
     record ItemFlagDTO(
