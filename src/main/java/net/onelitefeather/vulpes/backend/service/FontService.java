@@ -80,4 +80,28 @@ public interface FontService {
      * @return the updated character
      */
     FontStringResponseDTO updateCharByFontId(UUID id, FontStringDTO charModel);
+
+    /**
+     * Create the character of a font by its ID.
+     * @param id the ID of the font
+     * @param charModel the new character to set
+     * @return the updated character
+     */
+    FontStringResponseDTO createCharByFontId(UUID id, FontStringDTO charModel);
+
+    /**
+     * Deletes the character of a font by its ID.
+     * @param fontId the ID of the font
+     * @param charId the id of the character to delete
+     * @return the deleted character
+     */
+    FontStringResponseDTO deleteCharByFontId(UUID fontId, UUID charId);
+
+
+    /**
+     * Deletes all characters of a font by its ID.
+     * @param fontId the ID of the font
+     * @return the list of deleted characters
+     */
+    List<FontStringResponseDTO> deleteAllCharByFontId(UUID fontId);
 }
