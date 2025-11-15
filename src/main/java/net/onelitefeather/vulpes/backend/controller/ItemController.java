@@ -317,14 +317,14 @@ public class ItemController {
     }
 
     @Operation(
-            summary = "Create enchantment of an item",
-            operationId = "createEnchantment",
-            description = "Create the enchantment of an item by its ID.",
+            summary = "Delete enchantment of an item",
+            operationId = "deleteEnchantment",
+            description = "delete the enchantment of an item by its ID.",
             tags = {"Item"}
     )
     @ApiResponse(
             responseCode = "200",
-            description = "The enchantment of the item were successfully created.",
+            description = "The enchantment of the item were successfully deleted.",
             content = @Content(
                     mediaType = MediaType.APPLICATION_JSON,
                     schema = @Schema(implementation = ItemEnchantmentResponseDTO.ItemEnchantmentDTO.class)
@@ -338,7 +338,7 @@ public class ItemController {
                     schema = @Schema(implementation = ItemEnchantmentResponseDTO.ItemEnchantmentErrorDTO.class)
             )
     )
-    @Put(uris = {
+    @Delete(uris = {
             "/enchantment/{id}/{enchantmentId}",
             "/{id}/enchantment/{enchantmentId}"
     })
@@ -347,6 +347,39 @@ public class ItemController {
         if (enchantmentResult instanceof ItemEnchantmentResponseDTO.ItemEnchantmentErrorDTO) {
             return HttpResponse.notFound(enchantmentResult);
         }
+        return HttpResponse.ok(enchantmentResult);
+    }
+
+    @Operation(
+            summary = "Delete enchantments of an item",
+            operationId = "deleteEnchantments",
+            description = "delete the enchantments of an item by its ID.",
+            tags = {"Item"}
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "The enchantment of the item were successfully deleted.",
+            content = @Content(
+                    mediaType = MediaType.APPLICATION_JSON,
+                    array = @ArraySchema(
+                            schema = @Schema(implementation = ItemEnchantmentResponseDTO.ItemEnchantmentDTO.class)
+                    )
+            )
+    )
+    @ApiResponse(
+            responseCode = "404",
+            description = "No item were found for the given item ID.",
+            content = @Content(
+                    mediaType = MediaType.APPLICATION_JSON,
+                    schema = @Schema(implementation = ItemEnchantmentResponseDTO.ItemEnchantmentErrorDTO.class)
+            )
+    )
+    @Delete(uris = {
+            "/enchantment/{id}/",
+            "/{id}/enchantment/"
+    })
+    public HttpResponse<List<ItemEnchantmentResponseDTO>> deleteEnchantments(@PathVariable UUID id) {
+        var enchantmentResult = itemService.deleteAllEnchantmentsById(id);
         return HttpResponse.ok(enchantmentResult);
     }
 
