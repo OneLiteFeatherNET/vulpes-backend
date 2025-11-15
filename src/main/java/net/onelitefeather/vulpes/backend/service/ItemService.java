@@ -69,15 +69,6 @@ public interface ItemService {
     Optional<ItemEntity> findItemById(UUID id);
 
     /**
-     * Gets the enchantments of an item by its ID.
-     *
-     * @param id the ID of the item
-     * @param pageable pagination information
-     * @return a map of enchantment names to levels
-     */
-    Page<ItemEnchantmentResponseDTO> findEnchantmentsById(UUID id, Pageable pageable);
-
-    /**
      * Gets the flags of an item by its ID.
      *
      * @param id the ID of the item
@@ -87,21 +78,21 @@ public interface ItemService {
     Page<ItemFlagResponseDTO> findFlagsById(UUID id, Pageable pageable);
 
     /**
-     * Gets the lore of an item by its ID.
-     *
-     * @param id the ID of the item
-     * @param pageable pagination information
-     * @return a list of lore lines
-     */
-    Page<ItemLoreResponseDTO> findLoreById(UUID id, Pageable pageable);
-
-    /**
      * Updates the flag of an item by its ID.
      * @param id the ID of the item to update the flag of
      * @param flag the new flag to set
      * @return the updated flag
      */
     ItemFlagResponseDTO updateFlagById(UUID id, ItemFlagDTO flag);
+
+    /**
+     * Gets the enchantments of an item by its ID.
+     *
+     * @param id the ID of the item
+     * @param pageable pagination information
+     * @return a map of enchantment names to levels
+     */
+    Page<ItemEnchantmentResponseDTO> findEnchantmentsById(UUID id, Pageable pageable);
 
     /**
      * Updates the enchantments of an item by its ID.
@@ -135,10 +126,42 @@ public interface ItemService {
     List<ItemEnchantmentResponseDTO> deleteAllEnchantmentsById(UUID id);
 
     /**
+     * Gets the lore of an item by its ID.
+     *
+     * @param id the ID of the item
+     * @param pageable pagination information
+     * @return a list of lore lines
+     */
+    Page<ItemLoreResponseDTO> findLoreById(UUID id, Pageable pageable);
+
+    /**
      * Updates the lore of an item by its ID.
      * @param id the ID of the item to update the lore of
-     * @param lore the new lore to set
+     * @param loreDto the lore to update
      * @return the updated lore
      */
-    ItemLoreResponseDTO updateLoreById(UUID id, ItemLoreDTO lore);
+    ItemLoreResponseDTO updateLoreById(UUID id, ItemLoreDTO loreDto);
+
+    /**
+     * Creates the lore of an item by its ID.
+     * @param id the ID of the item to update the lore of item
+     * @param loreDto the lore to create
+     * @return the created lore
+     */
+    ItemLoreResponseDTO createLoreById(UUID id, ItemLoreDTO loreDto);
+
+    /**
+     * Delete the enchantment of an item by its ID.
+     * @param id the ID of the item to update the enchantments of
+     * @param loreId the enchantment to delete
+     * @return the deleted enchantment
+     */
+    ItemLoreResponseDTO deleteLoreById(UUID id, UUID loreId);
+
+    /**
+     * Delete the lore of an item by its ID.
+     * @param id the ID of the item to update the lore of
+     * @return the deleted lore
+     */
+    List<ItemLoreResponseDTO> deleteAllLoreById(UUID id);
 }

@@ -423,10 +423,7 @@ public class ItemController {
             description = "The flags of the item were successfully updated.",
             content = @Content(
                     mediaType = MediaType.APPLICATION_JSON,
-                    array = @ArraySchema(
-                            schema = @Schema(implementation = ItemLoreResponseDTO.ItemLoreDTO.class),
-                            arraySchema = @Schema(implementation = List.class)
-                    )
+                    schema = @Schema(implementation = ItemLoreResponseDTO.ItemLoreDTO.class)
             )
     )
     @Post(uris = {
@@ -435,6 +432,9 @@ public class ItemController {
     })
     public HttpResponse<ItemFlagResponseDTO> updateFlags(@PathVariable UUID id, @Body ItemFlagDTO flag) {
         ItemFlagResponseDTO result = itemService.updateFlagById(id, flag);
+        if (result instanceof ItemFlagResponseDTO.ItemFlagErrorDTO) {
+            return HttpResponse.notFound(result);
+        }
         return HttpResponse.ok(result);
     }
 
@@ -488,8 +488,107 @@ public class ItemController {
     })
     public HttpResponse<ItemLoreResponseDTO> updateLore(@PathVariable UUID id,@Body ItemLoreDTO lore) {
         ItemLoreResponseDTO result = itemService.updateLoreById(id, lore);
+        if (result instanceof ItemLoreResponseDTO.ItemLoreErrorDTO) {
+            return HttpResponse.notFound(result);
+        }
         return HttpResponse.ok(result);
     }
+
+    @Operation(
+            summary = "Create lore of an item",
+            operationId = "createdLore",
+            description = "Updates the lore of an item by its ID.",
+            tags = {"Item"}
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "The lore of the item was successfully created.",
+            content = @Content(
+                    mediaType = MediaType.APPLICATION_JSON,
+                    schema = @Schema(implementation = ItemLoreResponseDTO.ItemLoreDTO.class)
+            )
+    )
+    @Put(uris = {
+            "/lore/{id}",
+            "/{id}/lore"
+    })
+    public HttpResponse<ItemLoreResponseDTO> createLore(@PathVariable UUID id,@Body ItemLoreDTO lore) {
+        ItemLoreResponseDTO result = itemService.createLoreById(id, lore);
+        if (result instanceof ItemLoreResponseDTO.ItemLoreErrorDTO) {
+            return HttpResponse.notFound(result);
+        }
+        return HttpResponse.ok(result);
+    }
+
+
+    @Operation(
+            summary = "Delete lore of an item",
+            operationId = "deleteLore",
+            description = "delete the lore of an item by its ID.",
+            tags = {"Item"}
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "The lore of the item were successfully deleted.",
+            content = @Content(
+                    mediaType = MediaType.APPLICATION_JSON,
+                    schema = @Schema(implementation = ItemLoreResponseDTO.ItemLoreDTO.class)
+            )
+    )
+    @ApiResponse(
+            responseCode = "404",
+            description = "No item were found for the given item ID.",
+            content = @Content(
+                    mediaType = MediaType.APPLICATION_JSON,
+                    schema = @Schema(implementation = ItemLoreResponseDTO.ItemLoreErrorDTO.class)
+            )
+    )
+    @Delete(uris = {
+            "/lore/{id}/{loreId}",
+            "/{id}/lore/{loreId}"
+    })
+    public HttpResponse<ItemLoreResponseDTO> deleteLore(@PathVariable UUID id, @PathVariable UUID loreId) {
+        var deleteResponse = itemService.deleteLoreById(id, loreId);
+        if (deleteResponse instanceof ItemLoreResponseDTO.ItemLoreErrorDTO) {
+            return HttpResponse.notFound(deleteResponse);
+        }
+        return HttpResponse.ok(deleteResponse);
+    }
+
+    @Operation(
+            summary = "Delete all lore of an item",
+            operationId = "deleteAllLore",
+            description = "delete all the lores of an item by its ID.",
+            tags = {"Item"}
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "The lores of the item were successfully deleted.",
+            content = @Content(
+                    mediaType = MediaType.APPLICATION_JSON,
+                    array = @ArraySchema(
+                            schema = @Schema(implementation = ItemLoreResponseDTO.ItemLoreDTO.class)
+                    )
+            )
+    )
+    @ApiResponse(
+            responseCode = "404",
+            description = "No item were found for the given item ID.",
+            content = @Content(
+                    mediaType = MediaType.APPLICATION_JSON,
+                    schema = @Schema(implementation = ItemLoreResponseDTO.ItemLoreErrorDTO.class)
+            )
+    )
+    @Delete(uris = {
+            "/lore/{id}/",
+            "/{id}/lore/"
+    })
+    public HttpResponse<List<ItemLoreResponseDTO>> deleteLores(@PathVariable UUID id) {
+        var enchantmentResult = itemService.deleteAllLoreById(id);
+        return HttpResponse.ok(enchantmentResult);
+    }
+
+
 
 
 
