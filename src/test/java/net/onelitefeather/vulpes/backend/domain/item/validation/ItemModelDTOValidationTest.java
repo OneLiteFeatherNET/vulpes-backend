@@ -108,7 +108,7 @@ class ItemModelDTOValidationTest extends ValidationTestBase<ItemModelDTO> {
                 1
         );
 
-        assertViolation(dto, "group");
+        assertViolation(dto, "groupName");
     }
 
     @Test
