@@ -33,7 +33,7 @@ public record ItemModelDTO(
         @Schema(description = "Internal description of the item", requiredMode = Schema.RequiredMode.REQUIRED) String comment,
         @Schema(description = "The display name of the item", requiredMode = Schema.RequiredMode.REQUIRED) @NotBlank String displayName,
         @Schema(description = "The material from the item", requiredMode = Schema.RequiredMode.REQUIRED) @NotBlank String material,
-        @Schema(description = "The group to identify their basic usage", requiredMode = Schema.RequiredMode.REQUIRED) @NotBlank String group,
+        @Schema(description = "The group to identify their basic usage", requiredMode = Schema.RequiredMode.REQUIRED) @NotBlank String groupName,
         @Schema(description = "Integer which refers to the customModelData index", requiredMode = Schema.RequiredMode.REQUIRED) @PositiveOrZero int customModelData,
         @Schema(description = "The amount of the item", requiredMode = Schema.RequiredMode.REQUIRED) @Positive int amount
 ) {
@@ -51,7 +51,7 @@ public record ItemModelDTO(
                 comment,
                 displayName,
                 material,
-                group,
+                groupName,
                 customModelData,
                 amount,
                 List.of(),
