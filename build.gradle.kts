@@ -1,10 +1,9 @@
 plugins {
     alias(libs.plugins.micronaut.application)
     alias(libs.plugins.micronaut.aot)
-    alias(libs.plugins.micronaut.test.resources)
+//    alias(libs.plugins.micronaut.test.resources) // TODO: Needs be fixed, ref: https://github.com/micronaut-projects/micronaut-gradle-plugin/issues/1195
     jacoco
     `maven-publish`
-    id("org.openapi.generator") version "7.14.0"
     alias(libs.plugins.cyclonedx)
 }
 
@@ -37,7 +36,6 @@ dependencies {
     implementation(mn.micronaut.openapi)
     implementation(mn.validation)
     implementation(mn.swagger.core)
-    implementation(mn.micronaut.management)
     implementation(mn.micronaut.micrometer.core)
     implementation(mn.micronaut.micrometer.registry.prometheus)
     // External Dependencies
@@ -105,93 +103,6 @@ tasks {
             csv.required.set(false)
         }
     }
-    this.openApiGenerate {
-        dependsOn("compileJava")
-    }
-    register("pushDartClient") {
-        dependsOn("openApiGenerate")
-       doLast {
-           val clientDir = file("$projectDir/build/generated/dart-client")
-           val version = project.version as String
-
-           // Get GitHub credentials from environment variables
-           val githubToken = System.getenv("CLIENT_REPO_TOKEN") ?: System.getenv("GITHUB_TOKEN") ?: throw GradleException("CLIENT_REPO_TOKEN or GITHUB_TOKEN environment variable is required")
-
-           // Create a temporary directory for the Git repository
-           val tempDir = file("$projectDir/build/temp/vulpes-client")
-           tempDir.mkdirs()
-           providers.exec {
-               workingDir = tempDir
-               commandLine("git", "clone", "https://${githubToken}@github.com/OneLiteFeatherNET/vulpes-backend-client-dart.git", ".")
-           }.result?.get()
-
-           // Copy the generated client to the repository
-           copy {
-               from(clientDir)
-               into(tempDir)
-           }
-
-//           providers.exec {
-//               workingDir = tempDir
-//               commandLine("flutter", "pub", "get")
-//           }.result?.get()
-
-//           providers.exec {
-//               workingDir = tempDir
-//               commandLine("flutter", "pub", "run", "build_runner", "build", "--delete-conflicting-outputs")
-//           }.result?.get()
-
-           providers.exec {
-               workingDir = tempDir
-               commandLine("git", "add", ".")
-           }.result?.get()
-
-           providers.exec {
-               workingDir = tempDir
-               commandLine("git", "commit", "-m", "Update client to version $version")
-           }.result?.get()
-
-           providers.exec {
-               workingDir = tempDir
-               commandLine("git", "tag", "-a", "v$version", "-m", "Version $version")
-           }.result?.get()
-
-           providers.exec {
-               workingDir = tempDir
-               commandLine("git", "push", "origin")
-           }.result?.get()
-
-           providers.exec {
-               workingDir = tempDir
-               commandLine("git", "push", "origin", "--tags")
-           }.result?.get()
-       }
-    }
-    named("publish") {
-        dependsOn("pushDartClient")
-    }
-}
-
-// OpenAPI Generator configuration
-openApiGenerate {
-    generatorName.set("dart-dio")
-    inputSpec.set("$projectDir/build/classes/java/main/META-INF/swagger/vulpes-backend-1.0.yml")
-    outputDir.set("$projectDir/build/generated/dart-client")
-    apiPackage.set("net.onelitefeather.vulpes.backend.client.api")
-    invokerPackage.set("net.onelitefeather.vulpes.backend.client.invoker")
-    modelPackage.set("net.onelitefeather.vulpes.backend.client.model")
-    configOptions.set(mapOf(
-        "pubName" to "vulpes_backend_client",
-        "pubVersion" to (project.version as String),
-        "pubDescription" to "Vulpes Backend API Client",
-        "pubAuthor" to "OneLiteFeatherNET",
-        "pubAuthorEmail" to "p.glanz@madfix.me",
-        "pubHomepage" to "https://github.com/OneLiteFeatherNET/vulpes-backend-client-dart",
-        "pubRepository" to "https://github.com/OneLiteFeatherNET/vulpes-backend-client-dart",
-        "pubPublishTo" to "https://github.com/OneLiteFeatherNET/vulpes-backend-client-dart",
-        "dateLibrary" to "core",
-        "enumUnknownDefaultCase" to "true"
-    ))
 }
 
 publishing {

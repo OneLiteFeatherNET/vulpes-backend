@@ -11,6 +11,7 @@ import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.PathVariable;
 import io.micronaut.http.annotation.Post;
 import io.micronaut.http.annotation.Produces;
+import io.micronaut.http.annotation.Put;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -21,6 +22,8 @@ import jakarta.validation.Valid;
 import net.onelitefeather.vulpes.api.model.FontEntity;
 import net.onelitefeather.vulpes.backend.domain.font.FontModelDTO;
 import net.onelitefeather.vulpes.backend.domain.font.FontModelResponseDTO;
+import net.onelitefeather.vulpes.backend.domain.font.FontStringDTO;
+import net.onelitefeather.vulpes.backend.domain.font.FontStringResponseDTO;
 import net.onelitefeather.vulpes.backend.service.FontService;
 
 import java.util.List;
@@ -105,62 +108,7 @@ public class FontController {
     }
 
 
-    @Operation(
-            summary = "Get characters by font ID",
-            operationId = "getCharsById",
-            description = "Gets the characters of a font by its ID from the database.",
-            tags = {"Font"}
-    )
-    @ApiResponse(
-            responseCode = "200",
-            description = "The characters of the font were successfully retrieved from the database.",
-            content = @Content(
-                    mediaType = MediaType.APPLICATION_JSON,
-                    schema = @Schema(implementation = FontModelCharsResponseDTO.class)
-            )
-    )
-    @ApiResponse(
-            responseCode = "404",
-            description = "The font was not found in the database.",
-            content = @Content(
-                    mediaType = MediaType.APPLICATION_JSON,
-                    schema = @Schema(implementation = FontModelErrorDTO.class)
-            )
-    )
-    @Get("/chars/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public HttpResponse<FontModelResponseDTO> getCharsById(@PathVariable UUID id) {
-        List<String> model = fontService.findCharsByFontId(id);
-        if (model == null) {
-            return HttpResponse.notFound(new FontModelErrorDTO("Font not found"));
-        }
-        FontModelCharsResponseDTO dto = FontModelCharsResponseDTO.createDTO(id, model);
-        return HttpResponse.ok(dto);
-    }
 
-    @Operation(
-            summary = "Update characters of a font",
-            operationId = "updateChars",
-            description = "Updates the characters of a font in the database.",
-            tags = {"Font"}
-    )
-    @ApiResponse(
-            responseCode = "200",
-            description = "The characters of the font were successfully updated in the database.",
-            content = @Content(
-                    mediaType = MediaType.APPLICATION_JSON,
-                    array = @ArraySchema(
-                            schema = @Schema(implementation = FontModelCharsResponseDTO.class)
-                    )
-            )
-    )
-    @Post("/chars/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public HttpResponse<FontModelResponseDTO> updateChars(@PathVariable UUID id,@Body List<String> chars) {
-        List<String> model = fontService.updateCharsByFontId(id, chars);
-        FontModelCharsResponseDTO dto = FontModelCharsResponseDTO.createDTO(id, model);
-        return HttpResponse.ok(dto);
-    }
 
     @Operation(
             summary = "Remove a font by ID",
@@ -211,7 +159,7 @@ public class FontController {
                     )
             )
     )
-    @Get(uris = {"/all"})
+    @Get(uris = {"/"})
     @Produces(MediaType.APPLICATION_JSON)
     public HttpResponse<Page<FontModelResponseDTO.FontModelDTO>> getAll(Pageable pageable) {
         Page<FontModelResponseDTO.FontModelDTO> models = fontService.getAllFonts(pageable);
@@ -232,7 +180,7 @@ public class FontController {
                     schema = @Schema(implementation = FontModelResponseDTO.FontModelDTO.class)
             )
     )
-    @Delete("delete/all")
+    @Delete("delete")
     @Produces(MediaType.APPLICATION_JSON)
     public HttpResponse<List<FontModelResponseDTO>> deleteAll() {
         List<FontModelResponseDTO> result = fontService.deleteAllFonts();
@@ -271,5 +219,134 @@ public class FontController {
             return HttpResponse.notFound(result);
         }
         return HttpResponse.ok(result);
+    }
+
+    @Operation(
+            summary = "Create character of a font",
+            operationId = "createChar",
+            description = "Create the character of a font in the database.",
+            tags = {"Font"}
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "The characters of the font were successfully updated in the database.",
+            content = @Content(
+                    mediaType = MediaType.APPLICATION_JSON,
+                    schema = @Schema(implementation = FontStringResponseDTO.class)
+            )
+    )
+    @Put("/chars/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public HttpResponse<FontStringResponseDTO> createChar(@PathVariable UUID id, @Body FontStringDTO charModel) {
+        FontStringResponseDTO model = fontService.createCharByFontId(id, charModel);
+        return HttpResponse.ok(model);
+    }
+
+    @Operation(
+            summary = "Get characters by font ID",
+            operationId = "getCharsById",
+            description = "Gets the characters of a font by its ID from the database.",
+            tags = {"Font"}
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "The characters of the font were successfully retrieved from the database.",
+            content = @Content(
+                    mediaType = MediaType.APPLICATION_JSON,
+                    schema = @Schema(implementation = FontStringResponseDTO.class)
+            )
+    )
+    @ApiResponse(
+            responseCode = "404",
+            description = "The font was not found in the database.",
+            content = @Content(
+                    mediaType = MediaType.APPLICATION_JSON,
+                    schema = @Schema(implementation = FontModelErrorDTO.class)
+            )
+    )
+    @Get("/chars/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public HttpResponse<Page<FontStringResponseDTO>> readCharsById(@PathVariable UUID id, Pageable pageable) {
+        Page<FontStringResponseDTO> models = fontService.findCharsByFontId(id, pageable);
+        return HttpResponse.ok(models);
+    }
+
+    @Operation(
+            summary = "Update character of a font",
+            operationId = "updateChar",
+            description = "Updates the character of a font in the database.",
+            tags = {"Font"}
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "The characters of the font were successfully updated in the database.",
+            content = @Content(
+                    mediaType = MediaType.APPLICATION_JSON,
+                    array = @ArraySchema(
+                            schema = @Schema(implementation = FontStringResponseDTO.class)
+                    )
+            )
+    )
+    @Post("/chars/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public HttpResponse<FontStringResponseDTO> updateChar(@PathVariable UUID id, @Body FontStringDTO charModel) {
+        FontStringResponseDTO model = fontService.updateCharByFontId(id, charModel);
+        return HttpResponse.ok(model);
+    }
+
+
+    @Operation(
+            summary = "Delete character of a font",
+            operationId = "deleteChar",
+            description = "Delete the character of a font in the database.",
+            tags = {"Font"}
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "The characters of the font were successfully updated in the database.",
+            content = @Content(
+                    mediaType = MediaType.APPLICATION_JSON,
+                    schema = @Schema(implementation = FontStringResponseDTO.FontStringDTO.class)
+            )
+    )
+    @ApiResponse(
+            responseCode = "404",
+            description = "The character was not found in the database.",
+            content = @Content(
+                    mediaType = MediaType.APPLICATION_JSON,
+                    schema = @Schema(implementation = FontStringResponseDTO.FontStringErrorDTO.class)
+            )
+    )
+    @Delete("/chars/{fontId}/{charId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public HttpResponse<FontStringResponseDTO> deleteChar(@PathVariable UUID fontId, @PathVariable UUID charId) {
+        FontStringResponseDTO model = fontService.deleteCharByFontId(fontId, charId);
+        if (model instanceof FontStringResponseDTO.FontStringErrorDTO) {
+            return HttpResponse.notFound(model);
+        }
+        return HttpResponse.ok(model);
+    }
+
+    @Operation(
+            summary = "Delete character of a font",
+            operationId = "deleteChar",
+            description = "Delete the character of a font in the database.",
+            tags = {"Font"}
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "The characters of the font were successfully deleted in the database.",
+            content = @Content(
+                    mediaType = MediaType.APPLICATION_JSON,
+                    array = @ArraySchema(
+                            schema = @Schema(implementation = FontStringResponseDTO.class)
+                    )
+            )
+    )
+    @Delete("/chars/{fontId}/")
+    @Produces(MediaType.APPLICATION_JSON)
+    public HttpResponse<List<FontStringResponseDTO>> deleteAllChars(@PathVariable UUID fontId) {
+        List<FontStringResponseDTO> model = fontService.deleteAllCharByFontId(fontId);
+        return HttpResponse.ok(model);
     }
 }

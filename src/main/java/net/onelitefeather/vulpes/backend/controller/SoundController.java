@@ -174,7 +174,7 @@ public class SoundController {
                     schema = @Schema(implementation = SoundResponseDTO.SoundErrorDTO.class)
             )
     )
-    @Get("/all")
+    @Get("/")
     @Produces(MediaType.APPLICATION_JSON)
     public HttpResponse<Page<SoundResponseDTO.SoundModelDTO>> getAll(Pageable pageable) {
         Page<SoundResponseDTO.SoundModelDTO> returnValues = soundService.getAllSoundEvents(pageable);
@@ -195,7 +195,7 @@ public class SoundController {
                     schema = @Schema(implementation = SoundResponseDTO.SoundModelDTO.class)
             )
     )
-    @Delete("/delete/all")
+    @Delete("/delete/")
     @Produces(MediaType.APPLICATION_JSON)
     public HttpResponse<List<SoundResponseDTO>> deleteAll() {
         List<SoundResponseDTO> results = soundService.deleteAllSoundEvents();

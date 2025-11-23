@@ -144,7 +144,7 @@ public class AttributeController {
                     schema = @Schema(implementation = AttributeModelResponseDTO.AttributeModelDTO.class)
             )
     )
-    @Delete("/delete/all")
+    @Delete("/delete")
     public HttpResponse<List<AttributeModelResponseDTO>> deleteAll() {
         List<AttributeModelResponseDTO> result = attributeService.deleteAllAttributes();
         return HttpResponse.ok(result);
@@ -173,7 +173,7 @@ public class AttributeController {
             )
     )
     @Produces(MediaType.APPLICATION_JSON)
-    @Get(uris = {"/all"})
+    @Get(uris = {"/"})
     public HttpResponse<Page<AttributeModelResponseDTO.AttributeModelDTO>> getAll(Pageable pageable) {
         Page<AttributeModelResponseDTO.AttributeModelDTO> models = attributeService.getAllAttributes(pageable);
         return HttpResponse.ok(models);

@@ -50,7 +50,6 @@ public sealed interface FontModelResponseDTO {
      * @param comment      an example comment for the font model
      * @param ascent       the ascent value of the font model
      * @param height       the height of the font model
-     * @param chars        an optional list of characters in the font model
      */
     @Schema(name = "ResponseFontModelDTO", description = "Font model data")
     @Serdeable
@@ -63,8 +62,7 @@ public sealed interface FontModelResponseDTO {
             @Schema(description = "Example comment", requiredMode = Schema.RequiredMode.REQUIRED) String texturePath,
             @Schema(description = "Example comment", requiredMode = Schema.RequiredMode.REQUIRED) String comment,
             @Schema(description = "Example comment", requiredMode = Schema.RequiredMode.REQUIRED) int ascent,
-            @Schema(description = "Example comment", requiredMode = Schema.RequiredMode.REQUIRED) int height,
-            @Schema(description = "Example comment", requiredMode = Schema.RequiredMode.NOT_REQUIRED) List<String> chars
+            @Schema(description = "Example comment", requiredMode = Schema.RequiredMode.REQUIRED) int height
     ) implements FontModelResponseDTO {
 
         /**
@@ -83,8 +81,7 @@ public sealed interface FontModelResponseDTO {
                     fontModel.getTexturePath(),
                     fontModel.getComment(),
                     fontModel.getAscent(),
-                    fontModel.getHeight(),
-                    Collections.emptyList()
+                    fontModel.getHeight()
             );
         }
 
@@ -104,8 +101,7 @@ public sealed interface FontModelResponseDTO {
                     fontModel.getTexturePath(),
                     fontModel.getComment(),
                     fontModel.getAscent(),
-                    fontModel.getHeight(),
-                    fontModel.getChars()
+                    fontModel.getHeight()
             );
         }
     }
