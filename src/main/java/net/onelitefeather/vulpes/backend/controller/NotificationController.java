@@ -5,17 +5,18 @@ import io.micronaut.data.model.Pageable;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.*;
+import io.micronaut.validation.Validated;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import jakarta.validation.Valid;
 import jakarta.inject.Inject;
 import net.onelitefeather.vulpes.api.model.NotificationEntity;
 import net.onelitefeather.vulpes.backend.domain.notification.NotificationModelDTO;
 import net.onelitefeather.vulpes.backend.domain.notification.NotificationModelResponseDTO;
 import net.onelitefeather.vulpes.backend.service.NotificationService;
+import net.onelitefeather.vulpes.backend.validation.ValidationGroup;
 
 import java.util.List;
 import java.util.Optional;
@@ -69,8 +70,9 @@ public class NotificationController {
     )
     @Post
     @Produces(MediaType.APPLICATION_JSON)
+    @Validated(groups = ValidationGroup.Create.class)
     public HttpResponse<NotificationModelResponseDTO> add(
-            @Body @Valid NotificationModelDTO model
+            @Body NotificationModelDTO model
     ) {
         NotificationModelResponseDTO.NotificationModelDTO result = notificationService.createNotification(model);
         return HttpResponse.ok(result);
@@ -245,7 +247,8 @@ public class NotificationController {
     )
     @Post("/update")
     @Produces(MediaType.APPLICATION_JSON)
-    public HttpResponse<NotificationModelResponseDTO> update(@Body @Valid NotificationModelDTO model) {
+    @Validated(groups = ValidationGroup.Update.class)
+    public HttpResponse<NotificationModelResponseDTO> update(@Body NotificationModelDTO model) {
         NotificationModelResponseDTO result = notificationService.updateNotification(model);
         if (result instanceof NotificationModelResponseDTO.NotificationModelErrorDTO) {
             return HttpResponse.notFound(result);

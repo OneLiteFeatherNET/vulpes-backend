@@ -12,13 +12,13 @@ import io.micronaut.http.annotation.PathVariable;
 import io.micronaut.http.annotation.Post;
 import io.micronaut.http.annotation.Produces;
 import io.micronaut.http.annotation.Put;
+import io.micronaut.validation.Validated;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.inject.Inject;
-import jakarta.validation.Valid;
 import net.onelitefeather.vulpes.api.model.ItemEntity;
 import net.onelitefeather.vulpes.backend.domain.item.ItemEnchantmentDTO;
 import net.onelitefeather.vulpes.backend.domain.item.ItemEnchantmentResponseDTO;
@@ -29,6 +29,7 @@ import net.onelitefeather.vulpes.backend.domain.item.ItemLoreResponseDTO;
 import net.onelitefeather.vulpes.backend.domain.item.ItemModelDTO;
 import net.onelitefeather.vulpes.backend.domain.item.ItemModelResponseDTO;
 import net.onelitefeather.vulpes.backend.service.ItemService;
+import net.onelitefeather.vulpes.backend.validation.ValidationGroup;
 
 import java.util.List;
 import java.util.Optional;
@@ -72,8 +73,9 @@ public class ItemController {
     )
     @Post
     @Produces(MediaType.APPLICATION_JSON)
+    @Validated(groups = ValidationGroup.Create.class)
     public HttpResponse<ItemModelResponseDTO> add(
-           @Valid @Body ItemModelDTO itemModel
+           @Body ItemModelDTO itemModel
     ) {
         ItemModelResponseDTO.ItemModelDTO createdItem = itemService.createItem(itemModel);
         return HttpResponse.ok(createdItem);
@@ -104,7 +106,7 @@ public class ItemController {
     @Get("/{itemId}")
     @Produces(MediaType.APPLICATION_JSON)
     public HttpResponse<ItemModelResponseDTO> getById(
-            @Valid @PathVariable("itemId") UUID itemId
+            @PathVariable("itemId") UUID itemId
     ) {
         Optional<ItemEntity> foundItemOpt = itemService.findItemById(itemId);
         if (foundItemOpt.isPresent()) {
@@ -216,8 +218,9 @@ public class ItemController {
     )
     @Post("/update")
     @Produces(MediaType.APPLICATION_JSON)
+    @Validated(groups = ValidationGroup.Update.class)
     public HttpResponse<ItemModelResponseDTO> update(
-            @Valid @Body ItemModelDTO itemModel
+            @Body ItemModelDTO itemModel
     ) {
         ItemModelResponseDTO updateResult = itemService.updateItem(itemModel);
         if (updateResult instanceof ItemModelResponseDTO.ItemModelErrorDTO) {
@@ -279,6 +282,7 @@ public class ItemController {
             "/enchantment/{itemId}",
             "/{itemId}/enchantment"
     })
+    @Validated(groups = ValidationGroup.Update.class)
     public HttpResponse<ItemEnchantmentResponseDTO> updateEnchantment(@PathVariable("itemId") UUID itemId, @Body ItemEnchantmentDTO enchantment) {
         var updateResult = itemService.updateEnchantmentById(itemId, enchantment);
         if (updateResult instanceof ItemEnchantmentResponseDTO.ItemEnchantmentErrorDTO) {
@@ -313,6 +317,7 @@ public class ItemController {
             "/enchantment/{itemId}",
             "/{itemId}/enchantment"
     })
+    @Validated(groups = ValidationGroup.Create.class)
     public HttpResponse<ItemEnchantmentResponseDTO> createEnchantment(@PathVariable("itemId") UUID itemId, @Body ItemEnchantmentDTO enchantment) {
         var createResult = itemService.createEnchantmentById(itemId, enchantment);
         return HttpResponse.ok(createResult);
@@ -438,6 +443,7 @@ public class ItemController {
             "/lore/{itemId}",
             "/{itemId}/lore"
     })
+    @Validated(groups = ValidationGroup.Update.class)
     public HttpResponse<ItemLoreResponseDTO> updateLore(@PathVariable("itemId") UUID itemId, @Body ItemLoreDTO lore) {
         ItemLoreResponseDTO updateResult = itemService.updateLoreById(itemId, lore);
         if (updateResult instanceof ItemLoreResponseDTO.ItemLoreErrorDTO) {
@@ -472,6 +478,7 @@ public class ItemController {
             "/lore/{itemId}",
             "/{itemId}/lore"
     })
+    @Validated(groups = ValidationGroup.Create.class)
     public HttpResponse<ItemLoreResponseDTO> createLore(@PathVariable("itemId") UUID itemId, @Body ItemLoreDTO lore) {
         ItemLoreResponseDTO createResult = itemService.createLoreById(itemId, lore);
         if (createResult instanceof ItemLoreResponseDTO.ItemLoreErrorDTO) {
@@ -602,6 +609,7 @@ public class ItemController {
             "/flag/{itemId}",
             "/{itemId}/flag"
     })
+    @Validated(groups = ValidationGroup.Update.class)
     public HttpResponse<ItemFlagResponseDTO> updateFlags(@PathVariable("itemId") UUID itemId, @Body ItemFlagDTO flag) {
         ItemFlagResponseDTO updateResult = itemService.updateFlagById(itemId, flag);
         if (updateResult instanceof ItemFlagResponseDTO.ItemFlagErrorDTO) {
@@ -636,6 +644,7 @@ public class ItemController {
             "/flag/{itemId}",
             "/{itemId}/flag"
     })
+    @Validated(groups = ValidationGroup.Create.class)
     public HttpResponse<ItemFlagResponseDTO> createFlag(@PathVariable("itemId") UUID itemId, @Body ItemFlagDTO flag) {
         ItemFlagResponseDTO createResult = itemService.createFlagById(itemId, flag);
         if (createResult instanceof ItemFlagResponseDTO.ItemFlagErrorDTO) {
