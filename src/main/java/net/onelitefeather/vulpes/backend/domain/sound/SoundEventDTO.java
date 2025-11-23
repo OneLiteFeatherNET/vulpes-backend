@@ -6,10 +6,14 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Null;
 import net.onelitefeather.vulpes.api.model.sound.SoundEventEntity;
+import net.onelitefeather.vulpes.backend.validation.ValidationGroup;
 
 import java.util.List;
 import java.util.UUID;
+
+import static net.onelitefeather.vulpes.backend.validation.ValidationGroup.*;
 
 /**
  * The {@link SoundEventDTO} is a data transfer object that represents a {@link SoundEventEntity}.
@@ -37,11 +41,22 @@ import java.util.UUID;
 @Introspected
 @Serdeable
 public record SoundEventDTO(
-        @Schema(description = "Id of the Model", requiredMode = RequiredMode.REQUIRED) UUID id,
-        @Schema(description = "Name to display it in the ui", requiredMode = RequiredMode.REQUIRED) @NotBlank String uiName,
-        @Schema(description = "The name which is used for the variable generation", requiredMode = RequiredMode.REQUIRED) @NotBlank String variableName,
-        @Schema(description = "They key of the sound", requiredMode = RequiredMode.REQUIRED) @NotBlank String keyName,
-        @Schema(description = "The subtitle which is display when the sound is played", requiredMode = RequiredMode.REQUIRED) @NotBlank String subTitle
+        @Schema(description = "Id of the Model", requiredMode = RequiredMode.REQUIRED)
+        @Null(groups = Create.class)
+        @NotNull(groups = {Update.class})
+        UUID id,
+        @Schema(description = "Name to display it in the ui", requiredMode = RequiredMode.REQUIRED)
+        @NotBlank(groups = {Create.class, Update.class})
+        String uiName,
+        @Schema(description = "The name which is used for the variable generation", requiredMode = RequiredMode.REQUIRED)
+        @Null(groups = {Create.class, Update.class})
+        String variableName,
+        @Schema(description = "They key of the sound", requiredMode = RequiredMode.REQUIRED)
+        @Null(groups = {Create.class, Update.class})
+        String keyName,
+        @Schema(description = "The subtitle which is display when the sound is played", requiredMode = RequiredMode.REQUIRED)
+        @Null(groups = {Create.class, Update.class})
+        String subTitle
 ) {
     /**
      * Converts this DTO to a {@link SoundEventEntity}.

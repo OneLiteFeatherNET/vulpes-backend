@@ -5,8 +5,12 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Null;
 import jakarta.validation.constraints.PositiveOrZero;
 import net.onelitefeather.vulpes.api.model.FontEntity;
+import net.onelitefeather.vulpes.backend.validation.ValidationGroup;
+import net.onelitefeather.vulpes.backend.validation.ValidationGroup.Create;
+import net.onelitefeather.vulpes.backend.validation.ValidationGroup.Update;
 
 import java.util.List;
 import java.util.UUID;
@@ -14,16 +18,38 @@ import java.util.UUID;
 @Schema
 @Serdeable
 public record FontModelDTO(
-        @Schema(description = "ID of the mode", requiredMode = Schema.RequiredMode.NOT_REQUIRED) UUID id,
-        @Schema(description = "Model Name for the ui", requiredMode = Schema.RequiredMode.REQUIRED) @NotBlank String uiName,
-        @Schema(description = "Name in the UI", requiredMode = Schema.RequiredMode.REQUIRED) @NotBlank String variableName,
-        @Schema(description = "Which provider should be used", requiredMode = Schema.RequiredMode.REQUIRED) @NotBlank String provider,
-        @Schema(description = "Internal mapper variable", requiredMode = Schema.RequiredMode.REQUIRED) @NotBlank String mapper,
-        @Schema(description = "The path to the texture", requiredMode = Schema.RequiredMode.REQUIRED) @NotBlank String texturePath,
-        @Schema(description = "The comment", requiredMode = Schema.RequiredMode.REQUIRED) @Nullable String comment,
-        @Schema(description = "The ascent property", requiredMode = Schema.RequiredMode.REQUIRED) @PositiveOrZero int ascent,
-        @Schema(description = "The height property", requiredMode = Schema.RequiredMode.REQUIRED) @PositiveOrZero int height,
-        @Schema(description = "The chars which are overwritten", requiredMode = Schema.RequiredMode.NOT_REQUIRED) List<String> chars
+        @Schema(description = "ID of the font model", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+        @Null(groups = Create.class)
+        @NotNull(groups = Update.class)
+        UUID id,
+        @Schema(description = "Model Name for the ui", requiredMode = Schema.RequiredMode.REQUIRED)
+        @NotBlank(groups = {Create.class, Update.class}) String uiName,
+        @Schema(description = "Name in the UI", requiredMode = Schema.RequiredMode.REQUIRED)
+        @Null(groups = Create.class)
+        @NotBlank(groups = Update.class)
+        String variableName,
+        @Schema(description = "Which provider should be used", requiredMode = Schema.RequiredMode.REQUIRED)
+        @Null(groups = {Create.class, Update.class})
+        @NotBlank
+        String provider,
+        @Schema(description = "Internal mapper variable", requiredMode = Schema.RequiredMode.REQUIRED)
+        @Null(groups = {Create.class, Update.class})
+        String mapper,
+        @Schema(description = "The path to the texture", requiredMode = Schema.RequiredMode.REQUIRED)
+        @Null(groups = {Create.class, Update.class})
+        String texturePath,
+        @Schema(description = "The comment", requiredMode = Schema.RequiredMode.REQUIRED)
+        @Nullable
+        String comment,
+        @Schema(description = "The ascent property", requiredMode = Schema.RequiredMode.REQUIRED)
+        @PositiveOrZero
+        int ascent,
+        @Schema(description = "The height property", requiredMode = Schema.RequiredMode.REQUIRED)
+        @PositiveOrZero
+        int height,
+        @Schema(description = "The chars which are overwritten", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+        @Nullable
+        List<String> chars
 ) {
 
     /**
