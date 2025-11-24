@@ -28,7 +28,6 @@ public record AttributeModelDTO(
         @Schema(description = "The name which represents the variable after the generation", requiredMode = Schema.RequiredMode.REQUIRED)
         @Null(groups = {Create.class})
         @NotBlank(groups = {Update.class})
-        @NotNull(groups = {Update.class})
         String variableName,
         @Schema(description = "Default value of the attribute", requiredMode = Schema.RequiredMode.REQUIRED)
         @PositiveOrZero double defaultValue,
