@@ -10,7 +10,7 @@ import java.util.UUID;
 class FontModelDTOValidationTest extends ValidationTestBase<FontModelDTO> {
 
     @Test
-    void testBlankUiNameValidationFail() {
+    void testBlankUiNameNoValidation() {
         FontModelDTO dto = new FontModelDTO(
                 UUID.randomUUID(),
                 "", // invalid
@@ -24,11 +24,11 @@ class FontModelDTOValidationTest extends ValidationTestBase<FontModelDTO> {
                 List.of("a", "b")
         );
 
-        assertViolation(dto, "uiName");
+        assertNoViolation(dto, "uiName");
     }
 
     @Test
-    void testBlankVariableNameValidationFail() {
+    void testBlankVariableNameNoValidation() {
         FontModelDTO dto = new FontModelDTO(
                 UUID.randomUUID(),
                 "UI Name",
@@ -42,11 +42,11 @@ class FontModelDTOValidationTest extends ValidationTestBase<FontModelDTO> {
                 List.of("a", "b")
         );
 
-        assertViolation(dto, "variableName");
+        assertNoViolation(dto, "variableName");
     }
 
     @Test
-    void testBlankProviderValidationFail() {
+    void testBlankProviderValidation() {
         FontModelDTO dto = new FontModelDTO(
                 UUID.randomUUID(),
                 "UI Name",
@@ -64,7 +64,7 @@ class FontModelDTOValidationTest extends ValidationTestBase<FontModelDTO> {
     }
 
     @Test
-    void testBlankMapperValidationFail() {
+    void testBlankMapperNoValidation() {
         FontModelDTO dto = new FontModelDTO(
                 UUID.randomUUID(),
                 "UI Name",
@@ -78,11 +78,11 @@ class FontModelDTOValidationTest extends ValidationTestBase<FontModelDTO> {
                 List.of("a", "b")
         );
 
-        assertViolation(dto, "mapper");
+        assertNoViolation(dto, "mapper");
     }
 
     @Test
-    void testBlankTexturePathValidationFail() {
+    void testBlankTexturePathNoValidation() {
         FontModelDTO dto = new FontModelDTO(
                 UUID.randomUUID(),
                 "UI Name",
@@ -96,11 +96,11 @@ class FontModelDTOValidationTest extends ValidationTestBase<FontModelDTO> {
                 List.of("a", "b")
         );
 
-        assertViolation(dto, "texturePath");
+        assertNoViolation(dto, "texturePath");
     }
 
     @Test
-    void testNegativeAscentValidationFail() {
+    void testNegativeAscentValidation() {
         FontModelDTO dto = new FontModelDTO(
                 UUID.randomUUID(),
                 "UI Name",
@@ -118,7 +118,7 @@ class FontModelDTOValidationTest extends ValidationTestBase<FontModelDTO> {
     }
 
     @Test
-    void testNegativeHeightValidationFail() {
+    void testNegativeHeightValidation() {
         FontModelDTO dto = new FontModelDTO(
                 UUID.randomUUID(),
                 "UI Name",

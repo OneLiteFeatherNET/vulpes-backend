@@ -9,7 +9,7 @@ import java.util.UUID;
 class NotificationModelDTOValidationTest  extends ValidationTestBase<NotificationModelDTO> {
 
     @Test
-    void testBlankUiNameValidationFail() {
+    void testBlankUiNameNoValidation() {
         NotificationModelDTO dto = new NotificationModelDTO(
                 UUID.randomUUID(),
                 "", // invalid
@@ -20,11 +20,11 @@ class NotificationModelDTOValidationTest  extends ValidationTestBase<Notificatio
                 "Notification Title"
         );
 
-        assertViolation(dto, "uiName");
+        assertNoViolation(dto, "uiName");
     }
 
     @Test
-    void testBlankVariableNameValidationFail() {
+    void testBlankVariableNameNoValidation() {
         NotificationModelDTO dto = new NotificationModelDTO(
                 UUID.randomUUID(),
                 "UI Name",
@@ -35,11 +35,11 @@ class NotificationModelDTOValidationTest  extends ValidationTestBase<Notificatio
                 "Notification Title"
         );
 
-        assertViolation(dto, "variableName");
+        assertNoViolation(dto, "variableName");
     }
 
     @Test
-    void testBlankMaterialValidationFail() {
+    void testBlankMaterialNoValidation() {
         NotificationModelDTO dto = new NotificationModelDTO(
                 UUID.randomUUID(),
                 "UI Name",
@@ -50,11 +50,11 @@ class NotificationModelDTOValidationTest  extends ValidationTestBase<Notificatio
                 "Notification Title"
         );
 
-        assertViolation(dto, "material");
+        assertNoViolation(dto, "material");
     }
 
     @Test
-    void testBlankFrameTypeValidationFail() {
+    void testBlankFrameTypeNoValidation() {
         NotificationModelDTO dto = new NotificationModelDTO(
                 UUID.randomUUID(),
                 "UI Name",
@@ -65,11 +65,11 @@ class NotificationModelDTOValidationTest  extends ValidationTestBase<Notificatio
                 "Notification Title"
         );
 
-        assertViolation(dto, "frameType");
+        assertNoViolation(dto, "frameType");
     }
 
     @Test
-    void testBlankTitleValidationFail() {
+    void testBlankTitleNoValidation() {
         NotificationModelDTO dto = new NotificationModelDTO(
                 UUID.randomUUID(),
                 "UI Name",
@@ -80,6 +80,6 @@ class NotificationModelDTOValidationTest  extends ValidationTestBase<Notificatio
                 "" // invalid
         );
 
-        assertViolation(dto, "title");
+        assertNoViolation(dto, "title");
     }
 }

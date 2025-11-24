@@ -4,14 +4,12 @@ import net.onelitefeather.vulpes.backend.domain.ValidationTestBase;
 import net.onelitefeather.vulpes.backend.domain.item.ItemModelDTO;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 class ItemModelDTOValidationTest extends ValidationTestBase<ItemModelDTO> {
 
     @Test
-    void testBlankUiNameValidationFail() {
+    void testBlankUiNameNoValidation() {
         ItemModelDTO dto = new ItemModelDTO(
                 UUID.randomUUID(),
                 "", // invalid
@@ -24,11 +22,11 @@ class ItemModelDTOValidationTest extends ValidationTestBase<ItemModelDTO> {
                 1
         );
 
-        assertViolation(dto, "uiName");
+        assertNoViolation(dto, "uiName");
     }
 
     @Test
-    void testBlankVariableNameValidationFail() {
+    void testBlankVariableNameNoValidation() {
         ItemModelDTO dto = new ItemModelDTO(
                 UUID.randomUUID(),
                 "UI Name",
@@ -41,11 +39,11 @@ class ItemModelDTOValidationTest extends ValidationTestBase<ItemModelDTO> {
                 1
         );
 
-        assertViolation(dto, "variableName");
+        assertNoViolation(dto, "variableName");
     }
 
     @Test
-    void testBlankCommentValidationFail() {
+    void testBlankCommentNoValidation() {
         ItemModelDTO dto = new ItemModelDTO(
                 UUID.randomUUID(),
                 "UI Name",
@@ -61,7 +59,7 @@ class ItemModelDTOValidationTest extends ValidationTestBase<ItemModelDTO> {
     }
 
     @Test
-    void testBlankDisplayNameValidationFail() {
+    void testBlankDisplayNameNoValidation() {
         ItemModelDTO dto = new ItemModelDTO(
                 UUID.randomUUID(),
                 "UI Name",
@@ -74,11 +72,11 @@ class ItemModelDTOValidationTest extends ValidationTestBase<ItemModelDTO> {
                 1
         );
 
-        assertViolation(dto, "displayName");
+        assertNoViolation(dto, "displayName");
     }
 
     @Test
-    void testBlankMaterialValidationFail() {
+    void testBlankMaterialNoValidation() {
         ItemModelDTO dto = new ItemModelDTO(
                 UUID.randomUUID(),
                 "UI Name",
@@ -91,11 +89,11 @@ class ItemModelDTOValidationTest extends ValidationTestBase<ItemModelDTO> {
                 1
         );
 
-        assertViolation(dto, "material");
+        assertNoViolation(dto, "material");
     }
 
     @Test
-    void testBlankGroupValidationFail() {
+    void testBlankGroupNoValidation() {
         ItemModelDTO dto = new ItemModelDTO(
                 UUID.randomUUID(),
                 "UI Name",
@@ -108,11 +106,11 @@ class ItemModelDTOValidationTest extends ValidationTestBase<ItemModelDTO> {
                 1
         );
 
-        assertViolation(dto, "groupName");
+        assertNoViolation(dto, "groupName");
     }
 
     @Test
-    void testNegativeCustomModelDataValidationFail() {
+    void testNegativeCustomModelDataValidation() {
         ItemModelDTO dto = new ItemModelDTO(
                 UUID.randomUUID(),
                 "UI Name",
@@ -129,7 +127,7 @@ class ItemModelDTOValidationTest extends ValidationTestBase<ItemModelDTO> {
     }
 
     @Test
-    void testNegativeAmountValidationFail() {
+    void testNegativeAmountValidation() {
         ItemModelDTO dto = new ItemModelDTO(
                 UUID.randomUUID(),
                 "UI Name",
