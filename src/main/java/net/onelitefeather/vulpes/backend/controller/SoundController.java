@@ -11,6 +11,7 @@ import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.PathVariable;
 import io.micronaut.http.annotation.Post;
 import io.micronaut.http.annotation.Produces;
+import io.micronaut.validation.Validated;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -24,6 +25,7 @@ import net.onelitefeather.vulpes.backend.domain.sound.SoundEventDTO;
 import net.onelitefeather.vulpes.backend.domain.sound.SoundFileSourceDTO;
 import net.onelitefeather.vulpes.backend.domain.sound.SoundResponseDTO;
 import net.onelitefeather.vulpes.backend.service.SoundService;
+import net.onelitefeather.vulpes.backend.validation.ValidationGroup;
 
 import java.util.List;
 import java.util.UUID;
@@ -75,8 +77,9 @@ public class SoundController {
     )
     @Post
     @Produces(MediaType.APPLICATION_JSON)
+    @Validated(groups = ValidationGroup.Create.class)
     public HttpResponse<SoundResponseDTO> add(
-            @Body @Valid SoundEventDTO dtoModel
+            @Body SoundEventDTO dtoModel
     ) {
         SoundResponseDTO result = soundService.createSoundEvent(dtoModel);
         if (result instanceof SoundResponseDTO.SoundErrorDTO) {
@@ -226,7 +229,8 @@ public class SoundController {
     )
     @Post("/update")
     @Produces(MediaType.APPLICATION_JSON)
-    public HttpResponse<SoundResponseDTO> update(@Body @Valid SoundEventDTO model) {
+    @Validated(groups = ValidationGroup.Update.class)
+    public HttpResponse<SoundResponseDTO> update(@Body SoundEventDTO model) {
         SoundResponseDTO result = soundService.updateSoundEvent(model);
         if (result instanceof SoundResponseDTO.SoundErrorDTO) {
             return HttpResponse.notFound(result);
@@ -296,6 +300,7 @@ public class SoundController {
     )
     @Post("{id}/sources")
     @Produces(MediaType.APPLICATION_JSON)
+    @Validated(groups = ValidationGroup.Create.class)
     public HttpResponse<SoundResponseDTO> createSource(
             @PathVariable("id") UUID soundEventId,
             @Body SoundFileSourceDTO sourceDTO
@@ -335,6 +340,7 @@ public class SoundController {
     )
     @Post("{id}/sources/update")
     @Produces(MediaType.APPLICATION_JSON)
+    @Validated(groups = ValidationGroup.Update.class)
     public HttpResponse<SoundResponseDTO> updateSource(
             @PathVariable("id") UUID soundEventId,
             @Body SoundFileSourceDTO sourceDTO

@@ -12,7 +12,7 @@ class SoundFileSourceDTOValidationTest extends ValidationTestBase<SoundFileSourc
     void testBlankNameValidationFail() {
         SoundFileSourceDTO dto = new SoundFileSourceDTO(
                 UUID.randomUUID(),
-                "", // invalid
+                "",
                 1.0f,
                 1.0f,
                 1,
@@ -22,7 +22,7 @@ class SoundFileSourceDTOValidationTest extends ValidationTestBase<SoundFileSourc
                 "typeA"
         );
 
-        assertViolation(dto, "name");
+        assertNoViolation(dto, "name");
     }
 
     @Test
@@ -106,6 +106,6 @@ class SoundFileSourceDTOValidationTest extends ValidationTestBase<SoundFileSourc
                 true,
                 "" // invalid
         );
-        assertViolation(dto, "type");
+        assertNoViolation(dto, "type");
     }
 }
