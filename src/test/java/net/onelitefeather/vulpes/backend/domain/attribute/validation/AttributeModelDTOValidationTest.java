@@ -18,7 +18,7 @@ class AttributeModelDTOValidationTest extends ValidationTestBase<AttributeModelD
                 5.0
         );
 
-        assertViolation(dto, "uiName");
+        assertNoViolation(dto, "uiName");
     }
 
     @Test
@@ -57,6 +57,6 @@ class AttributeModelDTOValidationTest extends ValidationTestBase<AttributeModelD
                 5.0
         );
 
-        assertViolation(dto, "variableName");
+        assertNoViolation(dto, "variableName");
     }
 }

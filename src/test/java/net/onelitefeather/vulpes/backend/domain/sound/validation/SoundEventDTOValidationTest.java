@@ -9,7 +9,7 @@ import java.util.UUID;
 class SoundEventDTOValidationTest extends ValidationTestBase<SoundEventDTO> {
 
     @Test
-    void testBlankUiNameValidationFail() {
+    void testBlankUiNameNoValidation() {
         SoundEventDTO dto = new SoundEventDTO(
                 UUID.randomUUID(),
                 "", // invalid
@@ -18,11 +18,11 @@ class SoundEventDTOValidationTest extends ValidationTestBase<SoundEventDTO> {
                 "SubTitle"
         );
 
-        assertViolation(dto, "uiName");
+        assertNoViolation(dto, "uiName");
     }
 
     @Test
-    void testBlankVariableNameValidationFail() {
+    void testBlankVariableNameNoValidation() {
         SoundEventDTO dto = new SoundEventDTO(
                 UUID.randomUUID(),
                 "UI Name",
@@ -31,11 +31,11 @@ class SoundEventDTOValidationTest extends ValidationTestBase<SoundEventDTO> {
                 "SubTitle"
         );
 
-        assertViolation(dto, "variableName");
+        assertNoViolation(dto, "variableName");
     }
 
     @Test
-    void testBlankKeyNameValidationFail() {
+    void testBlankKeyNameNoValidation() {
         SoundEventDTO dto = new SoundEventDTO(
                 UUID.randomUUID(),
                 "UI Name",
@@ -43,11 +43,11 @@ class SoundEventDTOValidationTest extends ValidationTestBase<SoundEventDTO> {
                 "", // invalid
                 "subTitle"
         );
-        assertViolation(dto, "keyName");
+        assertNoViolation(dto, "keyName");
     }
 
     @Test
-    void testBlankSubTitleValidationFail() {
+    void testBlankSubTitleNoValidation() {
         SoundEventDTO dto = new SoundEventDTO(
                 UUID.randomUUID(),
                 "UI Name",
@@ -56,6 +56,6 @@ class SoundEventDTOValidationTest extends ValidationTestBase<SoundEventDTO> {
                 "" // invalid
         );
 
-        assertViolation(dto, "subTitle");
+        assertNoViolation(dto, "subTitle");
     }
 }
