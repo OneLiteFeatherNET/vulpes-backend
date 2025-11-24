@@ -8,7 +8,6 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Null;
 import jakarta.validation.constraints.PositiveOrZero;
 import net.onelitefeather.vulpes.api.model.FontEntity;
-import net.onelitefeather.vulpes.backend.validation.ValidationGroup;
 import net.onelitefeather.vulpes.backend.validation.ValidationGroup.Create;
 import net.onelitefeather.vulpes.backend.validation.ValidationGroup.Update;
 
@@ -46,10 +45,7 @@ public record FontModelDTO(
         int ascent,
         @Schema(description = "The height property", requiredMode = Schema.RequiredMode.REQUIRED)
         @PositiveOrZero
-        int height,
-        @Schema(description = "The chars which are overwritten", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-        @Nullable
-        List<String> chars
+        int height
 ) {
 
     /**
