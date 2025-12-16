@@ -4,7 +4,6 @@ import net.onelitefeather.vulpes.backend.domain.ValidationTestBase;
 import net.onelitefeather.vulpes.backend.domain.font.FontModelDTO;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
 import java.util.UUID;
 
 class FontModelDTOValidationTest extends ValidationTestBase<FontModelDTO> {
@@ -20,8 +19,7 @@ class FontModelDTOValidationTest extends ValidationTestBase<FontModelDTO> {
                 "texturePath",
                 "Some comment",
                 10,
-                20,
-                List.of("a", "b")
+                20
         );
 
         assertNoViolation(dto, "uiName");
@@ -38,8 +36,7 @@ class FontModelDTOValidationTest extends ValidationTestBase<FontModelDTO> {
                 "texturePath",
                 "Some comment",
                 10,
-                20,
-                List.of("a", "b")
+                20
         );
 
         assertNoViolation(dto, "variableName");
@@ -56,8 +53,7 @@ class FontModelDTOValidationTest extends ValidationTestBase<FontModelDTO> {
                 "texturePath",
                 "Some comment",
                 10,
-                20,
-                List.of("a", "b")
+                20
         );
 
         assertViolation(dto, "provider");
@@ -74,8 +70,7 @@ class FontModelDTOValidationTest extends ValidationTestBase<FontModelDTO> {
                 "texturePath",
                 "Some comment",
                 10,
-                20,
-                List.of("a", "b")
+                20
         );
 
         assertNoViolation(dto, "mapper");
@@ -92,8 +87,7 @@ class FontModelDTOValidationTest extends ValidationTestBase<FontModelDTO> {
                 "", // invalid
                 "Some comment",
                 10,
-                20,
-                List.of("a", "b")
+                20
         );
 
         assertNoViolation(dto, "texturePath");
@@ -110,8 +104,7 @@ class FontModelDTOValidationTest extends ValidationTestBase<FontModelDTO> {
                 "texturePath",
                 "Some comment",
                 -1, // invalid
-                20,
-                List.of("a", "b")
+                20
         );
 
         assertViolation(dto, "ascent");
@@ -128,8 +121,7 @@ class FontModelDTOValidationTest extends ValidationTestBase<FontModelDTO> {
                 "texturePath",
                 "Some comment",
                 10,
-                -5, // invalid
-                List.of("a", "b")
+                -5
         );
 
         assertViolation(dto, "height");
