@@ -166,9 +166,6 @@ tasks {
            }.result?.get()
        }
     }
-    named("publish") {
-        dependsOn("pushDartClient")
-    }
 }
 
 // OpenAPI Generator configuration
