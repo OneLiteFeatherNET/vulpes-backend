@@ -106,9 +106,6 @@ tasks {
             csv.required.set(false)
         }
     }
-    this.openApiGenerate {
-        dependsOn("compileJava")
-    }
 }
 
 publishing {
