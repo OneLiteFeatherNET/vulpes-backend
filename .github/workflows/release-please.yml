@@ -82,6 +82,9 @@ jobs:
       version: ${{ github.event_name == 'workflow_dispatch' && inputs.docker_version || needs.release-please.outputs.version }}
       setup-java: true
       build-command: "./gradlew jar optimizedBuildLayers optimizedDockerfile -Pversion=$VERSION"
+      build-env: |
+        ONELITEFEATHER_MAVEN_USERNAME=${{ secrets.ONELITEFEATHER_MAVEN_USERNAME }}
+        ONELITEFEATHER_MAVEN_PASSWORD=${{ secrets.ONELITEFEATHER_MAVEN_PASSWORD }}
       context: "./build/docker/optimized"
       blob-chunk: "90000000"   # ~90 MB, under the 100 MB Cloudflare cap
       req-concurrent: "4"
@@ -110,6 +113,9 @@ jobs:
       version: ${{ needs.version.outputs.version }}
       setup-java: true
       build-command: "./gradlew jar optimizedBuildLayers optimizedDockerfile -Pversion=$VERSION"
+      build-env: |
+        ONELITEFEATHER_MAVEN_USERNAME=${{ secrets.ONELITEFEATHER_MAVEN_USERNAME }}
+        ONELITEFEATHER_MAVEN_PASSWORD=${{ secrets.ONELITEFEATHER_MAVEN_PASSWORD }}
       context: "./build/docker/optimized"
       blob-chunk: "90000000"   # ~90 MB, under the 100 MB Cloudflare cap
       req-concurrent: "4"
