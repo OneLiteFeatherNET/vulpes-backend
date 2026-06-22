@@ -129,12 +129,10 @@ tasks {
 
 publishing {
     publications.create<MavenPublication>("maven") {
-        artifact(project.tasks.optimizedJitJar)
-        artifact(project.tasks.optimizedRunnerJitJar)
-        artifact(project.tasks.runnerJar)
+        // Only the thin application jar is published. The fat runner jars and the
+        // full distribution tar/zip bundle every dependency; the runnable artifact
+        // is the Docker image, not a Maven artifact.
         artifact(project.tasks.jar)
-        artifact(project.tasks.optimizedDistTar)
-        artifact(project.tasks.optimizedDistZip)
 
         version = rootProject.version as String
         artifactId = "vulpes-backend"
