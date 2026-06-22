@@ -28,6 +28,24 @@ micronaut:
       swagger-ui:
         paths: classpath:META-INF/swagger/views/swagger-ui
         mapping: /swagger-ui/**
+  metrics:
+    enabled: true
+    export:
+      prometheus:
+        enabled: true
+        step: PT1M
+        descriptions: true
+
+# Management endpoints — /health for liveness/readiness probes,
+# /prometheus for metrics scraping (both non-sensitive for internal scraping).
+endpoints:
+  health:
+    enabled: true
+    sensitive: false
+    details-visible: ANONYMOUS
+  prometheus:
+    enabled: true
+    sensitive: false
 
 # OpenTelemetry — tracing is disabled unless OTEL_TRACES_EXPORTER=otlp is set
 # (do this in the Docker/prod container). Metrics stay on Prometheus/Micrometer.
