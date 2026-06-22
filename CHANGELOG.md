@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.0](https://github.com/OneLiteFeatherNET/Vulpes-Backend/compare/v2.2.0...v2.3.0) (2026-06-22)
+
+
+### Features
+
+* enable /health and /prometheus management endpoints ([#141](https://github.com/OneLiteFeatherNET/Vulpes-Backend/issues/141)) ([dc87f28](https://github.com/OneLiteFeatherNET/Vulpes-Backend/commit/dc87f289a53ea94650adbde23de61fc96883258b))
+
 ## [2.2.0](https://github.com/OneLiteFeatherNET/Vulpes-Backend/compare/v2.1.0...v2.2.0) (2026-06-22)
 
 
