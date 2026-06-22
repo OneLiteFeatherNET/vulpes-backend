@@ -40,6 +40,9 @@ dependencyResolutionManagement {
             version("hibernate.validator", "9.1.0.Final")
             version("jakarta.validation", "3.1.1")
             version("cyclonedx", "3.2.4")
+            version("logstash.logback.encoder", "8.1")
+            version("janino", "3.1.12")
+            version("opentelemetry.instrumentation.alpha", "2.20.1-alpha")
 
             library("uuid.creator", "com.github.f4b6a3", "uuid-creator").versionRef("uuid.creator")
             library("vulpes.api", "net.onelitefeather", "vulpes-model").versionRef("vulpes.model")
@@ -49,6 +52,13 @@ dependencyResolutionManagement {
 
             library("hibernate.validator", "org.hibernate.validator", "hibernate-validator").versionRef("hibernate.validator")
             library("jakarta.validation", "jakarta.validation", "jakarta.validation-api").versionRef("jakarta.validation")
+
+            // Observability — JSON logging + OpenTelemetry (see build.gradle.kts).
+            // OTLP exporter version is managed by the Micronaut platform BOM.
+            library("logstash.logback.encoder", "net.logstash.logback", "logstash-logback-encoder").versionRef("logstash.logback.encoder")
+            library("janino", "org.codehaus.janino", "janino").versionRef("janino")
+            library("opentelemetry.exporter.otlp", "io.opentelemetry", "opentelemetry-exporter-otlp").withoutVersion()
+            library("opentelemetry.logback.mdc", "io.opentelemetry.instrumentation", "opentelemetry-logback-mdc-1.0").versionRef("opentelemetry.instrumentation.alpha")
 
             plugin("micronaut.application", "io.micronaut.application").versionRef("micronaut")
             plugin("micronaut.aot", "io.micronaut.aot").versionRef("micronaut")
