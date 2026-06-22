@@ -29,6 +29,29 @@ micronaut:
         paths: classpath:META-INF/swagger/views/swagger-ui
         mapping: /swagger-ui/**
 
+# OpenTelemetry — tracing is disabled unless OTEL_TRACES_EXPORTER=otlp is set
+# (do this in the Docker/prod container). Metrics stay on Prometheus/Micrometer.
+otel:
+  service:
+    name: ${OTEL_SERVICE_NAME:vulpes-backend}
+  traces:
+    exporter: ${OTEL_TRACES_EXPORTER:none}
+  metrics:
+    exporter: none
+  logs:
+    exporter: none
+  exporter:
+    otlp:
+      protocol: grpc
+      endpoint: ${OTEL_EXPORTER_OTLP_ENDPOINT:`http://localhost:4317`}
+  exclusions:
+    - /health
+    - /health/.*
+    - /prometheus
+    - /swagger
+    - /swagger/.*
+    - /swagger-ui/.*
+
 datasources:
   default:
     url: jdbc:mariadb://localhost:3336/vulpes
