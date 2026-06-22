@@ -38,6 +38,7 @@ dependencies {
     implementation(mn.micronaut.openapi)
     implementation(mn.validation)
     implementation(mn.swagger.core)
+    implementation(mn.micronaut.management)
     implementation(mn.micronaut.micrometer.core)
     implementation(mn.micronaut.micrometer.registry.prometheus)
     // External Dependencies
